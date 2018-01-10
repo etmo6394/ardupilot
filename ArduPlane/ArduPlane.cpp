@@ -98,7 +98,6 @@ void Plane::stats_update(void)
 void Plane::setup() 
 {
     // load the default values of variables listed in var_info[]
-    agc_feedback = 0;
 
     AP_Param::setup_sketch_defaults();
 

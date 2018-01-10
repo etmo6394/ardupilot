@@ -33,6 +33,8 @@ void Plane::init_ardupilot()
     //
     load_parameters();
 
+    agc_feedback = 0;
+
     // initialise stats module
     g2.stats.init();
 
