@@ -155,6 +155,70 @@ void Plane::update_soft_armed()
     DataFlash.set_vehicle_armed(hal.util->get_soft_armed());
 }
 
+
+//RAMROD flight mode switch
+void Plane::RAMROD_Switch()
+{
+    // update payload signal from TELEM2 (1/0)
+    //random number generator for testing purposes
+    randswitch = randswitch + 1;
+    if (randswitch == 100) {
+        randswitch = 1;
+    }
+
+    if (agc_feedback == 0) {
+        if (randswitch == 8) {
+            agc_feedback = 1;
+        }
+    }
+    if (agc_feedback == 1) {
+        if (randswitch == 8) {
+            agc_feedback = 0;
+        }
+    }
+
+    gcs().send_text(MAV_SEVERITY_INFO, "randswitch: %f.",(double)randswitch);
+
+    // switch between flight modes
+    switch(control_mode)
+    {
+    case MANUAL:
+    case STABILIZE:
+    case ACRO:
+    case FLY_BY_WIRE_A:
+    case AUTOTUNE:
+    case FLY_BY_WIRE_B:
+        if(agc_feedback == 0 && agc_feedback_prev == 1) {
+            set_mode(AUTO, MODE_REASON_AGC);
+            gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
+        }
+        break;
+    case CRUISE:
+    case TRAINING:
+    case QSTABILIZE:
+    case QLOITER:
+    case QHOVER:
+    case AUTO:
+        if(agc_feedback == 1 && agc_feedback_prev == 0) {
+            set_mode(FLY_BY_WIRE_B, MODE_REASON_AGC);
+            gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
+        }
+        break;
+    case AVOID_ADSB:
+    case GUIDED:
+    case LOITER:
+    case CIRCLE:
+    case RTL:
+    case QLAND:
+    case QRTL:
+    default:
+        break;
+    }
+    //GCS message
+
+
+}
+
 // update AHRS system
 void Plane::ahrs_update()
 {
