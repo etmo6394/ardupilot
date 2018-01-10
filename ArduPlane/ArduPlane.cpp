@@ -169,17 +169,18 @@ void Plane::RAMROD_Switch()
     }
 
     if (agc_feedback == 0) {
-        if (randswitch == 8) {
+        if (randswitch == 50) {
             agc_feedback = 1;
         }
     }
     if (agc_feedback == 1) {
-        if (randswitch == 8) {
+        if (randswitch == 50) {
             agc_feedback = 0;
         }
     }
 
     //gcs().send_text(MAV_SEVERITY_INFO, "randswitch: %f.",(double)randswitch);
+    gcs().send_text(MAV_SEVERITY_INFO, "agc_feedback | agc_feedback_prev: %f | %f.", (double)agc_feedback, (double)agc_feedback_prev);
 
     // switch between flight modes
     switch(control_mode)
