@@ -98,6 +98,8 @@ void Plane::stats_update(void)
 void Plane::setup() 
 {
     // load the default values of variables listed in var_info[]
+    agc_feedback = 0;
+
     AP_Param::setup_sketch_defaults();
 
     AP_Notify::flags.failsafe_battery = false;
@@ -177,7 +179,7 @@ void Plane::RAMROD_Switch()
         }
     }
 
-    gcs().send_text(MAV_SEVERITY_INFO, "randswitch: %f.",(double)randswitch);
+    //gcs().send_text(MAV_SEVERITY_INFO, "randswitch: %f.",(double)randswitch);
 
     // switch between flight modes
     switch(control_mode)
