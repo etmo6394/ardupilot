@@ -167,6 +167,8 @@ void Plane::RAMROD_Switch()
         randswitch = 1;
     }
 
+    agc_feedback_prev = agc_feedback;
+
     if (agc_feedback == 0 && randswitch == 50) {
        agc_feedback = 1;
     }
@@ -175,7 +177,6 @@ void Plane::RAMROD_Switch()
        agc_feedback = 0;
     }
 
-    //gcs().send_text(MAV_SEVERITY_INFO, "randswitch: %f.",(double)randswitch);
     gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %f | %f  (#: %f).", (double)agc_feedback, (double)agc_feedback_prev, (double)randswitch);
 
     //enum control_mode
@@ -192,49 +193,6 @@ void Plane::RAMROD_Switch()
             gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
         }
     }
-
-    // switch between flight modes
-    /*
-    switch(control_mode)
-    {
-    case MANUAL:
-    case STABILIZE:
-    case ACRO:
-    case FLY_BY_WIRE_A:
-    case AUTOTUNE:
-    case FLY_BY_WIRE_B: {
-        if(agc_feedback == 0 && agc_feedback_prev == 1) {
-            set_mode(AUTO, MODE_REASON_AGC);
-            gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
-        }
-        break;
-    }
-    case CRUISE:
-    case TRAINING:
-    case QSTABILIZE:
-    case QLOITER:
-    case QHOVER:
-    case AUTO: {
-        if(agc_feedback == 1 && agc_feedback_prev == 0) {
-            set_mode(FLY_BY_WIRE_B, MODE_REASON_AGC);
-            gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
-        }
-        break;
-    }
-    case AVOID_ADSB:
-    case GUIDED:
-    case LOITER:
-    case CIRCLE:
-    case RTL:
-    case QLAND:
-    case QRTL:
-    default:
-        break;
-    }
-    */
-    //GCS message
-
-
 }
 
 // update AHRS system
