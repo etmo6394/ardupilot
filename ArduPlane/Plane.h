@@ -166,8 +166,8 @@ private:
     ParametersG2 g2;
 
     // Signal from payload (0: GPS available, 1: no GPS available)
-    AP_int8 agc_feedback;
-    AP_int8 agc_feedback_prev;
+    AP_Int8 agc_feedback;
+    AP_Int8 agc_feedback_prev;
     AP_Int8 randswitch;
 
     // main loop scheduler
