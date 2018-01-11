@@ -168,16 +168,17 @@ void Plane::RAMROD_Switch()
     }
 
     agc_feedback_prev = agc_feedback;
-
     if (agc_feedback == 0 && randswitch == 50) {
-       agc_feedback = 1;
+        gcs().send_text(MAV_SEVERITY_INFO, "switch1");
+        agc_feedback = 1;
     }
 
     if (agc_feedback == 1 && randswitch == 50) {
-       agc_feedback = 0;
+        gcs().send_text(MAV_SEVERITY_INFO, "switch2");
+        agc_feedback = 0;
     }
 
-    gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %f | %f  (#: %f).", (double)agc_feedback, (double)agc_feedback_prev, (double)randswitch);
+    gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %d | %d  (#: %d).", (int)agc_feedback, (int)agc_feedback_prev, (int)randswitch);
 
     //enum control_mode
     if (control_mode == AUTO) {
