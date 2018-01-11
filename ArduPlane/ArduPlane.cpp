@@ -171,9 +171,7 @@ void Plane::RAMROD_Switch()
     if (agc_feedback == 0 && randswitch == 50) {
         gcs().send_text(MAV_SEVERITY_INFO, "switch1");
         agc_feedback = 1;
-    }
-
-    if (agc_feedback == 1 && randswitch == 50) {
+    } else if (agc_feedback == 1 && randswitch == 50) {
         gcs().send_text(MAV_SEVERITY_INFO, "switch2");
         agc_feedback = 0;
     }
