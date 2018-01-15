@@ -1093,7 +1093,7 @@ private:
     void accel_cal_update(void);
     void update_soft_armed();
     void update_soaring();
-    void RAMROD_Switch();
+    int RAMROD_Switch();
 
     // support for AP_Avoidance custom flight mode, AVOID_ADSB
     bool avoid_adsb_init(bool ignore_checks);
