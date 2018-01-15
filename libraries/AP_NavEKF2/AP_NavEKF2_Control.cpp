@@ -161,6 +161,7 @@ void NavEKF2_core::setAidingMode()
     PV_AidingModePrev = PV_AidingMode;
 
     // Get AGC Feedback
+    int agc_feedback = 0;
     // Plane::
 
     // Determine if we should change aiding mode
