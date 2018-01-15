@@ -158,7 +158,7 @@ void Plane::update_soft_armed()
 
 
 //RAMROD flight mode switch
-void Plane::RAMROD_Switch()
+int Plane::RAMROD_Switch()
 {
     // update payload signal from TELEM2 (1/0)
     //random number generator for testing purposes
@@ -169,29 +169,27 @@ void Plane::RAMROD_Switch()
 
     agc_feedback_prev = agc_feedback;
     if (agc_feedback == 0 && randswitch == 50) {
-        gcs().send_text(MAV_SEVERITY_INFO, "switch1");
         agc_feedback = 1;
     } else if (agc_feedback == 1 && randswitch == 50) {
-        gcs().send_text(MAV_SEVERITY_INFO, "switch2");
         agc_feedback = 0;
     }
 
-    gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %d | %d  (#: %d).", (int)agc_feedback, (int)agc_feedback_prev, (int)randswitch);
+    // gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %d | %d  (#: %d).", (int)agc_feedback, (int)agc_feedback_prev, (int)randswitch);
 
-    //enum control_mode
     if (control_mode == AUTO) {
         if(agc_feedback == 1 && agc_feedback_prev == 0) {
             set_mode(FLY_BY_WIRE_B, MODE_REASON_AGC);
-            gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
+            // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
         }
     }
 
     if (control_mode == FLY_BY_WIRE_B) {
         if(agc_feedback == 0 && agc_feedback_prev == 1) {
             set_mode(AUTO, MODE_REASON_AGC);
-            gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
+            // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
         }
     }
+    return agc_feedback;
 }
 
 // update AHRS system
