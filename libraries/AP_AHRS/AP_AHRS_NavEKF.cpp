@@ -123,7 +123,7 @@ void AP_AHRS_NavEKF::update(bool skip_ins_update)
     }
 }
 
-vector3f AP_AHRS_NavEKF::get_agc_feedback(void)
+Vector3i AP_AHRS_NavEKF::get_agc_feedback(void)
 {
     randswitch = randswitch + 1;
     if (randswitch == 100) {
