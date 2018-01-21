@@ -97,6 +97,18 @@ public:
         _rotation_vehicle_body_to_autopilot_body = _rotation_autopilot_body_to_vehicle_body.transposed();
     }
 
+
+    // RAMROD AGC Feedback
+    struct get_agc_feedback {
+        int agc_feedback_prev;
+        int agc_feedback;
+    };
+
+    // Signal from payload (0: GPS available, 1: no GPS available)
+    AP_Int8 agc_feedback;
+    AP_Int8 agc_feedback_prev;
+    AP_Int8 randswitch;
+
     // empty virtual destructor
     virtual ~AP_AHRS() {}
 

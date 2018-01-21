@@ -158,23 +158,17 @@ void Plane::update_soft_armed()
 
 
 //RAMROD flight mode switch
-int Plane::RAMROD_Switch()
+void Plane::RAMROD_Switch()
 {
-    // update payload signal from TELEM2 (1/0)
-    //random number generator for testing purposes
-    randswitch = randswitch + 1;
-    if (randswitch == 100) {
-        randswitch = 1;
-    }
-
-    agc_feedback_prev = agc_feedback;
-    if (agc_feedback == 0 && randswitch == 50) {
-        agc_feedback = 1;
-    } else if (agc_feedback == 1 && randswitch == 50) {
-        agc_feedback = 0;
-    }
 
     // gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %d | %d  (#: %d).", (int)agc_feedback, (int)agc_feedback_prev, (int)randswitch);
+
+    auto agc = ahrs.get_agc_feedback();
+
+    agc_feedback_prev = agc.agc_feedback_prev;
+    agc_feedback = agc.agc_feedback;
+
+    gcs().send_text(MAV_SEVERITY_INFO, "%d %d.", (int)agc_feedback_prev, (int)agc_feedback);
 
     if (control_mode == AUTO) {
         if(agc_feedback == 1 && agc_feedback_prev == 0) {
@@ -189,7 +183,7 @@ int Plane::RAMROD_Switch()
             // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
         }
     }
-    return agc_feedback;
+    //return agc_feedback;
 }
 
 // update AHRS system
