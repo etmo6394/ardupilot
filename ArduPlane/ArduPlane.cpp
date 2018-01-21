@@ -163,7 +163,7 @@ void Plane::RAMROD_Switch()
 
     // gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %d | %d  (#: %d).", (int)agc_feedback, (int)agc_feedback_prev, (int)randswitch);
 
-    auto agc = ahrs.get_agc_feedback();
+    auto agc = ahrs.get_agc_feedback(void);
 
     agc_feedback_prev = agc.x;
     agc_feedback = agc.y;
