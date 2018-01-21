@@ -145,9 +145,9 @@ Vector3i AP_AHRS::get_agc_feedback()
         agc_feedback = 0;
     }
 
-    get_agc_feedback = {agc_feedback_prev,agc_feedback,0};
+    Vector3i agc = {agc_feedback_prev,agc_feedback,0};
 
-    return get_agc_feedback;
+    return agc;
 
 
 }

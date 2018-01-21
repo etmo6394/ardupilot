@@ -103,9 +103,9 @@ public:
 
 
     // Signal from payload (0: GPS available, 1: no GPS available)
-    AP_Int8 agc_feedback;
-    AP_Int8 agc_feedback_prev;
-    AP_Int8 randswitch;
+    int16_t agc_feedback;
+    int16_t agc_feedback_prev;
+    int16_t randswitch;
 
     // empty virtual destructor
     virtual ~AP_AHRS() {}
