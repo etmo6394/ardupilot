@@ -123,26 +123,6 @@ void AP_AHRS_NavEKF::update(bool skip_ins_update)
     }
 }
 
-Vector3i AP_AHRS_NavEKF::get_agc_feedback()
-{
-    randswitch = randswitch + 1;
-    if (randswitch == 100) {
-        randswitch = 1;
-    }
-
-    agc_feedback_prev = agc_feedback;
-    if (agc_feedback == 0 && randswitch == 50) {
-        agc_feedback = 1;
-    } else if (agc_feedback == 1 && randswitch == 50) {
-        agc_feedback = 0;
-    }
-
-    get_agc_feedback = {agc_feedback_prev,agc_feedback,0}
-
-    return get_agc_feedback;
-
-
-}
 
 void AP_AHRS_NavEKF::update_DCM(bool skip_ins_update)
 {

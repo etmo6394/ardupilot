@@ -131,6 +131,27 @@ const AP_Param::GroupInfo AP_AHRS::var_info[] = {
     AP_GROUPEND
 };
 
+Vector3i AP_AHRS::get_agc_feedback()
+{
+    randswitch = randswitch + 1;
+    if (randswitch == 100) {
+        randswitch = 1;
+    }
+
+    agc_feedback_prev = agc_feedback;
+    if (agc_feedback == 0 && randswitch == 50) {
+        agc_feedback = 1;
+    } else if (agc_feedback == 1 && randswitch == 50) {
+        agc_feedback = 0;
+    }
+
+    get_agc_feedback = {agc_feedback_prev,agc_feedback,0}
+
+    return get_agc_feedback;
+
+
+}
+
 // return a smoothed and corrected gyro vector using the latest ins data (which may not have been consumed by the EKF yet)
 Vector3f AP_AHRS::get_gyro_latest(void) const
 {
