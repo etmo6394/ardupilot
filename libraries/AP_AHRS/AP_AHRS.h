@@ -99,10 +99,8 @@ public:
 
 
     // RAMROD AGC Feedback
-    struct get_agc_feedback {
-        int agc_feedback_prev;
-        int agc_feedback;
-    };
+    Vector3i get_agc_feedback(void);
+
 
     // Signal from payload (0: GPS available, 1: no GPS available)
     AP_Int8 agc_feedback;
