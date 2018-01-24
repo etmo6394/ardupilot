@@ -161,10 +161,13 @@ void NavEKF2_core::setAidingMode()
     PV_AidingModePrev = PV_AidingMode;
 
     // Get AGC Feedback
-    auto agc = ahrs.get_agc_feedback();
+    // auto agc = ahrs.get_agc_feedback();
+    auto agc = _ahrs->get_agc_feedback();
 
     agc_feedback_prev = agc.x;
     agc_feedback = agc.y;
+
+    gcs().send_text(MAV_SEVERITY_INFO, "EKF: %d %d.", (int)agc_feedback_prev, (int)agc_feedback);
 
     // Determine if we should change aiding mode
     switch (PV_AidingMode) {
