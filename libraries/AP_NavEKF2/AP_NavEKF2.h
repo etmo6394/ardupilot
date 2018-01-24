@@ -30,6 +30,7 @@
 #include <AP_Airspeed/AP_Airspeed.h>
 #include <AP_Compass/AP_Compass.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
+// #include <AP_AHRS/AP_AHRS.h>
 
 class NavEKF2_core;
 class AP_AHRS;
