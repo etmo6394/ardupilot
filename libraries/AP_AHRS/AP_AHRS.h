@@ -104,6 +104,10 @@ public:
     // RAMROD AGC Feedback
     Vector3i get_agc_feedback(void);
 
+    Vector3i get_agc(void) const {
+        return _agc;
+    }
+
 
     // Signal from payload (0: GPS available, 1: no GPS available)
     int16_t agc_feedback;

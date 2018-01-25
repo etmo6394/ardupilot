@@ -147,6 +147,7 @@ Vector3i AP_AHRS::get_agc_feedback(void)
 
     Vector3i agc = {agc_feedback_prev,agc_feedback,0};
 
+    _agc = agc;
     return agc;
 
 
