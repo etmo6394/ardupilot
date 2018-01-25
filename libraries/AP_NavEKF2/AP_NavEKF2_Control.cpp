@@ -161,9 +161,9 @@ void NavEKF2_core::setAidingMode()
     PV_AidingModePrev = PV_AidingMode;
 
     // Get AGC Feedback
-    // auto agc = ahrs.get_agc_feedback();
+    auto agc = ahrs.get_agc_feedback();
 
-    auto agc = AP_AHRS::get_agc_feedback();
+    // auto agc = AP_AHRS::get_agc_feedback();
 
     // auto agc = _ahrs->get_agc_feedback();
 

@@ -52,6 +52,9 @@ class AP_AHRS
 public:
     friend class AP_AHRS_View;
     
+    // RAMROD AGC Feedback
+    Vector3i get_agc_feedback(void);
+
     // Constructor
     AP_AHRS(AP_InertialSensor &ins, AP_Baro &baro) :
         roll(0.0f),
@@ -99,7 +102,7 @@ public:
 
 
     // RAMROD AGC Feedback
-    Vector3i get_agc_feedback(void) const;
+    // Vector3i get_agc_feedback(void);
 
 
     // Signal from payload (0: GPS available, 1: no GPS available)
