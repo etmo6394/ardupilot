@@ -51,9 +51,6 @@ class AP_AHRS
 {
 public:
     friend class AP_AHRS_View;
-    
-    // RAMROD AGC Feedback
-    Vector3i get_agc_feedback(void);
 
     // Constructor
     AP_AHRS(AP_InertialSensor &ins, AP_Baro &baro) :
@@ -98,6 +95,9 @@ public:
         _last_trim = _trim.get();
         _rotation_autopilot_body_to_vehicle_body.from_euler(_last_trim.x, _last_trim.y, 0.0f);
         _rotation_vehicle_body_to_autopilot_body = _rotation_autopilot_body_to_vehicle_body.transposed();
+
+        // RAMROD AGC Feedback
+        Vector3i get_agc_feedback(void);
     }
 
 
