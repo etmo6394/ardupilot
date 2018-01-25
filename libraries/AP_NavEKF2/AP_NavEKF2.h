@@ -30,14 +30,16 @@
 #include <AP_Airspeed/AP_Airspeed.h>
 #include <AP_Compass/AP_Compass.h>
 #include <AP_RangeFinder/AP_RangeFinder.h>
+#include <AP_InertialSensor/AP_InertialSensor.h>
 // #include <AP_AHRS/AP_AHRS.h>
 
 class NavEKF2_core;
 class AP_AHRS;
 
 AP_Baro barometer;
+AP_InertialSensor ins;
 
-AP_AHRS_View ahrs{barometer};
+AP_AHRS_DCM ahrs{ins, barometer};
 
 class NavEKF2 {
     friend class NavEKF2_core;
