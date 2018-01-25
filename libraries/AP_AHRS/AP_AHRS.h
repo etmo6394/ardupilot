@@ -99,7 +99,7 @@ public:
 
 
     // RAMROD AGC Feedback
-    Vector3i get_agc_feedback();
+    Vector3i get_agc_feedback() const;
 
 
     // Signal from payload (0: GPS available, 1: no GPS available)
@@ -670,6 +670,7 @@ protected:
     AP_AHRS_View *_view;
 
     // AOA and SSA
+    Vector3i _agc;
     float _AOA, _SSA;
     uint32_t _last_AOA_update_ms;
 };
