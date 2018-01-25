@@ -99,7 +99,7 @@ public:
 
 
     // RAMROD AGC Feedback
-    Vector3i get_agc_feedback() const;
+    Vector3i get_agc_feedback();
 
 
     // Signal from payload (0: GPS available, 1: no GPS available)
