@@ -35,6 +35,10 @@
 class NavEKF2_core;
 class AP_AHRS;
 
+AP_Baro barometer;
+
+AP_AHRS_View ahrs{barometer};
+
 class NavEKF2 {
     friend class NavEKF2_core;
 

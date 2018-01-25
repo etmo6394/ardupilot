@@ -97,12 +97,12 @@ public:
         _rotation_vehicle_body_to_autopilot_body = _rotation_autopilot_body_to_vehicle_body.transposed();
 
         // RAMROD AGC Feedback
-        Vector3i get_agc_feedback(void);
+        // Vector3i get_agc_feedback(void);
     }
 
 
     // RAMROD AGC Feedback
-    // Vector3i get_agc_feedback(void);
+    Vector3i get_agc_feedback(void);
 
 
     // Signal from payload (0: GPS available, 1: no GPS available)
