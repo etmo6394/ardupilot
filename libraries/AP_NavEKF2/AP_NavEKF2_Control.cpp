@@ -267,8 +267,7 @@ void NavEKF2_core::setAidingMode()
             rngBcnTimeout = true;
             gpsNotAvailable = true;
         } else if (agc_feedback == 1) {
-            PV_AidingMode = AID_RELATIVE;
-        }
+            //PV_AidingMode = AID_RELATIVE;
         }
         }
         break;
