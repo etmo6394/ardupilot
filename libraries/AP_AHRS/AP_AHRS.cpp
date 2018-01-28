@@ -134,14 +134,14 @@ const AP_Param::GroupInfo AP_AHRS::var_info[] = {
 Vector3i AP_AHRS::get_agc_feedback(void)
 {
     randswitch = randswitch + 1;
-    if (randswitch == 100) {
+    if (randswitch == 200) {
         randswitch = 1;
     }
 
     agc_feedback_prev = agc_feedback;
-    if (agc_feedback == 0 && randswitch == 50) {
+    if (agc_feedback == 0 && randswitch == 100) {
         agc_feedback = 1;
-    } else if (agc_feedback == 1 && randswitch == 50) {
+    } else if (agc_feedback == 1 && randswitch == 100) {
         agc_feedback = 0;
     }
 
