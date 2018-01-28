@@ -160,10 +160,6 @@ void NavEKF2_core::setAidingMode()
     // Save the previous status so we can detect when it has changed
     PV_AidingModePrev = PV_AidingMode;
 
-    // Get AGC Feedback
-    //auto agc = ahrs.get_agc_feedback();
-
-    // auto agc = AP_AHRS::get_agc_feedback();
 
     auto agc = _ahrs->get_agc();
 
@@ -199,7 +195,7 @@ void NavEKF2_core::setAidingMode()
         bool flowFusionTimeout = ((imuSampleTime_ms - prevFlowFuseTime_ms) > 5000);
         // Enable switch to absolute position mode if GPS is available
         // If GPS is not available and flow fusion has timed out, then fall-back to no-aiding
-        if((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit) {
+        if((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit && agc_feedback == 0) {
             PV_AidingMode = AID_ABSOLUTE;
         } else if (flowSensorTimeout || flowFusionTimeout) {
             PV_AidingMode = AID_NONE;
@@ -270,6 +266,9 @@ void NavEKF2_core::setAidingMode()
             velTimeout = true;
             rngBcnTimeout = true;
             gpsNotAvailable = true;
+        } else if (agc_feedback == 1) {
+            PV_AidingMode = AID_RELATIVE;
+        }
         }
         }
         break;
