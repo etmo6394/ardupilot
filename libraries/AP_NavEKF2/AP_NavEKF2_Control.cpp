@@ -311,7 +311,7 @@ void NavEKF2_core::setAidingMode()
             break;
 
         case AID_ABSOLUTE: {
-            bool canUseGPS = ((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit && agc_feedback == 0);
+            bool canUseGPS = ((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit);
             bool canUseRangeBeacon = readyToUseRangeBeacon();
             // We have commenced aiding and GPS usage is allowed
             if (canUseGPS) {
