@@ -170,7 +170,9 @@ void NavEKF2_core::setAidingMode()
     agc_feedback_prev = agc.x;
     agc_feedback = agc.y;
 
-    gcs().send_text(MAV_SEVERITY_INFO, "EKF: %d %d.", (int)agc_feedback_prev, (int)agc_feedback);
+    if (agc_feedback != agc_feedback_prev) {
+        gcs().send_text(MAV_SEVERITY_INFO, "EKF: %d %d.", (int)agc_feedback_prev, (int)agc_feedback);
+    }
 
     // Determine if we should change aiding mode
     switch (PV_AidingMode) {
