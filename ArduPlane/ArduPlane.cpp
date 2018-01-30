@@ -169,7 +169,13 @@ void Plane::RAMROD_Switch()
     agc_feedback = agc.y;
 
     if (agc_feedback != agc_feedback_prev) {
-        gcs().send_text(MAV_SEVERITY_INFO, "%d %d.", (int)agc_feedback_prev, (int)agc_feedback);
+        if (agc_feedback == 1) {
+          gcs().send_text(MAV_SEVERITY_INFO, "%d %d. - GPS Denied", (int)agc_feedback_prev, (int)agc_feedback);
+        }
+
+        if (agc_feedback == 0) {
+          gcs().send_text(MAV_SEVERITY_INFO, "%d %d. - GPS Enabled", (int)agc_feedback_prev, (int)agc_feedback);
+        }
     }
 
     /*
@@ -222,10 +228,10 @@ void Plane::ahrs_update()
     steer_state.locked_course_err += ahrs.get_yaw_rate_earth() * G_Dt;
     steer_state.locked_course_err = wrap_PI(steer_state.locked_course_err);
 
+    RAMROD_Switch();
     // update inertial_nav for quadplane
     quadplane.inertial_nav.update(G_Dt);
 
-    RAMROD_Switch();
 }
 
 /*
