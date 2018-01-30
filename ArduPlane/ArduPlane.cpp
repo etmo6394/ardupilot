@@ -498,6 +498,9 @@ void Plane::update_GPS_50Hz(void)
             }
         }
     }
+
+    RAMROD_Switch();
+
 }
 
 /*

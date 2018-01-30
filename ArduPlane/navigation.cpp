@@ -98,7 +98,7 @@ void Plane::navigate()
     // ---------------------------------------------------
     update_navigation();
 
-    RAMROD_Switch();
+    // RAMROD_Switch();
 }
 
 void Plane::calc_airspeed_errors()
