@@ -252,9 +252,7 @@ void NavEKF2_core::setAidingMode()
                    (imuSampleTime_ms - lastPosPassTime_ms > maxLossTime_ms);
         }
 
-        if (agc_feedback == 1 && agc_feedback_prev == 0) {
-                    PV_AidingMode = AID_RELATIVE;
-        } else if (attAidLossCritical) {
+        if (attAidLossCritical) {
             // if the loss of attitude data is critical, then put the filter into a constant position mode
             PV_AidingMode = AID_NONE;
             posTimeout = true;
@@ -268,6 +266,8 @@ void NavEKF2_core::setAidingMode()
             velTimeout = true;
             rngBcnTimeout = true;
             gpsNotAvailable = true;
+        } else if (agc_feedback == 1 && agc_feedback_prev == 0) {
+                        PV_AidingMode = AID_RELATIVE;
         }
         }
         break;
