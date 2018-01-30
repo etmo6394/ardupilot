@@ -160,7 +160,7 @@ void NavEKF2_core::setAidingMode()
     // Save the previous status so we can detect when it has changed
     PV_AidingModePrev = PV_AidingMode;
 
-
+    // get AGC status
     auto agc = _ahrs->get_agc();
 
     agc_feedback_prev = agc.x;
@@ -195,7 +195,7 @@ void NavEKF2_core::setAidingMode()
         bool flowFusionTimeout = ((imuSampleTime_ms - prevFlowFuseTime_ms) > 5000);
         // Enable switch to absolute position mode if GPS is available
         // If GPS is not available and flow fusion has timed out, then fall-back to no-aiding
-        if((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit && agc_feedback == 0) {
+        if((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit && agc_feedback == 0 && agc_feedback_prev == 1) {
             PV_AidingMode = AID_ABSOLUTE;
         } else if (flowSensorTimeout || flowFusionTimeout) {
             PV_AidingMode = AID_NONE;
@@ -252,7 +252,7 @@ void NavEKF2_core::setAidingMode()
                    (imuSampleTime_ms - lastPosPassTime_ms > maxLossTime_ms);
         }
 
-        if (agc_feedback == 1) {
+        if (agc_feedback == 1 && agc_feedback_prev == 0) {
                     PV_AidingMode = AID_RELATIVE;
         } else if (attAidLossCritical) {
             // if the loss of attitude data is critical, then put the filter into a constant position mode

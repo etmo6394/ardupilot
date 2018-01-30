@@ -185,7 +185,6 @@ void Plane::RAMROD_Switch()
             // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
         }
     }
-    //return agc_feedback;
 }
 
 // update AHRS system
