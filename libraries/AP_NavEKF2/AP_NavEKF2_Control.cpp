@@ -337,7 +337,7 @@ void NavEKF2_core::setAidingMode()
         }
 
             if (PV_AidingMode != PV_AidingModePrev) {
-              gcs().send_text(MAV_SEVERITY_INFO, "AidMode: %d -> %d.", (int)PV_AidingModePrev (int)PV_AidingMode);
+              gcs().send_text(MAV_SEVERITY_INFO, "AidMode: %d -> %d.", (int)PV_AidingModePrev, (int)PV_AidingMode);
             }
 
         // Always reset the position and velocity when changing mode
