@@ -336,7 +336,7 @@ void NavEKF2_core::setAidingMode()
             break;
         }
 
-            if (PV_AIDING_MODE != PV_AidingModePrev) {
+            if (PV_AidingMode != PV_AidingModePrev) {
               gcs().send_text(MAV_SEVERITY_INFO, "AidMode: %d -> %d.", (int)PV_AidingModePrev (int)PV_AidingMode);
             }
 
