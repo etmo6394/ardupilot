@@ -168,7 +168,6 @@ void NavEKF2_core::setAidingMode()
 
     if (agc_feedback != agc_feedback_prev) {
         gcs().send_text(MAV_SEVERITY_INFO, "EKF: %d %d.", (int)agc_feedback_prev, (int)agc_feedback);
-        gcs().send_text(MAV_SEVERITY_INFO, "AidMode: %d.", (int)PV_AidingMode);
     }
 
     // Determine if we should change aiding mode
@@ -336,6 +335,10 @@ void NavEKF2_core::setAidingMode()
         default:
             break;
         }
+
+            if (PV_AIDING_MODE != PV_AidingModePrev) {
+              gcs().send_text(MAV_SEVERITY_INFO, "AidMode: %d -> %d.", (int)PV_AidingModePrev (int)PV_AidingMode);
+            }
 
         // Always reset the position and velocity when changing mode
         ResetVelocity();
