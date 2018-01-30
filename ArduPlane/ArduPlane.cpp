@@ -172,6 +172,7 @@ void Plane::RAMROD_Switch()
         gcs().send_text(MAV_SEVERITY_INFO, "%d %d.", (int)agc_feedback_prev, (int)agc_feedback);
     }
 
+    /*
     if (control_mode == AUTO) {
         if(agc_feedback == 1 && agc_feedback_prev == 0) {
             set_mode(FLY_BY_WIRE_B, MODE_REASON_AGC);
@@ -185,6 +186,7 @@ void Plane::RAMROD_Switch()
             // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
         }
     }
+    */
 }
 
 // update AHRS system
@@ -222,6 +224,8 @@ void Plane::ahrs_update()
 
     // update inertial_nav for quadplane
     quadplane.inertial_nav.update(G_Dt);
+
+    RAMROD_Switch();
 }
 
 /*
@@ -498,8 +502,6 @@ void Plane::update_GPS_50Hz(void)
             }
         }
     }
-
-    RAMROD_Switch();
 
 }
 
