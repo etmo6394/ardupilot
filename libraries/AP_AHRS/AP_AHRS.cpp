@@ -133,9 +133,11 @@ const AP_Param::GroupInfo AP_AHRS::var_info[] = {
 
 Vector3i AP_AHRS::get_agc_feedback(void)
 {
-    randswitch = randswitch + 1;
-    if (randswitch == 2000) {
-        randswitch = 1;
+    if (hal.util->get_soft_armed()) {
+        randswitch = randswitch + 1;
+        if (randswitch == 2000) {
+                randswitch = 1;
+        }
     }
 
     agc_feedback_prev = agc_feedback;
