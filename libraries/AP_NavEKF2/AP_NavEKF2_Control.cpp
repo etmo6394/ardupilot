@@ -198,6 +198,7 @@ void NavEKF2_core::setAidingMode()
         if((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && !gpsInhibit && agc_feedback == 0) {
             PV_AidingMode = AID_ABSOLUTE;
         } else if (flowSensorTimeout || flowFusionTimeout) {
+            gcs().send_text(MAV_SEVERITY_INFO, "fST: %d, fFT: %d.", (bool)flowSensorTimeout, (bool)flowFusionTimeout);
             PV_AidingMode = AID_NONE;
         }
         }
