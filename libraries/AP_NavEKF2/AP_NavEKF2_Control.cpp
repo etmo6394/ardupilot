@@ -178,7 +178,7 @@ void NavEKF2_core::setAidingMode()
         bool filterIsStable = tiltAlignComplete && yawAlignComplete && checkGyroCalStatus();
         // If GPS usage has been prohiited then we use flow aiding provided optical flow data is present
         // GPS aiding is the preferred option unless excluded by the user
-        bool canUseGPS = ((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && filterIsStable && !gpsInhibit);
+        bool canUseGPS = ((frontend->_fusionModeGPS) != 3 && readyToUseGPS() && filterIsStable && !gpsInhibit && agc_feedback == 0);
         bool canUseRangeBeacon = readyToUseRangeBeacon() && filterIsStable;
         if(canUseGPS || canUseRangeBeacon) {
             PV_AidingMode = AID_ABSOLUTE;
