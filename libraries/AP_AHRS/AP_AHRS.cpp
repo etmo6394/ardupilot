@@ -131,6 +131,7 @@ const AP_Param::GroupInfo AP_AHRS::var_info[] = {
     AP_GROUPEND
 };
 
+/*
 Vector3i AP_AHRS::get_agc_feedback(void)
 {
 
@@ -154,6 +155,33 @@ Vector3i AP_AHRS::get_agc_feedback(void)
     return agc;
 
 }
+*/
+
+Vector_3i AP_AHRS::get_agc_feedback(void)
+{
+    // get GPS coordinates
+    const int32_t GPS_lat = AP::gps().location().lat; // Latitude * 10**7
+    const int32_t GPS_lon = AP::gps().location().lat; // Longitude * 10**7
+
+    // set up 500m square
+
+    if (GPS_lat >= 401435834 && GPS_lon >= -1052184677 && GPS_lat <= 401480864 && GPS_lon <= -1052126002) {
+        agc_feedback = 1;
+    } else {
+        agc_feedback = 0;
+    }
+
+    Vector3i agc = {agc_feedback_prev,agc_feedback,0};
+
+    _agc = agc;
+    return agc;
+
+}
+
+    //Z
+    //-105.2184677
+
+
 
 // return a smoothed and corrected gyro vector using the latest ins data (which may not have been consumed by the EKF yet)
 Vector3f AP_AHRS::get_gyro_latest(void) const
