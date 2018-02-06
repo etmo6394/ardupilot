@@ -159,6 +159,8 @@ Vector3i AP_AHRS::get_agc_feedback(void)
 
 Vector3i AP_AHRS::get_agc_feedback(void)
 {
+    agc_feedback_prev = agc_feedback;
+
     // get GPS coordinates
     const int32_t GPS_lat = AP::gps().location().lat; // Latitude * 10**7
     const int32_t GPS_lon = AP::gps().location().lat; // Longitude * 10**7
