@@ -53,7 +53,7 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
       // read byte from buffer
       char c = uart->read();
       // immediately print to pixhawk console to verify data
-      hal.console->printf("%c",c)
+      hal.console->printf("%c",c);
       count++;
     }
 
