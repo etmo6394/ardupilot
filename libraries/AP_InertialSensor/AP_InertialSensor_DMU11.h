@@ -19,7 +19,7 @@ public:
 
 private:
   // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel);
-  bool AP_InertialSensor_DMU11::get_reading(void);
+  bool AP_InertialSensor_DMU11::get_DMU11_data(void);
   AP_HAL::UARTDriver *uart = nullptr;
 
 }
