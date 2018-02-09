@@ -179,6 +179,20 @@ Vector3i AP_AHRS::get_agc_feedback(void)
         agc_feedback = 0;
     }
 
+/*
+  AP_uZedSerial.get_flag(agc_feedback) is calling the method
+  get_flag() within the class AP_uZedSerial. It passes the agc_feedback variable
+  whose address is grabbed by a pointer in get_flag() and is automatically
+  updated from within the method when the flag is read in from uart
+*/
+/*
+    if (AP_uZedSerial.get_flag(agc_feedback)) {
+        last_flag_ms = AP_HAL::millis();
+    } else if (AP_HAL::millis() - last_flag_ms > 100){
+        hal.console->printf('Lost uZed connection.');
+    }
+*/
+
     Vector3i agc = {agc_feedback_prev,agc_feedback,0};
 
     _agc = agc;
@@ -407,7 +421,7 @@ void AP_AHRS::update_AOA_SSA(void)
         return;
     }
     _last_AOA_update_ms = now;
-    
+
     Vector3f aoa_velocity, aoa_wind;
 
     // get velocity and wind
