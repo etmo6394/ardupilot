@@ -164,13 +164,13 @@ Vector3i AP_AHRS::get_agc_feedback(void)
 
     // get GPS coordinates
     const int32_t GPS_lat = AP::gps().location().lat; // Latitude * 10**7
-    const int32_t GPS_lon = AP::gps().location().lat; // Longitude * 10**7
+    const int32_t GPS_lon = AP::gps().location().lon; // Longitude * 10**7
 
     // set up 500m square
 
 
-    gcs().send_text(MAV_SEVERITY_INFO, "LAT %d (401435834)",(int)GPS_lat);
-    gcs().send_text(MAV_SEVERITY_INFO, "LON %d (-1052184677)",(int)GPS_lon);
+    //gcs().send_text(MAV_SEVERITY_INFO, "LAT %d (401435834)",(int)GPS_lat);
+    //gcs().send_text(MAV_SEVERITY_INFO, "LON %d (-1052184677)",(int)GPS_lon);
 
 
     if (GPS_lat >= 401435834 && GPS_lon >= -1052184677 && GPS_lat <= 401480864 && GPS_lon <= -1052126002) {
