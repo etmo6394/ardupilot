@@ -7,20 +7,18 @@
 
 class AP_InertialSensor_DMU11 : public AP_InertialSensor_Backend
 {
-
 public:
   // constructor
   AP_InertialSensor_DMU11(AP_InertialSensor &imu,
                           AP_SerialManager &serial_manager);
 // static detection function
   static bool detect(AP_SerialManager &serial_manager);
-
+  bool get_DMU11_data(void);
   // update state
   // void update(void);
 
 private:
-  // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel);
-  bool get_DMU11_data(void);
+  // bool get_reading(Vector3f &gyro, Vector3f &accel);
+  // bool get_DMU11_data(void);
   AP_HAL::UARTDriver *uart = nullptr;
-
 };
