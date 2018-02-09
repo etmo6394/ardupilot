@@ -16,7 +16,7 @@
 #include <AP_HAL/AP_HAL.h>
 #include "AP_InertialSensor_DMU11.h"
 #include <AP_SerialManager/AP_SerialManager.h>
-#include <ctype.h>
+// #include <ctype.h>
 
 // Declare external reference to HAL to gain access to namespace objects
 extern const AP_HAL::HAL& hal;
