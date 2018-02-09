@@ -22,7 +22,7 @@
 extern const AP_HAL::HAL& hal;
 
 AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor::AP_InertialSensor &imu,
-                                                 AP_SerialManager &serial_manager);
+                                                 AP_SerialManager &serial_manager) :
     AP_InertialSensor_Backend(imu)
 {
     uart = serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0);
