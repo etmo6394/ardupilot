@@ -15,7 +15,7 @@ public:
   static bool detect(AP_SerialManager &serial_manager);
 
   // update state
-  void update(void);
+  // void update(void);
 
 private:
   // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel);
