@@ -4,6 +4,7 @@
 #include "AP_InertialSensor_Backend.h"
 #include <AP_SerialManager/AP_SerialManager.h>
 
+
 class AP_InertialSensor_DMU11 : public AP_InertialSensor_Backend
 {
 
@@ -22,4 +23,4 @@ private:
   bool get_DMU11_data(void);
   AP_HAL::UARTDriver *uart = nullptr;
 
-}
+};
