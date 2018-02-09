@@ -42,7 +42,7 @@ bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
 // read - return last value measured by sensor
 // Vector3f stuff, refer to AP_InertialSensor.cpp lines ~1400-1600
 // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel)
-bool AP_InertialSensor_DMU11::get_DMU11_data();
+bool AP_InertialSensor_DMU11::get_DMU11_data(void);
 {
     if (uart == nullptr) {
         return false;
