@@ -38,11 +38,11 @@ bool AP_uZedSerial::get_flag(int16_t &agc_flag)
  return true;
 }
 
-bool AP_uZedSerial::send_telem()
-{
-  if (uart == nullptr) {
-    return false;
-  }
-  // Construct telem data packet
-  // uart->write();
-}
+// bool AP_uZedSerial::send_telem()
+// {
+//   if (uart == nullptr) {
+//     return false;
+//   }
+//   // Construct telem data packet
+//   // uart->write();
+// }
