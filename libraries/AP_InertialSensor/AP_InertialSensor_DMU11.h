@@ -2,6 +2,7 @@
 
 #include "AP_InertialSensor.h"
 #include "AP_InertialSensor_Backend.h"
+#include <AP_SerialManager/AP_SerialManager.h>
 
 class AP_InertialSensor_DMU11 : public AP_InertialSensor_Backend
 {
