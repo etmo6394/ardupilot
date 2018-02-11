@@ -26,6 +26,7 @@
 #include <Filter/LowPassFilter2p.h>
 #include <Filter/LowPassFilter.h>
 #include <Filter/NotchFilter.h>
+#include <AP_SerialManager/AP_SerialManager.h>
 
 class AP_InertialSensor_Backend;
 class AuxiliaryBus;
@@ -344,6 +345,9 @@ public:
     BatchSampler batchsampler{*this};
 
 private:
+    // Load Serial Manager
+    AP_SerialManger &serial_manager;
+
     // load backend drivers
     bool _add_backend(AP_InertialSensor_Backend *backend);
     void _start_backends();
