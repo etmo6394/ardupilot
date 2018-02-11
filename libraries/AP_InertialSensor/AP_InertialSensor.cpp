@@ -22,6 +22,7 @@
 #include "AP_InertialSensor_SITL.h"
 #include "AP_InertialSensor_qflight.h"
 #include "AP_InertialSensor_RST.h"
+#include "AP_InertialSensor_DMU11.h"
 
 /* Define INS_TIMING_DEBUG to track down scheduling issues with the main loop.
  * Output is on the debug console. */
