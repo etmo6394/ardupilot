@@ -346,7 +346,7 @@ public:
 
 private:
     // Load Serial Manager
-    AP_SerialManger &serial_manager;
+    // AP_SerialManager &serial_manager;
 
     // load backend drivers
     bool _add_backend(AP_InertialSensor_Backend *backend);
@@ -449,7 +449,7 @@ private:
     uint32_t _sample_accel_start_us[INS_MAX_INSTANCES];
     uint16_t _sample_gyro_count[INS_MAX_INSTANCES];
     uint32_t _sample_gyro_start_us[INS_MAX_INSTANCES];
-    
+
     // temperatures for an instance if available
     float _temperature[INS_MAX_INSTANCES];
 
