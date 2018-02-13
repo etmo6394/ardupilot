@@ -14,11 +14,16 @@ public:
 // static detection function
   static bool detect(AP_SerialManager &serial_manager);
 
+  // Start and register sensor instances
+  void start(void) override;
+
   // update state
-  // void update(void);
+  // void update(void) override;
 
 private:
   // bool get_reading(Vector3f &gyro, Vector3f &accel);
   bool get_DMU11_data(void);
   AP_HAL::UARTDriver *uart = nullptr;
+  uint8_t _gyro_instance;
+  uint8_t _accel_instance;
 };

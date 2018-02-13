@@ -39,6 +39,12 @@ bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
 }
 
+void AP_InertialSensor_DMU11::start(void)
+{
+  _gyro_instance = _imu.register_DMU11_gyro();
+  _accel_instance = _imu.register_DMU11_accel();
+}
+
 // read - return last value measured by sensor
 // Vector3f stuff, refer to AP_InertialSensor.cpp lines ~1400-1600
 // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel)

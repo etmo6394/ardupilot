@@ -29,6 +29,7 @@
 #include <AP_InertialSensor/AP_InertialSensor.h>
 #include <AP_Baro/AP_Baro.h>
 #include <AP_Param/AP_Param.h>
+#include <AP_InertialSensor/AP_InertialSensor_DMU11.h>
 // #include "uZedSerial.h"
 
 class OpticalFlow;
@@ -115,6 +116,7 @@ public:
     int16_t agc_feedback_prev;
     int16_t randswitch;
     uint32_t last_flag_ms;
+    bool DMU_test;
 
     // empty virtual destructor
     virtual ~AP_AHRS() {}

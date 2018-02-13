@@ -18,6 +18,7 @@
 #include "AP_AHRS_View.h"
 #include <AP_HAL/AP_HAL.h>
 #include <GCS_MAVLink/GCS.h>
+#include <AP_InertialSensor/AP_InertialSensor_DMU11.h>
 
 extern const AP_HAL::HAL& hal;
 
@@ -180,13 +181,13 @@ Vector3i AP_AHRS::get_agc_feedback(void)
     }
 
 /*
-  AP_uZedSerial.get_flag(agc_feedback) is calling the method
+  AP_uZedSerial::get_flag(agc_feedback) is calling the method
   get_flag() within the class AP_uZedSerial. It passes the agc_feedback variable
   whose address is grabbed by a pointer in get_flag() and is automatically
   updated from within the method when the flag is read in from uart
 */
 /*
-    if (AP_uZedSerial.get_flag(agc_feedback)) {
+    if (AP_uZedSerial::get_flag(agc_feedback)) {
         last_flag_ms = AP_HAL::millis();
     } else if (AP_HAL::millis() - last_flag_ms > 100){
         hal.console->printf('Lost uZed connection.');

@@ -546,6 +546,26 @@ uint8_t AP_InertialSensor::register_gyro(uint16_t raw_sample_rate_hz,
 }
 
 /*
+  register the DMU11 instances. May want to wrap this up as a new case in
+  register_gyro and regiater_accel, and specify a new dev ID in
+  AP_InertialSensor_Backend for calibration purposes
+*/
+uint8_t AP_InertialSensor::register_DMU11_gyro(void)
+{
+  if (_gyro_count == INS_MAX_INSTANCES) {
+    AP_HAL::panic("Too many gyros");
+  }
+  return _gyro_count++;
+}
+uint8_t AP_InertialSensor::register_DMU11_accel(void)
+{
+  if (_accel_count == INS_MAX_INSTANCES) {
+    AP_HAL::panic("Too many accels");
+  }
+  return _accel_count++;
+}
+
+/*
   register a new accel instance
  */
 uint8_t AP_InertialSensor::register_accel(uint16_t raw_sample_rate_hz,
