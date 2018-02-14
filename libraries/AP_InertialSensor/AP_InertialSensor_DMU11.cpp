@@ -12,6 +12,8 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+// spec sheet: https://www.siliconsensing.com/media/30801/dmu11-00-0100-132-rev-3.pdf
+
 
 #include <AP_HAL/AP_HAL.h>
 #include "AP_InertialSensor_DMU11.h"
@@ -20,6 +22,7 @@
 
 // Declare external reference to HAL to gain access to namespace objects
 extern const AP_HAL::HAL& hal;
+
 
 AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu,
                                                  AP_SerialManager &serial_manager) :
@@ -37,6 +40,9 @@ AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu,
 bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
 {
     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
+
+    gcs().send_text(MAV_SEVERITY_INFO, "Detected DMU11");
+
 }
 
 /*
@@ -48,6 +54,8 @@ void AP_InertialSensor_DMU11::start(void)
   // _accel_instance = _imu.register_DMU11_accel();
   _gyro_instance = _imu.register_gyro(0,0);
   _accel_instance = _imu.register_accel(0,0);
+
+  gcs().send_text(MAV_SEVERITY_INFO, "Started DMU11");
 }
 
 /*
@@ -74,6 +82,9 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
       char c = uart->read();
       // immediately print to pixhawk console to verify data
       hal.console->printf("%c",c);
+
+      gcs().send_text(MAV_SEVERITY_INFO, "%c",c);
+
       count++;
     }
 
