@@ -6,6 +6,9 @@
 #include "AP_InertialSensor_Backend.h"
 #include <AP_SerialManager/AP_SerialManager.h>
 
+#include <GCS_MAVLink/GCS_MAVLink.h>    // MAVLink GCS definitions
+
+
 
 class AP_InertialSensor_DMU11 : public AP_InertialSensor_Backend
 {
