@@ -18,8 +18,6 @@
 #include <AP_HAL/AP_HAL.h>
 #include "AP_InertialSensor_DMU11.h"
 #include <AP_SerialManager/AP_SerialManager.h>
-
-//#include <GCS_MAVLink/GCS.h>    // MAVLink GCS definitions
 // #include <ctype.h>
 
 // Declare external reference to HAL to gain access to namespace objects
@@ -43,8 +41,6 @@ bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
 {
     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
 
-    //gcs().send_text(MAV_SEVERITY_INFO, "Detected DMU11");
-
 }
 
 /*
@@ -57,7 +53,6 @@ void AP_InertialSensor_DMU11::start(void)
   _gyro_instance = _imu.register_gyro(0,0);
   _accel_instance = _imu.register_accel(0,0);
 
-  //gcs().send_text(MAV_SEVERITY_INFO, "Started DMU11");
 }
 
 /*
@@ -84,8 +79,6 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
       char c = uart->read();
       // immediately print to pixhawk console to verify data
       hal.console->printf("%c",c);
-
-      //gcs().send_text(MAV_SEVERITY_INFO, "%c",c);
 
       count++;
     }
