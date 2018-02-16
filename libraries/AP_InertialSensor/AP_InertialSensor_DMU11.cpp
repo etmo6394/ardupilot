@@ -39,8 +39,8 @@ AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu,
 */
 bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
 {
+    hal.console->printf("Detected DMU11 at 115k baud");
     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
-
 }
 
 /*
@@ -51,7 +51,9 @@ void AP_InertialSensor_DMU11::start(void)
   // _gyro_instance = _imu.register_DMU11_gyro();
   // _accel_instance = _imu.register_DMU11_accel();
   _gyro_instance = _imu.register_gyro(0,0);
+  hal.console->printf("Registered DMU11 gyro [%u]", _gyro_instance);
   _accel_instance = _imu.register_accel(0,0);
+  hal.console->printf("Registered DMU11 accel [%u]", _accel_instance);
 
 }
 
