@@ -510,7 +510,7 @@ AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
 AP_InertialSensor *AP_InertialSensor::get_instance()
 {
     if (!_s_instance) {
-        _s_instance = new AP_InertialSensor();
+        _s_instance = new AP_InertialSensor(AP_SerialManager &_serial_manager);
     }
     return _s_instance;
 }
