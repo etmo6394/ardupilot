@@ -504,6 +504,11 @@ AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     AP_AccelCal::register_client(this);
 }
 
+void AP_InertialSensor::AP_InertialSensor_Serial(AP_SerialManager &_serial_manager)
+{
+    serial_manager(_serial_manager)
+}
+
 /*
  * Get the AP_InertialSensor singleton
  */

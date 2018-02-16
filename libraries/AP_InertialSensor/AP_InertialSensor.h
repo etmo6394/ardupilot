@@ -52,6 +52,7 @@ class AP_InertialSensor : AP_AccelCal_Client
 public:
     //AP_InertialSensor(AP_SerialManager &_serial_manager);
     AP_InertialSensor();
+    void AP_InertialSensor_Serial(AP_SerialManager &_serial_manager);
 
     /* Do not allow copies */
     AP_InertialSensor(const AP_InertialSensor &other) = delete;
