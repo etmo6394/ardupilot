@@ -444,7 +444,7 @@ const AP_Param::GroupInfo AP_InertialSensor::var_info[] = {
 
 AP_InertialSensor *AP_InertialSensor::_s_instance = nullptr;
 
-AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
+AP_InertialSensor::AP_InertialSensor() :
     _gyro_count(0),
     _accel_count(0),
     _backend_count(0),
@@ -461,7 +461,7 @@ AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     _startup_error_counts_set(false),
     _startup_ms(0),
 
-    serial_manager(_serial_manager)
+    //serial_manager(_serial_manager)
 
 {
     if (_s_instance) {
