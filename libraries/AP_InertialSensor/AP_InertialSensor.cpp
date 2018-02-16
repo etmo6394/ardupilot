@@ -776,9 +776,16 @@ AP_InertialSensor::detect_backends(void)
         // if (AP_IntertialSensor_DMU11::detect(serial_manager)) {
         //     _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, serial_manager);
         // }
-        if (AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)) {
-            _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, AP_SerialManager &serial_manager);
+        //if (AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)) {
+        //    _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, AP_SerialManager &serial_manager);
+        // }
+
+
+
+        if (AP_InertialSensor_DMU11::detect(serial_manager)) {
+            _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, serial_manager);
         }
+
         break;
 
     case AP_BoardConfig::PX4_BOARD_PIXRACER:
