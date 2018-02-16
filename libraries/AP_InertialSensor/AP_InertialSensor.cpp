@@ -459,7 +459,7 @@ AP_InertialSensor::AP_InertialSensor() :
     _backends_detected(false),
     _accel_cal_requires_reboot(false),
     _startup_error_counts_set(false),
-    _startup_ms(0),
+    _startup_ms(0)
 
     //serial_manager(_serial_manager)
 
