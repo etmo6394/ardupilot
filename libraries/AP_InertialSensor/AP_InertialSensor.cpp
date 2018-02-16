@@ -444,7 +444,7 @@ const AP_Param::GroupInfo AP_InertialSensor::var_info[] = {
 
 AP_InertialSensor *AP_InertialSensor::_s_instance = nullptr;
 
-AP_InertialSensor::AP_InertialSensor() :
+AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     _gyro_count(0),
     _accel_count(0),
     _backend_count(0),
@@ -459,7 +459,10 @@ AP_InertialSensor::AP_InertialSensor() :
     _backends_detected(false),
     _accel_cal_requires_reboot(false),
     _startup_error_counts_set(false),
-    _startup_ms(0)
+    _startup_ms(0),
+
+    serial_manager(_serial_manager)
+
 {
     if (_s_instance) {
         AP_HAL::panic("Too many inertial sensors");
