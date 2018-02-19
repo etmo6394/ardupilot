@@ -58,7 +58,7 @@ public:
     AP_InertialSensor(const AP_InertialSensor &other) = delete;
     AP_InertialSensor &operator=(const AP_InertialSensor&) = delete;
 
-    static AP_InertialSensor *get_instance(AP_SerialManager &_serial_manager);
+    static AP_InertialSensor *get_instance();
 
     enum Gyro_Calibration_Timing {
         GYRO_CAL_NEVER = 0,
