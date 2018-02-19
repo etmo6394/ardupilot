@@ -411,6 +411,7 @@ AP_InertialSensor_Backend *AP_InertialSensor_LSM9DS0::probe(AP_InertialSensor &_
         return nullptr;
     }
 
+    hal.console->printf("Detected LSM9DS0");
     return sensor;
 }
 
@@ -420,6 +421,7 @@ bool AP_InertialSensor_LSM9DS0::_init_sensor()
      * Same semaphore for both since they necessarily share the same bus (with
      * different CS)
      */
+
     _spi_sem = _dev_gyro->get_semaphore();
 
     if (_drdy_pin_num_a >= 0) {
@@ -446,6 +448,7 @@ bool AP_InertialSensor_LSM9DS0::_init_sensor()
     _dump_registers();
 #endif
 
+    hal.console->printf("Initialized LSM9DS0");
     return success;
 }
 

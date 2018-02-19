@@ -308,6 +308,7 @@ AP_InertialSensor_Backend *AP_InertialSensor_Invensense::probe(AP_InertialSensor
         sensor->_id = HAL_INS_MPU60XX_I2C;
     }
 
+    hal.console->printf("Detected Invensense");
     return sensor;
 }
 
@@ -336,6 +337,7 @@ AP_InertialSensor_Backend *AP_InertialSensor_Invensense::probe(AP_InertialSensor
         sensor->_id = HAL_INS_MPU60XX_SPI;
     }
 
+    hal.console->printf("Detected Invensense");
     return sensor;
 }
 
@@ -348,6 +350,7 @@ bool AP_InertialSensor_Invensense::_init()
 
     bool success = _hardware_init();
 
+    hal.console->printf("Initialized Invensense");
     return success;
 }
 
