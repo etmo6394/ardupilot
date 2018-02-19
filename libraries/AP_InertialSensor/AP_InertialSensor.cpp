@@ -461,8 +461,13 @@ AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     _backends_detected(false),
     _accel_cal_requires_reboot(false),
     _startup_error_counts_set(false),
+<<<<<<< HEAD
     _startup_ms(0),
     serial_manager(_serial_manager)
+=======
+    _startup_ms(0)
+    // serial_manager(_serial_manager)
+>>>>>>> kennedy
 {
     if (_s_instance) {
         AP_HAL::panic("Too many inertial sensors");
@@ -781,19 +786,15 @@ AP_InertialSensor::detect_backends(void)
                                                       ROTATION_ROLL_180_YAW_90,
                                                       ROTATION_ROLL_180_YAW_90));
         _add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU9250_NAME), ROTATION_YAW_270));
+
+        // Add DMU11 backend
+        _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
         // if (AP_IntertialSensor_DMU11::detect(serial_manager)) {
         //     _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, serial_manager);
         // }
         //if (AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)) {
         //    _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, AP_SerialManager &serial_manager);
         // }
-
-
-
-        if (AP_InertialSensor_DMU11::detect(serial_manager)) {
-            _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, serial_manager);
-        }
-
         break;
 
     case AP_BoardConfig::PX4_BOARD_PIXRACER:
