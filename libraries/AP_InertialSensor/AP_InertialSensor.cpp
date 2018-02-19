@@ -633,6 +633,7 @@ void AP_InertialSensor::_start_backends()
     detect_backends();
 
     for (uint8_t i = 0; i < _backend_count; i++) {
+        hal.console->printf("Starting backend");
         _backends[i]->start();
     }
 
@@ -716,6 +717,7 @@ bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
         AP_HAL::panic("Too many INS backends");
     }
     _backends[_backend_count++] = backend;
+    hal.console->printf("Backend added");
     return true;
 }
 
@@ -770,6 +772,7 @@ AP_InertialSensor::detect_backends(void)
         break;
 
     case AP_BoardConfig::PX4_BOARD_PIXHAWK2:
+        hal.console->printf("PixHawk2 backend detected");
         // older Pixhawk2 boards have the MPU6000 instead of MPU9250
         _fast_sampling_mask.set_default(1);
         _add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU9250_EXT_NAME), ROTATION_PITCH_180));
