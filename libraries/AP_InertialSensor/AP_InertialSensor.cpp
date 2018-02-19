@@ -446,7 +446,7 @@ AP_InertialSensor *AP_InertialSensor::_s_instance = nullptr;
 
 //serial_manager(_serial_manager)
 
-AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
+AP_InertialSensor::AP_InertialSensor() :
     _gyro_count(0),
     _accel_count(0),
     _backend_count(0),
@@ -461,13 +461,7 @@ AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     _backends_detected(false),
     _accel_cal_requires_reboot(false),
     _startup_error_counts_set(false),
-<<<<<<< HEAD
-    _startup_ms(0),
-    serial_manager(_serial_manager)
-=======
     _startup_ms(0)
-    // serial_manager(_serial_manager)
->>>>>>> kennedy
 {
     if (_s_instance) {
         AP_HAL::panic("Too many inertial sensors");
@@ -520,7 +514,7 @@ void AP_InertialSensor::AP_InertialSensor_Serial(AP_SerialManager &_serial_manag
 AP_InertialSensor *AP_InertialSensor::get_instance()
 {
     if (!_s_instance) {
-        _s_instance = new AP_InertialSensor(serial_manager);
+        _s_instance = new AP_InertialSensor();
     }
     return _s_instance;
 }

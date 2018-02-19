@@ -70,15 +70,6 @@ void AP_InertialSensor_DMU11::start(void)
 
 }
 
-/*
-   Copy filtered data to frontend
-*/
-// bool AP_InertialSensor_DMU11::update(void);
-// {
-//   update_gyro(_gyro_instance);
-//   update_accel(_accel_instance);
-// }
-
 // read - return last value measured by sensor
 // Vector3f stuff, refer to AP_InertialSensor.cpp lines ~1400-1600
 // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel)
@@ -107,23 +98,16 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
     return true;
 }
 
+
+/*
+   Copy filtered data to frontend
+*/
+// bool AP_InertialSensor_DMU11::update(void);
+// {
+//   update_gyro(_gyro_instance);
+//   update_accel(_accel_instance);
+// }
 bool AP_InertialSensor_DMU11::update(void)
 {
   return false;
 }
-
-/*
-   update the state of the sensor
-*/
-/*
-void AP_InertialSensor_DMU11::update(void)
-{
-    if (get_reading(imu.gyro,imu.accel)) {  // Need to determine what inputs here
-        // update range_valid state based on distance measured
-        last_reading_ms = AP_HAL::millis();
-        update_status();
-    } else if (AP_HAL::millis() - last_reading_ms > 200) {
-        // set_status(RangeFinder::RangeFinder_NoData);
-    }
-}
-*/
