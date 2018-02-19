@@ -512,10 +512,10 @@ void AP_InertialSensor::AP_InertialSensor_Serial(AP_SerialManager &_serial_manag
 /*
  * Get the AP_InertialSensor singleton
  */
-AP_InertialSensor *AP_InertialSensor::get_instance()
+AP_InertialSensor *AP_InertialSensor::get_instance(AP_SerialManager &_serial_manager)
 {
     if (!_s_instance) {
-        _s_instance = new AP_InertialSensor();
+        _s_instance = new AP_InertialSensor(AP_SerialManager &_serial_manager);
     }
     return _s_instance;
 }
