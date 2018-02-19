@@ -208,7 +208,7 @@ private:
     AP_Baro barometer;
     Compass compass;
 
-    AP_InertialSensor ins{serial_manager};
+    AP_InertialSensor ins;
 
     RangeFinder rangefinder{serial_manager, ROTATION_PITCH_270};
 

@@ -444,7 +444,7 @@ const AP_Param::GroupInfo AP_InertialSensor::var_info[] = {
 
 AP_InertialSensor *AP_InertialSensor::_s_instance = nullptr;
 
-AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
+AP_InertialSensor::AP_InertialSensor() :
     _gyro_count(0),
     _accel_count(0),
     _backend_count(0),
@@ -459,8 +459,8 @@ AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     _backends_detected(false),
     _accel_cal_requires_reboot(false),
     _startup_error_counts_set(false),
-    _startup_ms(0),
-    serial_manager(_serial_manager)
+    _startup_ms(0)
+    // serial_manager(_serial_manager)
 {
     if (_s_instance) {
         AP_HAL::panic("Too many inertial sensors");
@@ -513,7 +513,7 @@ void AP_InertialSensor::AP_InertialSensor_Serial(AP_SerialManager &_serial_manag
 AP_InertialSensor *AP_InertialSensor::get_instance()
 {
     if (!_s_instance) {
-        _s_instance = new AP_InertialSensor(serial_manager);
+        _s_instance = new AP_InertialSensor();
     }
     return _s_instance;
 }
@@ -779,19 +779,15 @@ AP_InertialSensor::detect_backends(void)
                                                       ROTATION_ROLL_180_YAW_90,
                                                       ROTATION_ROLL_180_YAW_90));
         _add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU9250_NAME), ROTATION_YAW_270));
+
+        // Add DMU11 backend
+        _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
         // if (AP_IntertialSensor_DMU11::detect(serial_manager)) {
         //     _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, serial_manager);
         // }
         //if (AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)) {
         //    _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, AP_SerialManager &serial_manager);
         // }
-
-
-
-        if (AP_InertialSensor_DMU11::detect(serial_manager)) {
-            _backend[_backend_count++] = new AP_InertialSensor_DMU11(*this, serial_manager);
-        }
-
         break;
 
     case AP_BoardConfig::PX4_BOARD_PIXRACER:

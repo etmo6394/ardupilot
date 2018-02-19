@@ -50,9 +50,7 @@ class AP_InertialSensor : AP_AccelCal_Client
     friend class AP_InertialSensor_Backend;
 
 public:
-    AP_InertialSensor(AP_SerialManager &_serial_manager);
-    // AP_InertialSensor();
-    //void AP_InertialSensor_Serial(AP_SerialManager &_serial_manager);
+    AP_InertialSensor();
 
     /* Do not allow copies */
     AP_InertialSensor(const AP_InertialSensor &other) = delete;
@@ -351,7 +349,8 @@ public:
 
 private:
     // Load Serial Manager
-    AP_SerialManager &serial_manager;
+    // AP_SerialManager &serial_manager;
+    AP_SerialManager serial_manager;
 
     // load backend drivers
     bool _add_backend(AP_InertialSensor_Backend *backend);

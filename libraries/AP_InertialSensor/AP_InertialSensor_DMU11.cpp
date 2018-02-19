@@ -34,14 +34,27 @@ AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu,
     }
 }
 
+
 /*
   SerialProtocol_DMU11 sets the serial baud to 115k, RX buffer to 40 bytes, and stop bits to 2
 */
-bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
+// // // bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
+// // // {
+// // //     hal.console->printf("Detected DMU11 at 115k baud");
+// // //     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
+// // // }
+AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu,
+                                                          AP_SerialManager &serial_manager)
 {
-    hal.console->printf("Detected DMU11 at 115k baud");
-    return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
+  // Return nullptr if no sensor is connected on uartE
+  if (serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) == nullptr) {
+    return nullptr;
+  }
+  // Otherwise declare pointer to new object
+  AP_InertialSensor_DMU11 *sensor = new AP_InertialSensor_DMU11(imu,serial_manager);
+  return sensor;
 }
+
 
 /*
   "Start" the sensor, register the DMU11 as one new gyro and one new accel
@@ -92,6 +105,11 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
     }
     // reading_cm = 100 * sum / count;
     return true;
+}
+
+bool AP_InertialSensor_DMU11::update(void)
+{
+  return false;
 }
 
 /*
