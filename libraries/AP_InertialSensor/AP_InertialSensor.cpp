@@ -446,7 +446,7 @@ AP_InertialSensor *AP_InertialSensor::_s_instance = nullptr;
 
 //serial_manager(_serial_manager)
 
-AP_InertialSensor::AP_InertialSensor() :
+AP_InertialSensor::AP_InertialSensor(AP_SerialManager &_serial_manager) :
     _gyro_count(0),
     _accel_count(0),
     _backend_count(0),

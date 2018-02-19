@@ -50,8 +50,8 @@ class AP_InertialSensor : AP_AccelCal_Client
     friend class AP_InertialSensor_Backend;
 
 public:
-    //AP_InertialSensor(AP_SerialManager &_serial_manager);
-    AP_InertialSensor();
+    AP_InertialSensor(AP_SerialManager &_serial_manager);
+    //AP_InertialSensor();
     //void AP_InertialSensor_Serial(AP_SerialManager &_serial_manager);
 
     /* Do not allow copies */
