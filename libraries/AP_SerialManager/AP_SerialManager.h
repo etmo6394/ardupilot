@@ -118,7 +118,7 @@ public:
         SerialProtocol_Volz = 14,                    // Volz servo protocol
         SerialProtocol_Sbus1 = 15,
         SerialProtocol_DMU11 = 16,                    // DMU11 External IMU protocol
-        SerialProtocol_uZed = 17                      // MicroZed Protocol
+        SerialProtocol_uZed = 17,                      // MicroZed Protocol
     };
 
     // get singleton instance

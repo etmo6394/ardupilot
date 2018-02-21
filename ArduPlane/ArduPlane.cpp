@@ -98,7 +98,7 @@ void Plane::stats_update(void)
 void Plane::setup() 
 {
     // load the default values of variables listed in var_info[]
-
+    gcs().send_text(MAV_SEVERITY_INFO,"Running Plane::setup");
     AP_Param::setup_sketch_defaults();
 
     AP_Notify::flags.failsafe_battery = false;

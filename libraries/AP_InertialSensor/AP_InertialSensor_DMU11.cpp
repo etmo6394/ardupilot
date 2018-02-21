@@ -28,10 +28,11 @@ AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu,
                                                  AP_SerialManager &serial_manager) :
     AP_InertialSensor_Backend(imu)
 {
+    hal.console->printf("Creating new dmu11 obj\n");
     uart = serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0);
     if (uart != nullptr) {
         uart->begin(serial_manager.find_baudrate(AP_SerialManager::SerialProtocol_DMU11, 0));
-        hal.console->printf("Started sensor on uartE");
+        hal.console->printf("Started sensor on uartE\n");
     }
 }
 
@@ -48,13 +49,13 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
                                                           AP_SerialManager &serial_manager)
 {
   // Return nullptr if no sensor is connected on uartE
-  if (serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) == nullptr) {
-    hal.console->printf("No detected sensor on uartE");
+  if (serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) == nullptr){
+    hal.console->printf("No detected sensor on uartE\n");
     return nullptr;
   }
   // Otherwise declare pointer to new object
   AP_InertialSensor_DMU11 *sensor = new AP_InertialSensor_DMU11(imu,serial_manager);
-  hal.console->printf("Detected sensor on uartE");
+  hal.console->printf("Detected sensor on uartE\n");
   return sensor;
 }
 

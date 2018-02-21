@@ -160,6 +160,7 @@ void AP_SerialManager::init()
     state[2].uart = hal.uartD;  // serial2, uartD, normally telem2
     state[3].uart = hal.uartB;  // serial3, uartB, normally 1st GPS
     state[4].uart = hal.uartE;  // serial4, uartE, normally 2nd GPS
+    hal.console->printf("Serial4, uartE, initialised at address: %p\n", state[4].uart);
     state[5].uart = hal.uartF;  // serial5
 
     if (state[0].uart == nullptr) {
@@ -247,6 +248,8 @@ void AP_SerialManager::init()
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_RX,
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_TX);
                     state[i].uart->set_stop_bits(2);
+                    hal.console->printf("uartE at %d baud\n",(int32_t)state[i].baud);
+                    hal.console->printf("uartE protocol: %d\n",(int8_t)state[i].protocol);
                 case SerialProtocol_uZed:
                     state[i].baud = AP_SERIALMANAGER_UZED_BAUD/1000;
                     state[i].uart->begin(map_baudrate(state[i].baud),
@@ -266,8 +269,20 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
 
     // search for matching protocol
     for(uint8_t i=0; i<SERIALMANAGER_NUM_PORTS; i++) {
+        // debugging DMU11
+        hal.console->printf("find_serial protocol: %d\n",(int8_t)protocol);
+        hal.console->printf("match protocol: %d\n",(int8_t)state[i].protocol.get());
+        hal.console->printf("instance: %d\n",instance);
+        hal.console->printf("found_instance: %d\n", found_instance);
         if (protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get())) {
+            hal.console->printf("protocol: %s\n", protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get()) ? "true" : "false");
             if (found_instance == instance) {
+                hal.console->printf("instances: %s\n", (found_instance==instance) ? "true":"false" );
+                hal.console->printf("uart: %p\n", state[i].uart);
+                hal.console->printf("expected uart: %p\n", hal.uartE);
+                hal.console->printf("current i: %d\n", i);
+                hal.console->printf("verify baud: %d\n", (int32_t)state[i].baud);
+                hal.console->printf("verify protocol: %d\n", (int8_t)state[i].protocol);
                 return state[i].uart;
             }
             found_instance++;
@@ -275,6 +290,7 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
     }
 
     // if we got this far we did not find the uart
+    // hal.console->printf("We've gone too far\n");
     return nullptr;
 }
 

@@ -25,6 +25,9 @@
 #include "AP_InertialSensor_RST.h"
 #include "AP_InertialSensor_DMU11.h"
 
+// Include Plane.h for gcs() definition
+#include "../ArduPlane/Plane.h"
+
 /* Define INS_TIMING_DEBUG to track down scheduling issues with the main loop.
  * Output is on the debug console. */
 #ifdef INS_TIMING_DEBUG
@@ -633,7 +636,7 @@ void AP_InertialSensor::_start_backends()
     detect_backends();
 
     for (uint8_t i = 0; i < _backend_count; i++) {
-        hal.console->printf("Starting backend");
+        hal.console->printf("Starting backend\n");
         _backends[i]->start();
     }
 
@@ -710,6 +713,7 @@ AP_InertialSensor::init(uint16_t sample_rate)
 
 bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
 {
+    hal.console->printf("%s\n", (backend==nullptr) ? "true" : "false");
     if (!backend) {
         return false;
     }
@@ -717,7 +721,7 @@ bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
         AP_HAL::panic("Too many INS backends");
     }
     _backends[_backend_count++] = backend;
-    hal.console->printf("Backend added");
+    hal.console->printf("Backend added\n");
     return true;
 }
 
@@ -738,8 +742,13 @@ AP_InertialSensor::detect_backends(void)
         return;
     }
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
+    hal.console->printf("INS in SITL Mode\n");
     _add_backend(AP_InertialSensor_SITL::detect(*this));
+    hal.console->printf("Attempting to detect dmu11\n");
+    _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
 #elif HAL_INS_DEFAULT == HAL_INS_HIL
+    hal.console->printf("INS in HIL Mode\n");
+    gcs().send_text(MAV_SEVERITY_INFO,"INS in HIL Mode\n");
     _add_backend(AP_InertialSensor_HIL::detect(*this));
 #elif HAL_INS_DEFAULT == HAL_INS_MPU60XX_SPI && defined(HAL_INS_DEFAULT_ROTATION)
     _add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU60x0_NAME),
@@ -772,7 +781,8 @@ AP_InertialSensor::detect_backends(void)
         break;
 
     case AP_BoardConfig::PX4_BOARD_PIXHAWK2:
-        hal.console->printf("PixHawk2 backend detected");
+        hal.console->printf("PixHawk2 backend detected\n");
+        gcs().send_text(MAV_SEVERITY_CRITICAL,"Detecting PixHawk2 IMU backends\n");
         // older Pixhawk2 boards have the MPU6000 instead of MPU9250
         _fast_sampling_mask.set_default(1);
         _add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU9250_EXT_NAME), ROTATION_PITCH_180));
