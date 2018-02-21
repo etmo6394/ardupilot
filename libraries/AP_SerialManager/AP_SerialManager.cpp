@@ -163,6 +163,9 @@ void AP_SerialManager::init()
     hal.console->printf("Serial4, uartE, initialised at address: %p\n", state[4].uart);
     state[5].uart = hal.uartF;  // serial5
 
+    hal.console->printf("expected uart state 4: %p\n", hal.uartE);
+    hal.console->printf("actual uart state 4: %p\n", state[4].uart);
+
     if (state[0].uart == nullptr) {
         init_console();
     }
@@ -283,7 +286,6 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
                 hal.console->printf("current i: %d\n", i);
                 hal.console->printf("verify baud: %d\n", (int32_t)state[i].baud);
                 hal.console->printf("verify protocol: %d\n", (int8_t)state[i].protocol);
-                hal.console->printf("Testing: %p\n", nullptr);
                 return state[i].uart;
             }
             found_instance++;
