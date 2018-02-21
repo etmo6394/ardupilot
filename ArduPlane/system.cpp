@@ -26,6 +26,7 @@ void Plane::init_ardupilot()
                         "\n\nFree RAM: %u\n",
                         fwver.fw_string,
                         (unsigned)hal.util->available_memory());
+    gcs().send_text(MAV_SEVERITY_WARNING,"Initializing ArduPilot\n");
 
 
     //
@@ -71,7 +72,8 @@ void Plane::init_ardupilot()
 
     mavlink_system.sysid = g.sysid_this_mav;
 
-    // initialise serial ports
+    // initialise serial 
+    gcs().send_text(MAV_SEVERITY_WARNING,"Starting SERIAL inits\n");
     serial_manager.init();
     gcs().chan(0).setup_uart(serial_manager, AP_SerialManager::SerialProtocol_MAVLink, 0);
 

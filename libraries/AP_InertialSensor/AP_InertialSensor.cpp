@@ -748,7 +748,6 @@ AP_InertialSensor::detect_backends(void)
     _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
 #elif HAL_INS_DEFAULT == HAL_INS_HIL
     hal.console->printf("INS in HIL Mode\n");
-    gcs().send_text(MAV_SEVERITY_INFO,"INS in HIL Mode\n");
     _add_backend(AP_InertialSensor_HIL::detect(*this));
 #elif HAL_INS_DEFAULT == HAL_INS_MPU60XX_SPI && defined(HAL_INS_DEFAULT_ROTATION)
     _add_backend(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device(HAL_INS_MPU60x0_NAME),
