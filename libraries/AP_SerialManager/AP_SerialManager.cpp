@@ -283,6 +283,7 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
                 hal.console->printf("current i: %d\n", i);
                 hal.console->printf("verify baud: %d\n", (int32_t)state[i].baud);
                 hal.console->printf("verify protocol: %d\n", (int8_t)state[i].protocol);
+                hal.console->printf("Testing: %p\n", nullptr);
                 return state[i].uart;
             }
             found_instance++;
