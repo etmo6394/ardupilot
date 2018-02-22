@@ -352,7 +352,8 @@ private:
     // Load Serial Manager
     // AP_SerialManager &serial_manager;
     // AP_SerialManager serial_manager;
-    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
+    // AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
+    // AP_SerialManager &serial_manager = *AP::serialmanager();
 
     // load backend drivers
     bool _add_backend(AP_InertialSensor_Backend *backend);
