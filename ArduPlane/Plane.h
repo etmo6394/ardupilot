@@ -260,7 +260,7 @@ private:
     bool in_calibration;
 
     AP_SerialManager serial_manager;
-
+    
     // GCS selection
     GCS_Plane _gcs; // avoid using this; use gcs()
     GCS_Plane &gcs() { return _gcs; }
