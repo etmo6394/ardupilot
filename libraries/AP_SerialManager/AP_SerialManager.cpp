@@ -454,8 +454,6 @@ AP_SerialManager &serialmanager()
 {
     return *AP_SerialManager::get_instance();
 }
-*/
-
-
 
 }
+*/
