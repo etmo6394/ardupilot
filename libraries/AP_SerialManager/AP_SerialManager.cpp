@@ -447,7 +447,6 @@ bool AP_SerialManager::protocol_match(enum SerialProtocol protocol1, enum Serial
     return false;
 }
 
-/*
 namespace AP {
 
 AP_SerialManager &serialmanager()
@@ -456,4 +455,3 @@ AP_SerialManager &serialmanager()
 }
 
 }
-*/
