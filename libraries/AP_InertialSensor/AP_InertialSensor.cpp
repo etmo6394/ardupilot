@@ -708,6 +708,8 @@ AP_InertialSensor::init(uint16_t sample_rate)
 
     // initialise IMU batch logging
     batchsampler.init();
+
+    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
 }
 
 bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
