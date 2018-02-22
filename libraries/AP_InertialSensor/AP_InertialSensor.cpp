@@ -469,7 +469,7 @@ AP_InertialSensor::AP_InertialSensor() :
         AP_HAL::panic("Too many inertial sensors");
     }
 
-    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
+    //AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
 
     _s_instance = this;
     AP_Param::setup_object_defaults(this, var_info);
@@ -748,6 +748,7 @@ AP_InertialSensor::detect_backends(void)
     _add_backend(AP_InertialSensor_SITL::detect(*this));
     hal.console->printf("Attempting to detect dmu11\n");
     // See line 453 in AP_SerialManager.cpp
+    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
     _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
     // _add_backend(AP_InertialSensor_DMU11::probe(*this,use_serial_manager()));
 #elif HAL_INS_DEFAULT == HAL_INS_HIL
@@ -785,6 +786,7 @@ AP_InertialSensor::detect_backends(void)
 
     case AP_BoardConfig::PX4_BOARD_PIXHAWK2:
         hal.console->printf("PixHawk2 backend detected\n");
+        //AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
         // gcs().send_text(MAV_SEVERITY_CRITICAL,"Detecting PixHawk2 IMU backends\n");
         // older Pixhawk2 boards have the MPU6000 instead of MPU9250
         _fast_sampling_mask.set_default(1);
