@@ -748,7 +748,7 @@ AP_InertialSensor::detect_backends(void)
     _add_backend(AP_InertialSensor_SITL::detect(*this));
     hal.console->printf("Attempting to detect dmu11\n");
     // See line 453 in AP_SerialManager.cpp
-    _add_backend(AP_InertialSensor_DMU11::probe(*this,AP::serialmanager()));
+    _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
     // _add_backend(AP_InertialSensor_DMU11::probe(*this,use_serial_manager()));
 #elif HAL_INS_DEFAULT == HAL_INS_HIL
     hal.console->printf("INS in HIL Mode\n");
