@@ -253,6 +253,8 @@ void AP_SerialManager::init()
                     state[i].uart->set_stop_bits(2);
                     hal.console->printf("uartE at %d baud\n",(int32_t)state[i].baud);
                     hal.console->printf("uartE protocol: %d\n",(int8_t)state[i].protocol);
+                    hal.console->printf("expected uart state 4: %p\n", hal.uartE);
+                    hal.console->printf("actual uart state 4: %p\n", state[4].uart);
                 case SerialProtocol_uZed:
                     state[i].baud = AP_SERIALMANAGER_UZED_BAUD/1000;
                     state[i].uart->begin(map_baudrate(state[i].baud),
@@ -280,7 +282,7 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
         if (protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get())) {
             hal.console->printf("protocol: %s\n", protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get()) ? "true" : "false");
             if (found_instance == instance) {
-                if (i == 4 && found_instance == instance) {
+                if (i == 4 && found_instance == 16) {
                     hal.console->printf("instances: %s\n", (found_instance==instance) ? "true":"false" );
                     hal.console->printf("uart: %p\n", state[i].uart);
                     hal.console->printf("expected uart: %p\n", hal.uartE);
