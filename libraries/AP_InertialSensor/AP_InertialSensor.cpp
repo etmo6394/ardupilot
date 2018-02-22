@@ -468,6 +468,9 @@ AP_InertialSensor::AP_InertialSensor() :
     if (_s_instance) {
         AP_HAL::panic("Too many inertial sensors");
     }
+
+    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
+
     _s_instance = this;
     AP_Param::setup_object_defaults(this, var_info);
     for (uint8_t i=0; i<INS_MAX_BACKENDS; i++) {
@@ -708,8 +711,6 @@ AP_InertialSensor::init(uint16_t sample_rate)
 
     // initialise IMU batch logging
     batchsampler.init();
-
-    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
 }
 
 bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
