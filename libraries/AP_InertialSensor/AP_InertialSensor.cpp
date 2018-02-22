@@ -469,8 +469,6 @@ AP_InertialSensor::AP_InertialSensor() :
         AP_HAL::panic("Too many inertial sensors");
     }
 
-    //AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
-
     _s_instance = this;
     AP_Param::setup_object_defaults(this, var_info);
     for (uint8_t i=0; i<INS_MAX_BACKENDS; i++) {
@@ -507,12 +505,7 @@ AP_InertialSensor::AP_InertialSensor() :
 
     AP_AccelCal::register_client(this);
 }
-/*
-void AP_InertialSensor::AP_InertialSensor_Serial(AP_SerialManager &_serial_manager)
-{
-    serial_manager(_serial_manager)
-}
-*/
+
 /*
  * Get the AP_InertialSensor singleton
  */
@@ -736,9 +729,8 @@ AP_InertialSensor::detect_backends(void)
     if (_backends_detected) {
         return;
     }
-
     _backends_detected = true;
-
+    hal.console->printf("Detected Backends\n");
     if (_hil_mode) {
         _add_backend(AP_InertialSensor_HIL::detect(*this));
         return;
@@ -748,7 +740,8 @@ AP_InertialSensor::detect_backends(void)
     _add_backend(AP_InertialSensor_SITL::detect(*this));
     hal.console->printf("Attempting to detect dmu11\n");
     // See line 453 in AP_SerialManager.cpp
-    AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
+    AP_SerialManager &serial_manager = AP::serialmanager();
+   // AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
     _add_backend(AP_InertialSensor_DMU11::probe(*this,serial_manager));
     // _add_backend(AP_InertialSensor_DMU11::probe(*this,use_serial_manager()));
 #elif HAL_INS_DEFAULT == HAL_INS_HIL
