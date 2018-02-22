@@ -551,6 +551,7 @@ uint8_t AP_InertialSensor::register_gyro(uint16_t raw_sample_rate_hz,
         // assume this is the same sensor and save its ID to allow seamless
         // transition from when we didn't have the IDs.
         _gyro_id[_gyro_count].save();
+        hal.console->printf("Saved Instance\n");
     }
 #endif
 
