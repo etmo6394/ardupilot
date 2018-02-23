@@ -351,7 +351,7 @@ public:
 private:
     // Load Serial Manager
     // AP_SerialManager &serial_manager;
-    // AP_SerialManager serial_manager;
+    AP_SerialManager serial_manager;
     // AP_SerialManager &serial_manager = *AP_SerialManager::get_instance();
     // AP_SerialManager &serial_manager = *AP::serialmanager();
 
