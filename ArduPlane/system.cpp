@@ -123,6 +123,7 @@ void Plane::init_ardupilot()
     // setup telem slots with serial ports
     hal.console->printf("Setup Telem Slots\n");
     gcs().setup_uarts(serial_manager);
+    hal.console->printf("Exiting Setup Telem Slots\n");
 
     // setup frsky
 #if FRSKY_TELEM_ENABLED == ENABLED
@@ -137,6 +138,7 @@ void Plane::init_ardupilot()
 #endif
 
     // initialise airspeed sensor
+    hal.console->printf("Initialize Airspeed\n");
     airspeed.init();
 
     if (g.compass_enabled==true) {
