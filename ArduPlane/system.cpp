@@ -70,13 +70,16 @@ void Plane::init_ardupilot()
     }
 #endif
 
+    hal.console->printf("Initializing DataFlash\n");
     gcs().set_dataflash(&DataFlash);
 
     mavlink_system.sysid = g.sysid_this_mav;
 
     // initialise serial 
+    hal.console->printf("Initializing Serial\n");
     gcs().send_text(MAV_SEVERITY_WARNING,"Starting SERIAL inits\n");
     serial_manager.init();
+    hal.console->printf("Exiting Serial Init\n");
     gcs().chan(0).setup_uart(serial_manager, AP_SerialManager::SerialProtocol_MAVLink, 0);
 
 
