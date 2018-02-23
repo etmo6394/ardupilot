@@ -146,6 +146,7 @@ void Plane::init_ardupilot()
         bool compass_ok = compass.init() && compass.read();
 #if HIL_SUPPORT
     if (g.hil_mode != 0) {
+        hal.console->printf("HIL Compass\n");
         compass_ok = true;
     }
 #endif
@@ -153,9 +154,12 @@ void Plane::init_ardupilot()
             hal.console->printf("Compass initialisation failed!\n");
             g.compass_enabled = false;
         } else {
+            hal.console->printf("Setting Compass\n");
             ahrs.set_compass(&compass);
+            hal.console->printf("Finished Setting Compass\n");
         }
     }
+
     hal.console->printf("Setup Optical Flow\n");
     
 #if OPTFLOW == ENABLED
