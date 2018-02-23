@@ -88,6 +88,7 @@ void Plane::init_ardupilot()
     hal.scheduler->register_delay_callback(mavlink_delay_cb_static, 5);
 
     // setup any board specific drivers
+    hal.console->printf("Initializing Board Specific Drivers\n");
     BoardConfig.init();
 #if HAL_WITH_UAVCAN
     BoardConfig_CAN.init();
@@ -120,6 +121,7 @@ void Plane::init_ardupilot()
     rpm_sensor.init();
 
     // setup telem slots with serial ports
+    hal.console->printf("Setup Telem Slots\n");
     gcs().setup_uarts(serial_manager);
 
     // setup frsky
@@ -163,6 +165,7 @@ void Plane::init_ardupilot()
     ahrs.set_airspeed(&airspeed);
 
     // GPS Initialization
+    hal.console->printf("Setup GPS\n");
     gps.set_log_gps_bit(MASK_LOG_GPS);
     gps.init(serial_manager);
 
@@ -190,6 +193,7 @@ void Plane::init_ardupilot()
 
     AP_Param::reload_defaults_file();
     
+    hal.console->printf("Startup Ground\n");
     startup_ground();
 
     // don't initialise aux rc output until after quadplane is setup as
