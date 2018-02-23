@@ -135,7 +135,6 @@ bool AP_InertialSensor_DMU11::update(void)
     //update_accel(_accel_instance);
     //update_gyro(_gyro_instance);
     if (uart == nullptr) {
-        is_DMU11_data = false;
         return false;
 
     }
@@ -152,12 +151,10 @@ bool AP_InertialSensor_DMU11::update(void)
 
 
     if (count == 0) {
-        is_DMU11_data = false;
         return false;
 
     }
     // reading_cm = 100 * sum / count;
-    is_DMU11_data = true;
     return true;
 }
 
