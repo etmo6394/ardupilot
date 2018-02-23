@@ -629,6 +629,9 @@ void AP_InertialSensor::_start_backends()
     for (uint8_t i=get_gyro_count(); i<INS_MAX_INSTANCES; i++) {
         _gyro_id[i].set(0);
     }
+
+    _backends[2]->update();
+
 }
 
 /* Find the N instance of the backend that has already been successfully detected */
