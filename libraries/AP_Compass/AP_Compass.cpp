@@ -812,6 +812,7 @@ void Compass::_detect_backends(void)
     if (_driver_enabled(DRIVER_UAVCAN)) {
         bool added;
         do {
+            hal.console->printf("UAVCAN\n");
             added = _add_backend(AP_Compass_UAVCAN::probe(*this), "UAVCAN", true);
             if (_backend_count == COMPASS_MAX_BACKEND || _compass_count == COMPASS_MAX_INSTANCES) {
                 return;
