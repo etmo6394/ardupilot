@@ -251,10 +251,10 @@ void AP_SerialManager::init()
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_RX,
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_TX);
                     state[i].uart->set_stop_bits(2);
-                    hal.console->printf("uartE at %d baud\n",(int32_t)state[i].baud);
+                    hal.console->printf("\nuartE at %d baud\n",(int32_t)state[i].baud);
                     hal.console->printf("uartE protocol: %d\n",(int8_t)state[i].protocol);
                     hal.console->printf("expected uart state 4: %p\n", hal.uartE);
-                    hal.console->printf("actual uart state 4: %p\n", state[4].uart);
+                    hal.console->printf("actual uart state 4: %p\n\n", state[4].uart);
                     break;
                 case SerialProtocol_uZed:
                     state[i].baud = AP_SERIALMANAGER_UZED_BAUD/1000;
