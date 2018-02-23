@@ -63,7 +63,8 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
 
 
 
-AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu)
+AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu,
+                                                          AP_SerialManager &serial_manager)
 {
     AP_SerialManager &serial_manager = AP::serialmanager();
   // Return nullptr if no sensor is connected on uartE
