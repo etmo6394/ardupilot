@@ -1286,8 +1286,8 @@ void AP_InertialSensor::update(void)
     // wait_for_sample(), and a wait is implied
     wait_for_sample();
 
-    AP_InertialSensor_DMU11 DMU11;
-    bool DMU11_test_data = DMU11.get_DMU11_data();
+    //AP_InertialSensor_DMU11 DMU11;
+    bool DMU11_test_data = AP_InertialSensor_DMU11::get_DMU11_data();
 
     if (!_hil_mode) {
         for (uint8_t i=0; i<INS_MAX_INSTANCES; i++) {

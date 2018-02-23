@@ -22,7 +22,7 @@ public:
 
   bool update(void) override;
 
-  bool get_DMU11_data(void);
+  static bool get_DMU11_data(void);
   // update state
   // void update(void) override;
 
