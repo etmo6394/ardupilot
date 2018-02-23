@@ -18,8 +18,9 @@ public:
   // static bool detect(AP_SerialManager &serial_manager);
 
   // Static probe function
-  static AP_InertialSensor_Backend *probe(AP_InertialSensor &imu,
-                                          AP_SerialManager &serial_manager);
+ // static AP_InertialSensor_Backend *probe(AP_InertialSensor &imu,
+  //                                        AP_SerialManager &serial_manager);
+  static AP_InertialSensor_Backend *probe(AP_InertialSensor &imu);
 
   // Start and register sensor instances
   void start(void) override;
