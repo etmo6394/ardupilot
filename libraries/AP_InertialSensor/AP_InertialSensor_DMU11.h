@@ -22,7 +22,8 @@ public:
 
   bool update(void) override;
 
-  bool is_DMU11_data;
+  bool is_DMU11_data = false;
+
   bool get_DMU11_data(void);
   static bool return_DMU11_data(void) {
        return is_DMU11_data;
