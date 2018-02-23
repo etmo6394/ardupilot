@@ -95,7 +95,7 @@ class AP_SerialManager {
 public:
     AP_SerialManager();
 
-    static AP_SerialManager *get_instance();
+    //static AP_SerialManager *get_instance();
 
     /* Do not allow copies */
     AP_SerialManager(const AP_SerialManager &other) = delete;
