@@ -275,12 +275,12 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
     // search for matching protocol
     for(uint8_t i=0; i<SERIALMANAGER_NUM_PORTS; i++) {
         // debugging DMU11
-        hal.console->printf("find_serial protocol: %d\n",(int8_t)protocol);
-        hal.console->printf("match protocol: %d\n",(int8_t)state[i].protocol.get());
-        hal.console->printf("instance: %d\n",instance);
-        hal.console->printf("found_instance: %d\n", found_instance);
+        //hal.console->printf("find_serial protocol: %d\n",(int8_t)protocol);
+        //hal.console->printf("match protocol: %d\n",(int8_t)state[i].protocol.get());
+        //hal.console->printf("instance: %d\n",instance);
+        //hal.console->printf("found_instance: %d\n", found_instance);
         if (protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get())) {
-            hal.console->printf("protocol: %s\n", protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get()) ? "true" : "false");
+            //hal.console->printf("protocol: %s\n", protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get()) ? "true" : "false");
             if (found_instance == instance) {
                 if (i == 4 && found_instance == 16) {
                     hal.console->printf("instances: %s\n", (found_instance==instance) ? "true":"false" );

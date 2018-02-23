@@ -20,18 +20,20 @@ static void failsafe_check_static()
 void Plane::init_ardupilot()
 {
     // initialise serial port
+    hal.console->printf("Initializing Console\n");
     serial_manager.init_console();
 
     hal.console->printf("\n\nInit %s"
                         "\n\nFree RAM: %u\n",
                         fwver.fw_string,
                         (unsigned)hal.util->available_memory());
-    gcs().send_text(MAV_SEVERITY_WARNING,"Initializing ArduPilot\n");
+    //gcs().send_text(MAV_SEVERITY_WARNING,"Initializing ArduPilot\n");
 
 
     //
     // Check the EEPROM format version before loading any parameters from EEPROM
     //
+    hal.console->printf("Loading Parameters\n");
     load_parameters();
 
     agc_feedback = 0;
