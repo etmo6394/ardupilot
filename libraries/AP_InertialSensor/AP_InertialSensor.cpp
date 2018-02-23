@@ -1292,7 +1292,7 @@ void AP_InertialSensor::update(void)
     //AP_InertialSensor_DMU11 dmu11;
     //dmu11.return_DMU11_data();
 
-    bool DMU_test_data = _backends[2]->get_DMU11_data();
+    //bool DMU_test_data = _backends[2]->AP_InertialSensor_DMU11::get_DMU11_data();
 
 
     if (!_hil_mode) {

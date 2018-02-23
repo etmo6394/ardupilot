@@ -91,6 +91,8 @@ void AP_InertialSensor_DMU11::start(void)
 // read - return last value measured by sensor
 // Vector3f stuff, refer to AP_InertialSensor.cpp lines ~1400-1600
 // bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel)
+
+/*
 bool AP_InertialSensor_DMU11::get_DMU11_data(void)
 {
     if (uart == nullptr) {
@@ -120,24 +122,50 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
     return true;
 
 }
-
+*/
 
 /*
    Copy filtered data to frontend
 */
-/*
+
 bool AP_InertialSensor_DMU11::update(void)
 {
-    update_accel(_accel_instance);
-    update_gyro(_gyro_instance);
 
+
+    //update_accel(_accel_instance);
+    //update_gyro(_gyro_instance);
+    if (uart == nullptr) {
+        is_DMU11_data = false;
+        return false;
+
+    }
+    uint16_t count = 0;
+    int16_t nbytes = uart->available();
+    while (nbytes-- > 0) {
+      // read byte from buffer
+      char c = uart->read();
+      // immediately print to pixhawk console to verify data
+      hal.console->printf("%c",c);
+
+      count++;
+    }
+
+
+    if (count == 0) {
+        is_DMU11_data = false;
+        return false;
+
+    }
+    // reading_cm = 100 * sum / count;
+    is_DMU11_data = true;
     return true;
 }
-*/
 
 
+/*
 bool AP_InertialSensor_DMU11::update(void)
 {
   return false;
 }
+*/
 
