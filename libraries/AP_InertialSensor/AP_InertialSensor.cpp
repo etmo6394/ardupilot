@@ -630,7 +630,7 @@ void AP_InertialSensor::_start_backends()
         _gyro_id[i].set(0);
     }
 
-    _backends[2]->update();
+   // _backends[2]->update();
 
 }
 

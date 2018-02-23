@@ -86,6 +86,8 @@ void AP_InertialSensor_DMU11::start(void)
   hal.console->printf("Registered DMU11 gyro [%u]\n", _gyro_instance);
   _accel_instance = _imu.register_accel(1000,0);
   hal.console->printf("Registered DMU11 accel [%u]\n", _accel_instance);
+
+  update();
 }
 
 // read - return last value measured by sensor
