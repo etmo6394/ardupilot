@@ -76,7 +76,8 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
     return nullptr;
   }
   // Otherwise declare pointer to new object
-  AP_InertialSensor_DMU11 *sensor = new AP_InertialSensor_DMU11(imu,serial_manager);
+  //AP_InertialSensor_DMU11 *sensor = new AP_InertialSensor_DMU11(imu,serial_manager);
+  AP_InertialSensor_DMU11 *sensor = new AP_InertialSensor_DMU11(imu);
   hal.console->printf("Detected sensor on uartE\n");
   return sensor;
 }
