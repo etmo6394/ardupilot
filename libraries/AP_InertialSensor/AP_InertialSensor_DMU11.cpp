@@ -17,7 +17,7 @@
 
 #include <AP_HAL/AP_HAL.h>
 #include "AP_InertialSensor_DMU11.h"
-#include <AP_SerialManager/AP_SerialManager.h>
+//#include <AP_SerialManager/AP_SerialManager.h>
 // #include <ctype.h>
 
 // Declare external reference to HAL to gain access to namespace objects
@@ -42,27 +42,13 @@ AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu) :
 
 /*
   SerialProtocol_DMU11 sets the serial baud to 115k, RX buffer to 40 bytes, and stop bits to 2
-*/
 // // // bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
 // // // {
 // // //     hal.console->printf("Detected DMU11 at 115k baud");
 // // //     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
 // // // }
-/*
-AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu,
-                                                          AP_SerialManager &serial_manager)
-{
-  // Return nullptr if no sensor is connected on uartE
-  if (serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) == nullptr){
-    hal.console->printf("No detected sensor on uartE\n");
-    return nullptr;
-  }
-  // Otherwise declare pointer to new object
-  AP_InertialSensor_DMU11 *sensor = new AP_InertialSensor_DMU11(imu,serial_manager);
-  hal.console->printf("Detected sensor on uartE\n");
-  return sensor;
-}
 */
+
 
 
 

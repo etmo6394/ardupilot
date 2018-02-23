@@ -9,7 +9,7 @@
 #include <AP_Vehicle/AP_Vehicle.h>
 #include <AP_BoardConfig/AP_BoardConfig.h>
 #include <AP_AHRS/AP_AHRS.h>
-#include <AP_SerialManager/AP_SerialManager.h>
+//#include <AP_SerialManager/AP_SerialManager.h>
 #include "AP_InertialSensor.h"
 #include "AP_InertialSensor_BMI160.h"
 #include "AP_InertialSensor_Backend.h"
@@ -445,8 +445,6 @@ const AP_Param::GroupInfo AP_InertialSensor::var_info[] = {
 };
 
 AP_InertialSensor *AP_InertialSensor::_s_instance = nullptr;
-
-//serial_manager(_serial_manager)
 
 AP_InertialSensor::AP_InertialSensor() :
     _gyro_count(0),

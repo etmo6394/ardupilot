@@ -26,7 +26,7 @@
 #include <Filter/LowPassFilter2p.h>
 #include <Filter/LowPassFilter.h>
 #include <Filter/NotchFilter.h>
-#include <AP_SerialManager/AP_SerialManager.h>
+//#include <AP_SerialManager/AP_SerialManager.h>
 // #include "../ArduPlane/Plane.h"
 
 class AP_InertialSensor_Backend;
@@ -350,7 +350,7 @@ public:
 
 private:
     // Load Serial Manager
-    AP_SerialManager serial_manager;
+    //AP_SerialManager serial_manager;
 
     // load backend drivers
     bool _add_backend(AP_InertialSensor_Backend *backend);
