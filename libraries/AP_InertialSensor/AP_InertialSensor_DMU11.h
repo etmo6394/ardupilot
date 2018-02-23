@@ -25,8 +25,10 @@ public:
   bool is_DMU11_data = false;
 
   bool get_DMU11_data(void);
+
   static bool return_DMU11_data(void) {
-       return is_DMU11_data;
+      return get_DMU11_data();
+       //return is_DMU11_data;
   };
   // update state
   // void update(void) override;
