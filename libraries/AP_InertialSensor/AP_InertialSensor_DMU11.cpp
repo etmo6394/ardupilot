@@ -80,9 +80,9 @@ void AP_InertialSensor_DMU11::start(void)
   // _gyro_instance = _imu.register_DMU11_gyro();
   // _accel_instance = _imu.register_DMU11_accel();
   _gyro_instance = _imu.register_gyro(0,0);
-  hal.console->printf("Registered DMU11 gyro [%u]", _gyro_instance);
+  hal.console->printf("Registered DMU11 gyro [%u]\n", _gyro_instance);
   _accel_instance = _imu.register_accel(0,0);
-  hal.console->printf("Registered DMU11 accel [%u]", _accel_instance);
+  hal.console->printf("Registered DMU11 accel [%u]\n", _accel_instance);
 
 }
 

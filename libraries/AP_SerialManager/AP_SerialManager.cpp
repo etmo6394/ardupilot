@@ -284,14 +284,12 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
         if (protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get())) {
             //hal.console->printf("protocol: %s\n", protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get()) ? "true" : "false");
             if (found_instance == instance) {
-                if (i == 4 && found_instance == 16) {
                     hal.console->printf("instances: %s\n", (found_instance==instance) ? "true":"false" );
                     hal.console->printf("uart: %p\n", state[i].uart);
                     hal.console->printf("expected uart: %p\n", hal.uartE);
                     hal.console->printf("current i: %d\n", i);
                     hal.console->printf("verify baud: %d\n", (int32_t)state[i].baud);
                     hal.console->printf("verify protocol: %d\n", (int8_t)state[i].protocol);
-                }
 
                 return state[i].uart;
             }
