@@ -554,7 +554,9 @@ void Compass::_detect_backends(void)
     } while (0)
 
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
+    hal.console->printf("Setup SITL Compass Backend\n");
     ADD_BACKEND(DRIVER_SITL, new AP_Compass_SITL(*this), nullptr, false);
+    hal.console->printf("Finished Setup SITL Compass Backend\n");
     return;
 #endif
     
