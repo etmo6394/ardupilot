@@ -699,7 +699,7 @@ AP_InertialSensor::init(uint16_t sample_rate)
 
 bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
 {
-    hal.console->printf("%s\n", (backend==nullptr) ? "true" : "false");
+    hal.console->printf("%s\n", (backend==nullptr) ? "Backend=nullptr" : "Backend!=nullptr");
     if (!backend) {
         return false;
     }
@@ -1285,6 +1285,8 @@ void AP_InertialSensor::update(void)
     // during initialisation update() may be called without
     // wait_for_sample(), and a wait is implied
     wait_for_sample();
+
+    AP_InertialSensor_DMU11::get_DMU11_data(void);
 
     if (!_hil_mode) {
         for (uint8_t i=0; i<INS_MAX_INSTANCES; i++) {

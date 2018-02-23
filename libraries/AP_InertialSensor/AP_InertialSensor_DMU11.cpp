@@ -78,9 +78,6 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
 }
 
 
-
-
-
 //"Start" the sensor, register the DMU11 as one new gyro and one new accel
 void AP_InertialSensor_DMU11::start(void)
 {
@@ -89,10 +86,6 @@ void AP_InertialSensor_DMU11::start(void)
   hal.console->printf("Registered DMU11 gyro [%u]\n", _gyro_instance);
   _accel_instance = _imu.register_accel(1000,0);
   hal.console->printf("Registered DMU11 accel [%u]\n", _accel_instance);
-
-
-  //get_DMU11_data();
-
 }
 
 // read - return last value measured by sensor
@@ -115,7 +108,6 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
     }
 
 
-
     if (count == 0) {
         return false;
     }
@@ -127,12 +119,19 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
 /*
    Copy filtered data to frontend
 */
-// bool AP_InertialSensor_DMU11::update(void);
-// {
-//   update_gyro(_gyro_instance);
-//   update_accel(_accel_instance);
-// }
+/*
+bool AP_InertialSensor_DMU11::update(void)
+{
+    update_accel(_accel_instance);
+    update_gyro(_gyro_instance);
+
+    return true;
+}
+*/
+
+
 bool AP_InertialSensor_DMU11::update(void)
 {
   return false;
 }
+
