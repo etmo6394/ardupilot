@@ -12,21 +12,15 @@ class AP_InertialSensor_DMU11 : public AP_InertialSensor_Backend
 {
 public:
   // constructor
-  //AP_InertialSensor_DMU11(AP_InertialSensor &imu, AP_SerialManager &serial_manager);
-    AP_InertialSensor_DMU11(AP_InertialSensor &imu);
-
-// static detection function
-  // static bool detect(AP_SerialManager &serial_manager);
+  AP_InertialSensor_DMU11(AP_InertialSensor &imu);
 
   // Static probe function
-  //static AP_InertialSensor_Backend *probe(AP_InertialSensor &imu,
-  //                                        AP_SerialManager &serial_manager);
   static AP_InertialSensor_Backend *probe(AP_InertialSensor &imu);
 
   // Start and register sensor instances
   void start(void) override;
 
-  bool update() override;
+  bool update(void) override;
 
   // update state
   // void update(void) override;

@@ -571,6 +571,13 @@ uint8_t AP_InertialSensor::register_accel(uint16_t raw_sample_rate_hz,
         AP_HAL::panic("Too many accels");
     }
 
+    // If sensor is DMU11
+    if (id == 0) {
+      _accel_raw_sample_rates[_accel_count] = 0;
+      _accel_over_sampling[_accel_count] = 0;
+      return _accel_count++;
+    }
+
     _accel_raw_sample_rates[_accel_count] = raw_sample_rate_hz;
     _accel_over_sampling[_accel_count] = 1;
 

@@ -14,24 +14,46 @@
  */
 // spec sheet: https://www.siliconsensing.com/media/30801/dmu11-00-0100-132-rev-3.pdf
 
+/*
+Expected Data:
+
+Item    Word    Data Item               Value/Units
+0       0       Header                  16 Bit, 0x55AA
+1       1       Message Count           16 Bit, 0 to 65535 decimal
+2       2-3     Axis X Rate             32 Bit Single Precision FP, (deg/s)
+3       4-5     Axis X Accel            32 Bit Single Precision FP, (g)
+4       6-7     Axis Y Rate             32 Bit Single Precision FP, (deg/s)
+5       8-9     Axis Y Accel            32 Bit Single Precision FP, (g)
+6       10-11   Axis Z Rate             32 Bit Single Precision FP, (deg/s)
+7       12-13   Axis Z Accel            32 Bit Single Precision FP, (g)
+8       14-15   Aux Input V             32 Bit Single Precision FP, (V)
+9       16-17   Avg IMU Temp            32 Bit Single Precision FP, (degC)
+10      18-19   Axis X Delta Theta      32 Bit Single Precision FP, (deg)
+11      20-21   Axis X Delta Vel        32 Bit Single Precision FP, (m/s)
+12      22-23   Axis Y Delta Theta      32 Bit Single Precision FP, (deg)
+13      24-25   Axis Y Delta Vel        32 Bit Single Precision FP, (m/s)
+14      26-27   Axis Z Delta Theta      32 Bit Single Precision FP, (deg)
+15      28-29   Axis Z Delta Vel        32 Bit Single Precision FP, (m/s)
+16      30      Sys Startup Flags       16 Bit, 0 to 65535 decimal
+17      31      Sys Op Flags            16 Bit, 0 to 65535 decimal
+18      32      Bit Flag Error Ind      16 Bit, 0 to 65535 decimal
+19      33      Checksum                16 Bit 2-s complement of 16 Bit Sum of prev 0-18 items
+*/
+
 
 #include <AP_HAL/AP_HAL.h>
 #include "AP_InertialSensor_DMU11.h"
-//#include <AP_SerialManager/AP_SerialManager.h>
-// #include <ctype.h>
 
 // Declare external reference to HAL to gain access to namespace objects
 extern const AP_HAL::HAL& hal;
 
-
-//AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu,
-//                                                 AP_SerialManager &serial_manager) :
+// DMU11 Constructor, sets up backend, creates DMU11 object, and finds UART port
 AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu) :
     AP_InertialSensor_Backend(imu)
 {
     AP_SerialManager &serial_manager = AP::serialmanager();
 
-    hal.console->printf("Creating new dmu11 obj\n");
+    hal.console->printf("Creating new DMU11 obj\n");
     uart = serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0);
     if (uart != nullptr) {
         uart->begin(serial_manager.find_baudrate(AP_SerialManager::SerialProtocol_DMU11, 0));
@@ -39,21 +61,8 @@ AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu) :
     }
 }
 
-
-/*
-  SerialProtocol_DMU11 sets the serial baud to 115k, RX buffer to 40 bytes, and stop bits to 2
-// // // bool AP_InertialSensor_DMU11::detect(AP_SerialManager &serial_manager)
-// // // {
-// // //     hal.console->printf("Detected DMU11 at 115k baud");
-// // //     return serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) != nullptr;
-// // // }
-*/
-
-
-
-
+// Probe for detected uartE sensor
 AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu)
- //                                                         AP_SerialManager &serial_manager)
 {
     AP_SerialManager &serial_manager = AP::serialmanager();
   // Return nullptr if no sensor is connected on uartE
@@ -72,20 +81,17 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
 
 
 
-/*
-  "Start" the sensor, register the DMU11 as one new gyro and one new accel
-*/
+//"Start" the sensor, register the DMU11 as one new gyro and one new accel
 void AP_InertialSensor_DMU11::start(void)
 {
-  // _gyro_instance = _imu.register_DMU11_gyro();
-  // _accel_instance = _imu.register_DMU11_accel();
-  _gyro_instance = _imu.register_gyro(200,0);
+  // Register 1 accel and 1 gyro, sampling raw at 1000Hz, with DMU11 protocol
+  _gyro_instance = _imu.register_gyro(1000,0);
   hal.console->printf("Registered DMU11 gyro [%u]\n", _gyro_instance);
-  _accel_instance = _imu.register_accel(200,0);
+  _accel_instance = _imu.register_accel(1000,0);
   hal.console->printf("Registered DMU11 accel [%u]\n", _accel_instance);
 
 
-  get_DMU11_data();
+  //get_DMU11_data();
 
 }
 
