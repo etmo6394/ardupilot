@@ -22,12 +22,12 @@ public:
 
   bool update(void) override;
 
+  bool get_DMU11_data(void);
   // update state
   // void update(void) override;
 
 private:
   // bool get_reading(Vector3f &gyro, Vector3f &accel);
-  bool get_DMU11_data(void);
   AP_HAL::UARTDriver *uart = nullptr;
   uint8_t _gyro_instance;
   uint8_t _accel_instance;
