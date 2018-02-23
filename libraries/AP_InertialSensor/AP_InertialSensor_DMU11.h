@@ -26,7 +26,7 @@ public:
 
   bool get_DMU11_data(void);
 
-  static bool return_DMU11_data(void) {
+  bool return_DMU11_data(void) {
       return get_DMU11_data();
        //return is_DMU11_data;
   };
