@@ -12,7 +12,8 @@ class AP_InertialSensor_DMU11 : public AP_InertialSensor_Backend
 {
 public:
   // constructor
-  AP_InertialSensor_DMU11(AP_InertialSensor &imu, AP_SerialManager &serial_manager);
+  //AP_InertialSensor_DMU11(AP_InertialSensor &imu, AP_SerialManager &serial_manager);
+    AP_InertialSensor_DMU11(AP_InertialSensor &imu);
 
 // static detection function
   // static bool detect(AP_SerialManager &serial_manager);
