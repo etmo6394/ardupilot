@@ -115,6 +115,12 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
     return true;
 }
 
+bool AP_InertialSensor_DMU11::return_DMU11_data(void)
+{
+    bool DMU11_test = get_DMU11_data(void);
+    return DMU11_test;
+}
+
 
 /*
    Copy filtered data to frontend
