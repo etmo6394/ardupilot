@@ -1288,6 +1288,7 @@ void AP_InertialSensor::update(void)
 
     //AP_InertialSensor_DMU11 DMU11;
     bool DMU11_test_data = AP_InertialSensor_DMU11::get_DMU11_data();
+    hal.console->printf("%s\n",DMU11_test_data ? "true" : "false");
 
     if (!_hil_mode) {
         for (uint8_t i=0; i<INS_MAX_INSTANCES; i++) {
