@@ -132,6 +132,7 @@ bool AP_InertialSensor_DMU11::update(void)
 {
 
     char c = uart->read();
+    hal.console->printf("%c\n",c);
     //update_accel(_accel_instance);
     //update_gyro(_gyro_instance);
     hal.console->printf("uart: %p\n",uart);
