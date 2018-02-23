@@ -839,7 +839,7 @@ Compass::accumulate(void)
 bool
 Compass::read(void)
 {
-    hal.console->printf("Reading Compass\n");
+    //hal.console->printf("Reading Compass\n");
     for (uint8_t i=0; i< _backend_count; i++) {
         // call read on each of the backend. This call updates field[i]
         _backends[i]->read();
@@ -849,7 +849,7 @@ Compass::read(void)
         _state[i].healthy = (time - _state[i].last_update_ms < 500);
     }
     return healthy();
-    hal.console->printf("End Reading Compass\n");
+    //hal.console->printf("End Reading Compass\n");
 }
 
 uint8_t
