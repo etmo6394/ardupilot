@@ -180,8 +180,10 @@ public:
     }
 
     void set_compass(Compass *compass) {
+        hal.console->printf("Setting Compass\n");
         _compass = compass;
         set_orientation();
+        hal.console->printf("Set Compass\n");
     }
 
     const Compass* get_compass() const {
