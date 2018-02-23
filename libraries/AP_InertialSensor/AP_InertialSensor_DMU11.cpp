@@ -66,7 +66,7 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
 AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu,
                                                           AP_SerialManager &serial_manager)
 {
-    AP_SerialManager &serial_manager = AP::serialmanager();
+    //AP_SerialManager &serial_manager = AP::serialmanager();
   // Return nullptr if no sensor is connected on uartE
   if (serial_manager.find_serial(AP_SerialManager::SerialProtocol_DMU11, 0) == nullptr){
     hal.console->printf("No detected sensor on uartE\n");
