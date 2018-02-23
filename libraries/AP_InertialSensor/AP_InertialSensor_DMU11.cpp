@@ -94,7 +94,9 @@ void AP_InertialSensor_DMU11::start(void)
 bool AP_InertialSensor_DMU11::get_DMU11_data(void)
 {
     if (uart == nullptr) {
+        is_DMU11_data = false;
         return false;
+
     }
     uint16_t count = 0;
     int16_t nbytes = uart->available();
@@ -109,10 +111,14 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
 
 
     if (count == 0) {
+        is_DMU11_data = false;
         return false;
+
     }
     // reading_cm = 100 * sum / count;
+    is_DMU11_data = true;
     return true;
+
 }
 /*
 bool AP_InertialSensor_DMU11::return_DMU11_data(void)
