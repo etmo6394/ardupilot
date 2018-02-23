@@ -141,6 +141,7 @@ void Plane::init_ardupilot()
     hal.console->printf("Initialize Airspeed\n");
     airspeed.init();
 
+    hal.console->printf("Setup Compass\n");
     if (g.compass_enabled==true) {
         bool compass_ok = compass.init() && compass.read();
 #if HIL_SUPPORT
@@ -155,6 +156,7 @@ void Plane::init_ardupilot()
             ahrs.set_compass(&compass);
         }
     }
+    hal.console->printf("Setup Optical Flow\n");
     
 #if OPTFLOW == ENABLED
     // make optflow available to libraries
@@ -164,6 +166,7 @@ void Plane::init_ardupilot()
 #endif
 
     // give AHRS the airspeed sensor
+    hal.console->printf("Set Airspeed\n");
     ahrs.set_airspeed(&airspeed);
 
     // GPS Initialization
