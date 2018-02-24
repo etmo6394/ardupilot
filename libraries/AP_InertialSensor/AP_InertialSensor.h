@@ -447,7 +447,7 @@ private:
     uint32_t _sample_accel_start_us[INS_MAX_INSTANCES];
     uint16_t _sample_gyro_count[INS_MAX_INSTANCES];
     uint32_t _sample_gyro_start_us[INS_MAX_INSTANCES];
-    
+
     // temperatures for an instance if available
     float _temperature[INS_MAX_INSTANCES];
 
@@ -462,9 +462,6 @@ private:
     // control enable of fast sampling
     AP_Int8     _fast_sampling_mask;
 
-    // control enable of detected sensors
-    AP_Int8     _enable_mask;
-    
     // board orientation from AHRS
     enum Rotation _board_orientation;
 
@@ -564,8 +561,4 @@ private:
     uint32_t _gyro_startup_error_count[INS_MAX_INSTANCES];
     bool _startup_error_counts_set;
     uint32_t _startup_ms;
-};
-
-namespace AP {
-    AP_InertialSensor &ins();
 };
