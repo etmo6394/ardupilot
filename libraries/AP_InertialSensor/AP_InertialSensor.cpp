@@ -610,6 +610,14 @@ void AP_InertialSensor::_start_backends()
     if (_gyro_count == 0 || _accel_count == 0) {
         AP_HAL::panic("INS needs at least 1 gyro and 1 accel");
     }
+
+    // clear IDs for unused sensor instances
+    for (uint8_t i=get_accel_count(); i<INS_MAX_INSTANCES; i++) {
+        _accel_id[i].set(0);
+    }
+    for (uint8_t i=get_gyro_count(); i<INS_MAX_INSTANCES; i++) {
+        _gyro_id[i].set(0);
+    }
 }
 
 /* Find the N instance of the backend that has already been successfully detected */
@@ -687,6 +695,7 @@ bool AP_InertialSensor::_add_backend(AP_InertialSensor_Backend *backend)
         AP_HAL::panic("Too many INS backends");
     }
     _backends[_backend_count++] = backend;
+    hal.console->printf("Backend added\n");
     return true;
 }
 
@@ -1979,3 +1988,12 @@ MAV_RESULT AP_InertialSensor::simple_accel_cal(AP_AHRS &ahrs)
 
     return result;
 }
+
+namespace AP {
+
+AP_InertialSensor &ins()
+{
+    return *AP_InertialSensor::get_instance();
+}
+
+};
