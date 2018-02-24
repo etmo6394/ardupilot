@@ -131,11 +131,9 @@ bool AP_InertialSensor_DMU11::get_DMU11_data(void)
 bool AP_InertialSensor_DMU11::update(void)
 {
 
-    char c = uart->read();
-    hal.console->printf("%c\n",c);
     //update_accel(_accel_instance);
     //update_gyro(_gyro_instance);
-    //hal.console->printf("uart: %p\n",uart);
+
     if (uart == nullptr) {
         return false;
     }
@@ -148,7 +146,7 @@ bool AP_InertialSensor_DMU11::update(void)
       // read byte from buffer
       char c = uart->read();
       // immediately print to pixhawk console to verify data
-      hal.console->printf("%c\n",c);
+      hal.console->printf("DMU11 Data: %c\n",c);
 
       count++;
     }
