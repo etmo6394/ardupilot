@@ -729,7 +729,7 @@ AP_InertialSensor::detect_backends(void)
     _backends_detected = true;
 
     uint8_t probe_count = 0;
-    //uint8_t enable_mask = uint8_t(_enable_mask.get());
+    uint8_t enable_mask = uint8_t(_enable_mask.get());
     uint8_t found_mask = 0;
 
     /*
