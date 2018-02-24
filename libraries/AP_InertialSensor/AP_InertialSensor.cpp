@@ -917,7 +917,7 @@ AP_InertialSensor::detect_backends(void)
 #elif HAL_INS_DEFAULT == HAL_INS_ICM20789_SPI
     ADD_BACKEND(AP_InertialSensor_Invensense::probe(*this, hal.spi->get_device("icm20789")));
 #else
-    //#error Unrecognised HAL_INS_TYPE setting
+    #error Unrecognised HAL_INS_TYPE setting
 #endif
 
     _enable_mask.set(found_mask);
