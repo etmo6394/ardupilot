@@ -70,7 +70,7 @@ const AP_Scheduler::Task Plane::scheduler_tasks[] = {
     SCHED_TASK(airspeed_ratio_update,   1,    100),
     SCHED_TASK(update_mount,           50,    100),
     SCHED_TASK(update_trigger,         50,    100),
-    SCHED_TASK(log_perf_info,         0.2,    100),
+    SCHED_TASK_CLASS(AP_Scheduler, &plane.scheduler, update_logging,         0.2,    100),
     SCHED_TASK(compass_save,          0.1,    200),
     SCHED_TASK(Log_Write_Fast,         25,    300),
     SCHED_TASK(update_logging1,        25,    300),
@@ -98,7 +98,6 @@ void Plane::stats_update(void)
 void Plane::setup() 
 {
     // load the default values of variables listed in var_info[]
-    gcs().send_text(MAV_SEVERITY_INFO,"Running Plane::setup");
     AP_Param::setup_sketch_defaults();
 
     AP_Notify::flags.failsafe_battery = false;
@@ -108,45 +107,13 @@ void Plane::setup()
     init_ardupilot();
 
     // initialise the main loop scheduler
-    scheduler.init(&scheduler_tasks[0], ARRAY_SIZE(scheduler_tasks));
+    scheduler.init(&scheduler_tasks[0], ARRAY_SIZE(scheduler_tasks), MASK_LOG_PM);
 }
 
 void Plane::loop()
 {
-    uint32_t loop_us = 1000000UL / scheduler.get_loop_rate_hz();
-
-    // wait for an INS sample
-    ins.wait_for_sample();
-
-    uint32_t timer = micros();
-
-    perf.delta_us_fast_loop  = timer - perf.fast_loopTimer_us;
-    G_Dt = perf.delta_us_fast_loop * 1.0e-6f;
-
-    if (perf.delta_us_fast_loop > loop_us + 500) {
-        perf.num_long++;
-    }
-
-    if (perf.delta_us_fast_loop > perf.G_Dt_max && perf.fast_loopTimer_us != 0) {
-        perf.G_Dt_max = perf.delta_us_fast_loop;
-    }
-
-    if (perf.delta_us_fast_loop < perf.G_Dt_min || perf.G_Dt_min == 0) {
-        perf.G_Dt_min = perf.delta_us_fast_loop;
-    }
-    perf.fast_loopTimer_us = timer;
-
-    perf.mainLoop_count++;
-
-    // tell the scheduler one tick has passed
-    scheduler.tick();
-
-    // run all the tasks that are due to run. Note that we only
-    // have to call this once per loop, as the tasks are scheduled
-    // in multiples of the main loop tick. So if they don't run on
-    // the first call to the scheduler they won't run on a later
-    // call until scheduler.tick() is called again
-    scheduler.run(loop_us);
+    scheduler.loop();
+    G_Dt = scheduler.get_loop_period_s();
 }
 
 void Plane::update_soft_armed()
@@ -154,45 +121,6 @@ void Plane::update_soft_armed()
     hal.util->set_soft_armed(arming.is_armed() &&
                              hal.util->safety_switch_state() != AP_HAL::Util::SAFETY_DISARMED);
     DataFlash.set_vehicle_armed(hal.util->get_soft_armed());
-}
-
-
-//RAMROD flight mode switch
-void Plane::RAMROD_Switch()
-{
-
-    // gcs().send_text(MAV_SEVERITY_INFO, "agc | agc_prev: %d | %d  (#: %d).", (int)agc_feedback, (int)agc_feedback_prev, (int)randswitch);
-
-    auto agc = ahrs.get_agc_feedback();
-
-    agc_feedback_prev = agc.x;
-    agc_feedback = agc.y;
-
-    if (agc_feedback != agc_feedback_prev) {
-        if (agc_feedback == 1) {
-          gcs().send_text(MAV_SEVERITY_INFO, "%d %d. - GPS Denied", (int)agc_feedback_prev, (int)agc_feedback);
-        }
-
-        if (agc_feedback == 0) {
-          gcs().send_text(MAV_SEVERITY_INFO, "%d %d. - GPS Enabled", (int)agc_feedback_prev, (int)agc_feedback);
-        }
-    }
-
-    /*
-    if (control_mode == AUTO) {
-        if(agc_feedback == 1 && agc_feedback_prev == 0) {
-            set_mode(FLY_BY_WIRE_B, MODE_REASON_AGC);
-            // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
-        }
-    }
-
-    if (control_mode == FLY_BY_WIRE_B) {
-        if(agc_feedback == 0 && agc_feedback_prev == 1) {
-            set_mode(AUTO, MODE_REASON_AGC);
-            // gcs().send_text(MAV_SEVERITY_INFO, "Switching flight mode.");
-        }
-    }
-    */
 }
 
 // update AHRS system
@@ -228,10 +156,8 @@ void Plane::ahrs_update()
     steer_state.locked_course_err += ahrs.get_yaw_rate_earth() * G_Dt;
     steer_state.locked_course_err = wrap_PI(steer_state.locked_course_err);
 
-    RAMROD_Switch();
     // update inertial_nav for quadplane
     quadplane.inertial_nav.update(G_Dt);
-
 }
 
 /*
@@ -275,7 +201,6 @@ void Plane::update_compass(void)
 {
     if (g.compass_enabled && compass.read()) {
         ahrs.set_compass(&compass);
-        compass.learn_offsets();
         if (should_log(MASK_LOG_COMPASS) && !ahrs.have_ekf_logging()) {
             DataFlash.Log_Write_Compass(compass);
         }
@@ -408,24 +333,6 @@ void Plane::one_second_loop()
     update_sensor_status_flags();
 }
 
-void Plane::log_perf_info()
-{
-    if (scheduler.debug() != 0) {
-        gcs().send_text(MAV_SEVERITY_INFO, "PERF: %u/%u Dt=%u/%u Log=%u",
-                          (unsigned)perf.num_long,
-                          (unsigned)perf.mainLoop_count,
-                          (unsigned)perf.G_Dt_max,
-                          (unsigned)perf.G_Dt_min,
-                          (unsigned)(DataFlash.num_dropped() - perf.last_log_dropped));
-    }
-
-    if (should_log(MASK_LOG_PM)) {
-        Log_Write_Performance();
-    }
-
-    resetPerfData();
-}
-
 void Plane::compass_save()
 {
     if (g.compass_enabled &&
@@ -508,7 +415,6 @@ void Plane::update_GPS_50Hz(void)
             }
         }
     }
-
 }
 
 /*

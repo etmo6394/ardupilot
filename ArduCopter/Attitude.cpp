@@ -149,7 +149,7 @@ float Copter::get_pilot_desired_throttle(int16_t throttle_control, float thr_mid
         thr_mid = motors->get_throttle_hover();
     }
 
-    int16_t mid_stick = channel_throttle->get_control_mid();
+    int16_t mid_stick = get_throttle_mid();
     // protect against unlikely divide by zero
     if (mid_stick <= 0) {
         mid_stick = 500;
@@ -186,8 +186,16 @@ float Copter::get_pilot_desired_climb_rate(float throttle_control)
         return 0.0f;
     }
 
+#if TOY_MODE_ENABLED == ENABLED
+    if (g2.toy_mode.enabled()) {
+        // allow throttle to be reduced after throttle arming and for
+        // slower descent close to the ground
+        g2.toy_mode.throttle_adjust(throttle_control);
+    }
+#endif
+    
     float desired_rate = 0.0f;
-    float mid_stick = channel_throttle->get_control_mid();
+    float mid_stick = get_throttle_mid();
     float deadband_top = mid_stick + g.throttle_deadzone;
     float deadband_bottom = mid_stick - g.throttle_deadzone;
 
@@ -283,7 +291,7 @@ float Copter::get_surface_tracking_climb_rate(int16_t target_rate, float current
 float Copter::get_avoidance_adjusted_climbrate(float target_rate)
 {
 #if AC_AVOID_ENABLED == ENABLED
-    avoid.adjust_velocity_z(pos_control->get_pos_z_kP(), pos_control->get_accel_z(), target_rate);
+    avoid.adjust_velocity_z(pos_control->get_pos_z_p().kP(), pos_control->get_accel_z(), target_rate, G_Dt);
     return target_rate;
 #else
     return target_rate;
@@ -296,7 +304,7 @@ void Copter::set_accel_throttle_I_from_pilot_throttle()
     // get last throttle input sent to attitude controller
     float pilot_throttle = constrain_float(attitude_control->get_throttle_in(), 0.0f, 1.0f);
     // shift difference between pilot's throttle and hover throttle into accelerometer I
-    g.pid_accel_z.set_integrator((pilot_throttle-motors->get_throttle_hover()) * 1000.0f);
+    pos_control->get_accel_z_pid().set_integrator((pilot_throttle-motors->get_throttle_hover()) * 1000.0f);
 }
 
 // rotate vector from vehicle's perspective to North-East frame

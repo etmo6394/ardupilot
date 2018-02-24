@@ -59,4 +59,17 @@ public:
      */
     void printf(const char *s, ...) FMT_PRINTF(2, 3);
     void vprintf(const char *s, va_list ap);
+
+    /*
+      wait for at least n bytes of incoming data, with timeout in
+      milliseconds. Return true if n bytes are available, false if
+      timeout
+     */
+    virtual bool wait_timeout(uint16_t n, uint32_t timeout_ms) { return false; }
+
+    /*
+     * Optional method to control the update of the motors. Derived classes
+     * can implement it if their HAL layer requires.
+     */
+    virtual void _timer_tick(void) { }
 };

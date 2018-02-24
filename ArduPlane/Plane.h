@@ -64,6 +64,7 @@
 #include <AP_Declination/AP_Declination.h> // ArduPilot Mega Declination Helper Library
 #include <DataFlash/DataFlash.h>
 #include <AP_Scheduler/AP_Scheduler.h>       // main loop scheduler
+#include <AP_Scheduler/PerfInfo.h>                  // loop perf monitoring
 
 #include <AP_Navigation/AP_Navigation.h>
 #include <AP_L1_Control/AP_L1_Control.h>
@@ -125,7 +126,7 @@ public:
 
     // called to set all outputs to termination state
     void terminate_vehicle(void);
-
+    
 protected:
     // setup failsafe values for if FMU firmware stops running
     void setup_IO_failsafe(void);
@@ -164,11 +165,6 @@ private:
     // Global parameters are all contained within the 'g' and 'g2' classes.
     Parameters g;
     ParametersG2 g2;
-
-    // Signal from payload (0: GPS available, 1: no GPS available)
-    AP_Int8 agc_feedback;
-    AP_Int8 agc_feedback_prev;
-    AP_Int8 randswitch;
 
     // main loop scheduler
     AP_Scheduler scheduler;
@@ -260,7 +256,7 @@ private:
     bool in_calibration;
 
     AP_SerialManager serial_manager;
-    
+
     // GCS selection
     GCS_Plane _gcs; // avoid using this; use gcs()
     GCS_Plane &gcs() { return _gcs; }
@@ -351,10 +347,10 @@ private:
 
         // the time when the last HEARTBEAT message arrived from a GCS
         uint32_t last_heartbeat_ms;
-
+        
         // A timer used to track how long we have been in a "short failsafe" condition due to loss of RC signal
         uint32_t short_timer_ms;
-
+        
         uint32_t last_valid_rc_ms;
 
         //keeps track of the last valid rc as it relates to the AFS system
@@ -396,7 +392,7 @@ private:
     int32_t altitude_error_cm;
 
     // Battery Sensors
-    AP_BattMonitor battery;
+    AP_BattMonitor battery{MASK_LOG_CURRENT};
 
 #if FRSKY_TELEM_ENABLED == ENABLED
     // FrSky telemetry support
@@ -407,7 +403,7 @@ private:
     uint32_t control_sensors_present;
     uint32_t control_sensors_enabled;
     uint32_t control_sensors_health;
-
+ 
     // Airspeed Sensors
     AP_Airspeed airspeed;
 
@@ -432,7 +428,7 @@ private:
         uint32_t last_report_ms;
         bool launchTimerStarted;
     } takeoff_state;
-
+    
     // ground steering controller state
     struct {
         // Direction held during phases of takeoff and landing centidegrees
@@ -440,7 +436,7 @@ private:
         // this is a 0..36000 value, or -1 for disabled
         int32_t hold_course_cd;
 
-        // locked_course and locked_course_cd are used in stabilize mode
+        // locked_course and locked_course_cd are used in stabilize mode 
         // when ground steering is active, and for steering in auto-takeoff
         bool locked_course;
         float locked_course_err;
@@ -491,10 +487,10 @@ private:
         // the highest airspeed we have reached since entering AUTO. Used
         // to control ground takeoff
         float highest_airspeed;
-
+        
         // initial pitch. Used to detect if nose is rising in a tail dragger
         int16_t initial_pitch_cd;
-
+        
         // turn angle for next leg of mission
         float next_turn_angle {90};
 
@@ -503,13 +499,13 @@ private:
 
         // time when we first pass min GPS speed on takeoff
         uint32_t takeoff_speed_time_ms;
-
+        
         // distance to next waypoint
         float wp_distance;
-
+        
         // proportion to next waypoint
         float wp_proportion;
-
+        
         // last time is_flying() returned true in milliseconds
         uint32_t last_flying_ms;
 
@@ -565,13 +561,13 @@ private:
     // true if we are in an auto-navigation mode, which controls whether control input is ignored
     // with STICK_MIXING=0
     bool auto_navigation_mode:1;
-
+    
     // this allows certain flight modes to mix RC input with throttle depending on airspeed_nudge_cm
     bool throttle_allows_nudging:1;
 
     // this controls throttle suppression in auto modes
     bool throttle_suppressed;
-
+	
     // reduce throttle to eliminate battery over-current
     int8_t  throttle_watt_limit_max;
     int8_t  throttle_watt_limit_min; // for reverse thrust
@@ -645,7 +641,7 @@ private:
         // previous target bearing, used to update sum_cd
         int32_t old_target_bearing_cd;
 
-        // Total desired rotation in a loiter.  Used for Loiter Turns commands.
+        // Total desired rotation in a loiter.  Used for Loiter Turns commands. 
         int32_t total_cd;
 
         // total angle completed in the loiter so far
@@ -739,32 +735,8 @@ private:
     // This is the time between calls to the DCM algorithm and is the Integration time for the gyros.
     float G_Dt = 0.02f;
 
-    struct {
-        // Performance monitoring
-        // Timer used to accrue data and trigger recording of the performanc monitoring log message
-        uint32_t start_ms;
-
-        // The maximum and minimum main loop execution time, in microseconds, recorded in the current performance monitoring interval
-        uint32_t G_Dt_max;
-        uint32_t G_Dt_min;
-
-        // System Timers
-        // Time in microseconds of start of main control loop
-        uint32_t fast_loopTimer_us;
-
-        // Number of milliseconds used in last main loop cycle
-        uint32_t delta_us_fast_loop;
-
-        // Counter of main loop executions.  Used for performance monitoring and failsafe processing
-        uint16_t mainLoop_count;
-
-        // number of long loops
-        uint16_t num_long;
-
-        // accumulated lost log messages
-        uint32_t last_log_dropped;
-    } perf;
-
+    // loop performance monitoring:
+    AP::PerfInfo perf_info;
     struct {
         uint32_t last_trim_check;
         uint32_t last_trim_save;
@@ -800,12 +772,12 @@ private:
     AP_Tuning_Plane tuning;
 
     static const struct LogStructure log_structure[];
-
+    
 #if CONFIG_HAL_BOARD == HAL_BOARD_PX4
     // the crc of the last created PX4Mixer
     int32_t last_mixer_crc = -1;
 #endif // CONFIG_HAL_BOARD
-
+    
     void adjust_nav_pitch_throttle(void);
     void update_load_factor(void);
     void send_heartbeat(mavlink_channel_t chan);
@@ -839,7 +811,6 @@ private:
     void Log_Write_Status();
     void Log_Write_Sonar();
     void Log_Write_Optflow();
-    void Log_Write_Current();
     void Log_Arm_Disarm();
     void Log_Write_GPS(uint8_t instance);
     void Log_Write_IMU();
@@ -978,7 +949,6 @@ private:
     void check_short_failsafe();
     void startup_INS_ground(void);
     void update_notify();
-    void resetPerfData(void);
     bool should_log(uint32_t mask);
     int8_t throttle_percentage(void);
     void change_arm_state(void);
@@ -1004,8 +974,7 @@ private:
     void one_second_loop(void);
     void airspeed_ratio_update(void);
     void update_mount(void);
-    void update_trigger(void);
-    void log_perf_info(void);
+    void update_trigger(void);    
     void compass_save(void);
     void update_logging1(void);
     void update_logging2(void);
@@ -1093,7 +1062,6 @@ private:
     void accel_cal_update(void);
     void update_soft_armed();
     void update_soaring();
-    void RAMROD_Switch();
 
     // support for AP_Avoidance custom flight mode, AVOID_ADSB
     bool avoid_adsb_init(bool ignore_checks);

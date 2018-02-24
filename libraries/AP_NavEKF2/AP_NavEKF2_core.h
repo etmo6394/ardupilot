@@ -719,10 +719,6 @@ private:
     // Must be larger than the time period defined by IMU_BUFFER_LENGTH
     static const uint32_t OBS_BUFFER_LENGTH = 5;
 
-    // Signal from payload (0: GPS available, 1: no GPS available)
-    int16_t agc_feedback;
-    int16_t agc_feedback_prev;
-
     // Variables
     bool statesInitialised;         // boolean true when filter states have been initialised
     bool velHealth;                 // boolean true if velocity measurements have passed innovation consistency check

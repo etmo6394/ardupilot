@@ -55,7 +55,6 @@ enum mode {
 //  Logging parameters
 #define LOG_THR_MSG             0x01
 #define LOG_NTUN_MSG            0x02
-#define LOG_PERFORMANCE_MSG     0x03
 #define LOG_STARTUP_MSG         0x06
 #define LOG_RANGEFINDER_MSG     0x07
 #define LOG_ARM_DISARM_MSG      0x08
@@ -100,6 +99,8 @@ enum mode {
 #define MAVLINK_SET_ATT_TYPE_MASK_THROTTLE_IGNORE      (1<<6)
 #define MAVLINK_SET_ATT_TYPE_MASK_ATTITUDE_IGNORE      (1<<7)
 
+// general error codes
+#define ERROR_CODE_ERROR_RESOLVED       0
 // Error message sub systems and error codes
 #define ERROR_SUBSYSTEM_FAILSAFE_FENCE  9
 #define ERROR_SUBSYSTEM_FLIGHT_MODE     10
@@ -122,7 +123,8 @@ enum mode_reason_t {
     MODE_REASON_FAILSAFE,
     MODE_REASON_MISSION_END,
     MODE_REASON_CRASH_FAILSAFE,
-    MODE_REASON_MISSION_COMMAND
+    MODE_REASON_MISSION_COMMAND,
+    MODE_REASON_FENCE_BREACH,
 };
 
 // values used by the ap.ch7_opt and ap.ch8_opt flags

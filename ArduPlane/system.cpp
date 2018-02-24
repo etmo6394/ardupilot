@@ -20,24 +20,18 @@ static void failsafe_check_static()
 void Plane::init_ardupilot()
 {
     // initialise serial port
-    hal.console->printf("Initializing Console\n");
     serial_manager.init_console();
 
     hal.console->printf("\n\nInit %s"
                         "\n\nFree RAM: %u\n",
                         fwver.fw_string,
                         (unsigned)hal.util->available_memory());
-    //gcs().send_text(MAV_SEVERITY_WARNING,"Initializing ArduPilot\n");
 
 
     //
     // Check the EEPROM format version before loading any parameters from EEPROM
     //
-    hal.console->printf("Loading Parameters\n");
     load_parameters();
-
-    agc_feedback = 0;
-    hal.console->printf("Init agc_feedback = 0\n");
 
     // initialise stats module
     g2.stats.init();
@@ -45,7 +39,6 @@ void Plane::init_ardupilot()
 #if HIL_SUPPORT
     if (g.hil_mode == 1) {
         // set sensors to HIL mode
-        gcs().send_text(MAV_SEVERITY_INFO,"Entering HIL Mode");
         ins.set_hil_mode();
         compass.set_hil_mode();
         barometer.set_hil_mode();
@@ -70,16 +63,12 @@ void Plane::init_ardupilot()
     }
 #endif
 
-    hal.console->printf("Initializing DataFlash\n");
     gcs().set_dataflash(&DataFlash);
 
     mavlink_system.sysid = g.sysid_this_mav;
 
-    // initialise serial 
-    hal.console->printf("Initializing Serial\n");
-    gcs().send_text(MAV_SEVERITY_WARNING,"Starting SERIAL inits\n");
+    // initialise serial ports
     serial_manager.init();
-    hal.console->printf("Exiting Serial Init\n");
     gcs().chan(0).setup_uart(serial_manager, AP_SerialManager::SerialProtocol_MAVLink, 0);
 
 
@@ -88,7 +77,6 @@ void Plane::init_ardupilot()
     hal.scheduler->register_delay_callback(mavlink_delay_cb_static, 5);
 
     // setup any board specific drivers
-    hal.console->printf("Initializing Board Specific Drivers\n");
     BoardConfig.init();
 #if HAL_WITH_UAVCAN
     BoardConfig_CAN.init();
@@ -121,9 +109,7 @@ void Plane::init_ardupilot()
     rpm_sensor.init();
 
     // setup telem slots with serial ports
-    hal.console->printf("Setup Telem Slots\n");
     gcs().setup_uarts(serial_manager);
-    hal.console->printf("Exiting Setup Telem Slots\n");
 
     // setup frsky
 #if FRSKY_TELEM_ENABLED == ENABLED
@@ -138,15 +124,12 @@ void Plane::init_ardupilot()
 #endif
 
     // initialise airspeed sensor
-    hal.console->printf("Initialize Airspeed\n");
     airspeed.init();
 
-    hal.console->printf("Setup Compass\n");
     if (g.compass_enabled==true) {
         bool compass_ok = compass.init() && compass.read();
 #if HIL_SUPPORT
     if (g.hil_mode != 0) {
-        hal.console->printf("HIL Compass\n");
         compass_ok = true;
     }
 #endif
@@ -154,13 +137,9 @@ void Plane::init_ardupilot()
             hal.console->printf("Compass initialisation failed!\n");
             g.compass_enabled = false;
         } else {
-            hal.console->printf("Setting Compass\n");
             ahrs.set_compass(&compass);
-            hal.console->printf("Finished Setting Compass\n");
         }
     }
-
-    hal.console->printf("Setup Optical Flow\n");
     
 #if OPTFLOW == ENABLED
     // make optflow available to libraries
@@ -170,11 +149,9 @@ void Plane::init_ardupilot()
 #endif
 
     // give AHRS the airspeed sensor
-    hal.console->printf("Set Airspeed\n");
     ahrs.set_airspeed(&airspeed);
 
     // GPS Initialization
-    hal.console->printf("Setup GPS\n");
     gps.set_log_gps_bit(MASK_LOG_GPS);
     gps.init(serial_manager);
 
@@ -202,7 +179,6 @@ void Plane::init_ardupilot()
 
     AP_Param::reload_defaults_file();
     
-    hal.console->printf("Startup Ground\n");
     startup_ground();
 
     // don't initialise aux rc output until after quadplane is setup as
@@ -622,17 +598,6 @@ void Plane::update_notify()
 {
     notify.update();
 }
-
-void Plane::resetPerfData(void) 
-{
-    perf.mainLoop_count = 0;
-    perf.G_Dt_max       = 0;
-    perf.G_Dt_min       = 0;
-    perf.num_long       = 0;
-    perf.start_ms       = millis();
-    perf.last_log_dropped = DataFlash.num_dropped();
-}
-
 
 // sets notify object flight mode information
 void Plane::notify_flight_mode(enum FlightMode mode)

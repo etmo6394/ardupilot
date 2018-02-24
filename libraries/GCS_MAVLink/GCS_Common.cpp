@@ -30,6 +30,11 @@
 #include <fcntl.h>
 #endif
 
+#ifdef HAL_RCINPUT_WITH_AP_RADIO
+#include <AP_Radio/AP_Radio.h>
+#include <AP_BoardConfig/AP_BoardConfig.h>
+#endif
+
 extern const AP_HAL::HAL& hal;
 
 uint32_t GCS_MAVLINK::last_radio_status_remrssi_ms;
@@ -197,7 +202,7 @@ void GCS_MAVLINK::send_battery_status(const AP_BattMonitor &battery, const uint8
                                     battery.get_cell_voltages(instance).cells, // cell voltages
                                     battery.has_current(instance) ? battery.current_amps(instance) * 100 : -1, // current
                                     battery.has_current(instance) ? battery.current_total_mah(instance) : -1, // total current
-                                    -1, // joules used
+                                    battery.has_consumed_energy(instance) ? battery.consumed_wh(instance) * 36 : -1, // consumed energy in hJ (hecto-Joules)
                                     battery.capacity_remaining_pct(instance));
 }
 
@@ -556,6 +561,9 @@ void GCS_MAVLINK::handle_mission_write_partial_list(AP_Mission &mission, mavlink
     waypoint_receiving   = true;
     waypoint_request_i   = packet.start_index;
     waypoint_request_last= packet.end_index;
+
+    waypoint_dest_sysid = msg->sysid;       // record system id of GCS who wants to partially update the mission
+    waypoint_dest_compid = msg->compid;     // record component id of GCS who wants to partially update the mission
 }
 
 
@@ -1377,12 +1385,13 @@ void GCS_MAVLINK::send_autopilot_version() const
     uint32_t middleware_sw_version = 0;
     uint32_t os_sw_version = 0;
     uint32_t board_version = 0;
-    char flight_custom_version[8]{};
-    char middleware_custom_version[8]{};
-    char os_custom_version[8]{};
+    char flight_custom_version[MAVLINK_MSG_AUTOPILOT_VERSION_FIELD_FLIGHT_CUSTOM_VERSION_LEN]{};
+    char middleware_custom_version[MAVLINK_MSG_AUTOPILOT_VERSION_FIELD_MIDDLEWARE_CUSTOM_VERSION_LEN]{};
+    char os_custom_version[MAVLINK_MSG_AUTOPILOT_VERSION_FIELD_OS_CUSTOM_VERSION_LEN]{};
     uint16_t vendor_id = 0;
     uint16_t product_id = 0;
     uint64_t uid = 0;
+    uint8_t  uid2[MAVLINK_MSG_AUTOPILOT_VERSION_FIELD_UID2_LEN] = {0};
     const AP_FWVersion &version = get_fwver();
 
     flight_sw_version = version.major << (8 * 3) | \
@@ -1417,7 +1426,8 @@ void GCS_MAVLINK::send_autopilot_version() const
         (uint8_t *)os_custom_version,
         vendor_id,
         product_id,
-        uid
+        uid,
+        uid2
     );
 }
 
@@ -1811,6 +1821,33 @@ void GCS_MAVLINK::handle_set_gps_global_origin(const mavlink_message_t *msg)
 }
 
 /*
+  handle a DATA96 message
+ */
+void GCS_MAVLINK::handle_data_packet(mavlink_message_t *msg)
+{
+#ifdef HAL_RCINPUT_WITH_AP_RADIO
+    mavlink_data96_t m;
+    mavlink_msg_data96_decode(msg, &m);
+    switch (m.type) {
+    case 42:
+    case 43: {
+        // pass to AP_Radio (for firmware upload and playing test tunes)
+        AP_Radio *radio = AP_Radio::instance();
+        if (radio != nullptr) {
+            radio->handle_data_packet(chan, m);
+        }
+        break;
+    }
+    default:
+        // unknown
+        break;
+    }
+#endif
+}
+
+
+
+/*
   handle messages which don't require vehicle specific data
  */
 void GCS_MAVLINK::handle_common_message(mavlink_message_t *msg)
@@ -1924,6 +1961,10 @@ void GCS_MAVLINK::handle_common_message(mavlink_message_t *msg)
     case MAVLINK_MSG_ID_RALLY_FETCH_POINT:
         handle_common_rally_message(msg);
         break;
+
+    case MAVLINK_MSG_ID_DATA96:
+        handle_data_packet(msg);
+        break;        
     }
 
 }
@@ -2115,6 +2156,14 @@ MAV_RESULT GCS_MAVLINK::handle_command_long_message(mavlink_command_long_t &pack
         result = handle_command_preflight_set_sensor_offsets(packet);
         break;
     }
+
+    case MAV_CMD_PREFLIGHT_STORAGE:
+        if (is_equal(packet.param1, 2.0f)) {
+            AP_Param::erase_all();
+            send_text(MAV_SEVERITY_WARNING, "All parameters reset, reboot board");
+            result= MAV_RESULT_ACCEPTED;
+        }
+        break;
 
     case MAV_CMD_DO_SET_SERVO:
         /* fall through */

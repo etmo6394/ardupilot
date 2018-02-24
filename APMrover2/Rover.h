@@ -76,6 +76,9 @@
 #include <Filter/ModeFilter.h>                      // Mode Filter from Filter library
 #include <RC_Channel/RC_Channel.h>                  // RC Channel Library
 #include <StorageManager/StorageManager.h>
+#include <AC_Fence/AC_Fence.h>
+#include <AP_Proximity/AP_Proximity.h>
+#include <AC_Avoidance/AC_Avoid.h>
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
 #include <SITL/SITL.h>
 #endif
@@ -174,7 +177,7 @@ private:
 #endif
 
     // Arming/Disarming management class
-    AP_Arming_Rover arming{ahrs, barometer, compass, battery};
+    AP_Arming_Rover arming{ahrs, barometer, compass, battery, g2.fence};
 
     AP_L1_Control L1_controller{ahrs, nullptr};
 
@@ -289,7 +292,7 @@ private:
     aux_switch_pos aux_ch7;
 
     // Battery Sensors
-    AP_BattMonitor battery;
+    AP_BattMonitor battery{MASK_LOG_CURRENT};
 
 #if FRSKY_TELEM_ENABLED == ENABLED
     // FrSky telemetry support
@@ -326,20 +329,6 @@ private:
     // The main loop execution time.  Seconds
     // This is the time between calls to the DCM algorithm and is the Integration time for the gyros.
     float G_Dt;
-
-    // Performance monitoring
-    // Timer used to accrue data and trigger recording of the performance monitoring log message
-    int32_t perf_mon_timer;
-    // The maximum main loop execution time, in microseconds, recorded in the current performance monitoring interval
-    uint32_t G_Dt_max;
-
-    // System Timers
-    // Time in microseconds of start of main control loop.
-    uint32_t fast_loopTimer_us;
-    // Number of milliseconds used in last main loop cycle
-    uint32_t delta_us_fast_loop;
-    // Counter of main loop executions.  Used for performance monitoring and failsafe processing
-    uint16_t mainLoop_count;
 
     // set if we are driving backwards
     bool in_reverse;
@@ -400,8 +389,6 @@ private:
     // APMrover2.cpp
     void stats_update();
     void ahrs_update();
-    void mount_update(void);
-    void update_trigger(void);
     void update_alt();
     void gcs_failsafe_check(void);
     void update_compass(void);
@@ -471,14 +458,15 @@ private:
     void cruise_learn_update();
     void cruise_learn_complete();
 
-    // events.cpp
-    void update_events(void);
-
     // failsafe.cpp
     void failsafe_trigger(uint8_t failsafe_type, bool on);
 #if ADVANCED_FAILSAFE == ENABLED
     void afs_fs_check(void);
 #endif
+
+    // fence.cpp
+    void fence_check();
+    void fence_send_mavlink_status(mavlink_channel_t chan);
 
     // GCS_Mavlink.cpp
     void send_heartbeat(mavlink_channel_t chan);
@@ -492,6 +480,7 @@ private:
     void send_rangefinder(mavlink_channel_t chan);
     void send_pid_tuning(mavlink_channel_t chan);
     void send_wheel_encoder(mavlink_channel_t chan);
+    void send_fence_status(mavlink_channel_t chan);
     void gcs_data_stream_send(void);
     void gcs_update(void);
     void gcs_retry_deferred(void);
@@ -505,7 +494,6 @@ private:
     void Log_Write_Nav_Tuning();
     void Log_Write_Attitude();
     void Log_Write_Rangefinder();
-    void Log_Write_Current();
     void Log_Arm_Disarm();
     void Log_Write_RC(void);
     void Log_Write_Error(uint8_t sub_system, uint8_t error_code);
@@ -513,6 +501,7 @@ private:
     void Log_Write_Home_And_Origin();
     void Log_Write_GuidedTarget(uint8_t target_type, const Vector3f& pos_target, const Vector3f& vel_target);
     void Log_Write_WheelEncoder();
+    void Log_Write_Proximity();
     void Log_Read(uint16_t log_num, uint16_t start_page, uint16_t end_page);
     void log_init(void);
     void Log_Write_Vehicle_Startup_Messages();
@@ -536,16 +525,14 @@ private:
     void init_barometer(bool full_calibration);
     void init_rangefinder(void);
     void init_beacon();
-    void update_beacon();
     void init_visual_odom();
     void update_visual_odom();
     void update_wheel_encoder();
-    void read_battery(void);
     void read_receiver_rssi(void);
     void compass_cal_update(void);
     void accel_cal_update(void);
     void read_rangefinders(void);
-    void button_update(void);
+    void init_proximity();
     void update_sensor_status_flags(void);
 
     // Steering.cpp
@@ -559,8 +546,6 @@ private:
     bool set_mode(Mode &new_mode, mode_reason_t reason);
     bool mavlink_set_mode(uint8_t mode);
     void startup_INS_ground(void);
-    void update_notify();
-    void resetPerfData(void);
     void check_usb_mux(void);
     void print_mode(AP_HAL::BetterStream *port, uint8_t mode);
     void notify_mode(const Mode *new_mode);
@@ -569,15 +554,12 @@ private:
     void change_arm_state(void);
     bool arm_motors(AP_Arming::ArmingMethod method);
     bool disarm_motors(void);
-    void smart_rtl_update();
     bool is_boat() const;
 
 public:
     void mavlink_delay_cb();
     void failsafe_check();
 
-    void dataflash_periodic(void);
-    void ins_periodic();
     void update_soft_armed();
     // Motor test
     void motor_test_output();

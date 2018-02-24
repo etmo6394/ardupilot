@@ -29,8 +29,6 @@
 #include <AP_InertialSensor/AP_InertialSensor.h>
 #include <AP_Baro/AP_Baro.h>
 #include <AP_Param/AP_Param.h>
-#include <AP_InertialSensor/AP_InertialSensor_DMU11.h>
-// #include "uZedSerial.h"
 
 class OpticalFlow;
 #define AP_AHRS_TRIM_LIMIT 10.0f        // maximum trim angle in degrees
@@ -53,7 +51,7 @@ class AP_AHRS
 {
 public:
     friend class AP_AHRS_View;
-
+    
     // Constructor
     AP_AHRS(AP_InertialSensor &ins, AP_Baro &baro) :
         roll(0.0f),
@@ -97,26 +95,7 @@ public:
         _last_trim = _trim.get();
         _rotation_autopilot_body_to_vehicle_body.from_euler(_last_trim.x, _last_trim.y, 0.0f);
         _rotation_vehicle_body_to_autopilot_body = _rotation_autopilot_body_to_vehicle_body.transposed();
-
-        // RAMROD AGC Feedback
-        // Vector3i get_agc_feedback(void);
     }
-
-
-    // RAMROD AGC Feedback
-    Vector3i get_agc_feedback(void);
-
-    Vector3i get_agc(void) const {
-        return _agc;
-    }
-
-
-    // Signal from payload (0: GPS available, 1: no GPS available)
-    int16_t agc_feedback;
-    int16_t agc_feedback_prev;
-    int16_t randswitch;
-    uint32_t last_flag_ms;
-    bool DMU_test;
 
     // empty virtual destructor
     virtual ~AP_AHRS() {}
@@ -166,7 +145,7 @@ public:
         }
         return AP_HAL::millis() - _last_flying_ms;
     }
-
+    
     AHRS_VehicleClass get_vehicle_class(void) const {
         return _vehicle_class;
     }
@@ -238,7 +217,7 @@ public:
     virtual uint8_t get_primary_gyro_index(void) const {
         return _ins.get_primary_gyro();
     }
-
+    
     // accelerometer values in the earth frame in m/s/s
     virtual const Vector3f &get_accel_ef(uint8_t i) const {
         return _accel_ef[i];
@@ -269,7 +248,7 @@ public:
     virtual bool have_ekf_logging(void) const {
         return false;
     }
-
+    
     // Euler angles (radians)
     float roll;
     float pitch;
@@ -472,7 +451,7 @@ public:
     virtual bool get_secondary_quaternion(Quaternion &quat) const {
         return false;
     }
-
+    
     // return secondary position solution if available
     virtual bool get_secondary_position(struct Location &loc) const {
         return false;
@@ -548,7 +527,7 @@ public:
     virtual bool resetHeightDatum(void) {
         return false;
     }
-
+    
     // get_variances - provides the innovations normalised using the innovation variance where a value of 0
     // indicates perfect consistency between the measurement and the EKF solution and a value of of 1 is the maximum
     // inconsistency that will be accepted by the filter
@@ -556,7 +535,7 @@ public:
     virtual bool get_variances(float &velVar, float &posVar, float &hgtVar, Vector3f &magVar, float &tasVar, Vector2f &offset) const {
         return false;
     }
-
+    
     // time that the AHRS has been up
     virtual uint32_t uptime_ms(void) const = 0;
 
@@ -570,13 +549,21 @@ public:
 
     // create a view
     AP_AHRS_View *create_view(enum Rotation rotation);
-
+    
     // return calculated AOA
     float getAOA(void);
 
     // return calculated SSA
     float getSSA(void);
 
+    // rotate a 2D vector from earth frame to body frame
+    // in result, x is forward, y is right
+    Vector2f rotate_earth_to_body2D(const Vector2f &ef_vector) const;
+
+    // rotate a 2D vector from earth frame to body frame
+    // in input, x is forward, y is right
+    Vector2f rotate_body_to_earth2D(const Vector2f &bf) const;
+    
     virtual void update_AOA_SSA(void);
 
     // get_hgt_ctrl_limit - get maximum height to be observed by the
@@ -617,7 +604,7 @@ protected:
     void calc_trig(const Matrix3f &rot,
                    float &cr, float &cp, float &cy,
                    float &sr, float &sp, float &sy) const;
-
+    
     // update_trig - recalculates _cos_roll, _cos_pitch, etc based on latest attitude
     //      should be called after _dcm_matrix is updated
     void update_trig(void);
@@ -681,7 +668,6 @@ protected:
     AP_AHRS_View *_view;
 
     // AOA and SSA
-    Vector3i _agc;
     float _AOA, _SSA;
     uint32_t _last_AOA_update_ms;
 };

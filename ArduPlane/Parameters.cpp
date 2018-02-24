@@ -971,7 +971,7 @@ const AP_Param::Info Plane::var_info[] = {
     GOBJECT(tuning,           "TUNE_", AP_Tuning_Plane),
     
     // @Group: Q_A_
-    // @Path: ../libraries/AC_AttitudeControl/AC_AttitudeControl_Multi.cpp
+    // @Path: ../libraries/AC_AttitudeControl/AC_AttitudeControl.cpp,../libraries/AC_AttitudeControl/AC_AttitudeControl_Multi.cpp
     { AP_PARAM_GROUP, "Q_A_", Parameters::k_param_q_attitude_control,
       (const void *)&plane.quadplane.attitude_control,
       {group_info : AC_AttitudeControl_Multi::var_info}, AP_PARAM_FLAG_POINTER },
@@ -1030,9 +1030,9 @@ const AP_Param::Info Plane::var_info[] = {
     // @Path: ../libraries/AP_AHRS/AP_AHRS.cpp
     GOBJECT(ahrs,                   "AHRS_",    AP_AHRS),
 
-    // @Group: ARSPD_
+    // @Group: ARSPD
     // @Path: ../libraries/AP_Airspeed/AP_Airspeed.cpp
-    GOBJECT(airspeed,                               "ARSPD_",   AP_Airspeed),
+    GOBJECT(airspeed,                               "ARSPD",   AP_Airspeed),
 
     // @Group: NAVL1_
     // @Path: ../libraries/AP_L1_Control/AP_L1_Control.cpp

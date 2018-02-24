@@ -29,7 +29,7 @@
 // drift_init - initialise drift controller
 bool Copter::ModeDrift::init(bool ignore_checks)
 {
-    if (_copter.position_ok() || ignore_checks) {
+    if (copter.position_ok() || ignore_checks) {
         return true;
     }else{
         return false;
@@ -40,7 +40,7 @@ bool Copter::ModeDrift::init(bool ignore_checks)
 // should be called at 100hz or more
 void Copter::ModeDrift::run()
 {
-    static float breaker = 0.0f;
+    static float braker = 0.0f;
     static float roll_input = 0.0f;
     float target_roll, target_pitch;
     float target_yaw_rate;
@@ -48,8 +48,7 @@ void Copter::ModeDrift::run()
 
     // if landed and throttle at zero, set throttle to zero and exit immediately
     if (!motors->armed() || !motors->get_interlock() || (ap.land_complete && ap.throttle_zero)) {
-        motors->set_desired_spool_state(AP_Motors::DESIRED_SPIN_WHEN_ARMED);
-        attitude_control->set_throttle_out_unstabilized(0,true,g.throttle_filt);
+        zero_throttle_and_relax_ac();
         return;
     }
 
@@ -59,7 +58,7 @@ void Copter::ModeDrift::run()
     }
 
     // convert pilot input to lean angles
-    get_pilot_desired_lean_angles(channel_roll->get_control_in(), channel_pitch->get_control_in(), target_roll, target_pitch, _copter.aparm.angle_max);
+    get_pilot_desired_lean_angles(channel_roll->get_control_in(), channel_pitch->get_control_in(), target_roll, target_pitch, copter.aparm.angle_max);
 
     // get pilot's desired throttle
     pilot_throttle_scaled = get_pilot_desired_throttle(channel_throttle->get_control_in());
@@ -89,12 +88,12 @@ void Copter::ModeDrift::run()
 
     // If we let go of sticks, bring us to a stop
     if(is_zero(target_pitch)){
-        // .14/ (.03 * 100) = 4.6 seconds till full breaking
-        breaker += .03f;
-        breaker = MIN(breaker, DRIFT_SPEEDGAIN);
-        target_pitch = pitch_vel * breaker;
+        // .14/ (.03 * 100) = 4.6 seconds till full braking
+        braker += .03f;
+        braker = MIN(braker, DRIFT_SPEEDGAIN);
+        target_pitch = pitch_vel * braker;
     }else{
-        breaker = 0.0f;
+        braker = 0.0f;
     }
 
     // set motors to full range

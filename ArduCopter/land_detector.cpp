@@ -16,7 +16,7 @@ void Copter::update_land_and_crash_detectors()
     // update 1hz filtered acceleration
     Vector3f accel_ef = ahrs.get_accel_ef_blended();
     accel_ef.z += GRAVITY_MSS;
-    land_accel_ef_filter.apply(accel_ef, MAIN_LOOP_SECONDS);
+    land_accel_ef_filter.apply(accel_ef, scheduler.get_loop_period_s());
 
     update_land_detector();
 
@@ -63,7 +63,7 @@ void Copter::update_land_detector()
         bool motor_at_lower_limit = motors->limit.throttle_lower && attitude_control->is_throttle_mix_min();
 #endif
 
-        // check that the airframe is not accelerating (not falling or breaking after fast forward flight)
+        // check that the airframe is not accelerating (not falling or braking after fast forward flight)
         bool accel_stationary = (land_accel_ef_filter.get().length() <= LAND_DETECTOR_ACCEL_MAX);
 
         // check that vertical speed is within 1m/s of zero

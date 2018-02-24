@@ -34,7 +34,6 @@ AP_InertialSensor_Backend *AP_InertialSensor_PX4::detect(AP_InertialSensor &_imu
         delete sensor;
         return nullptr;
     }
-    hal.console->printf("Detected PX4 IMU");
     return sensor;
 }
 

@@ -39,14 +39,11 @@ public:
     // attributes of the mode
     //
 
-    // return if in non-manual mode : AUTO, GUIDED, RTL
+    // return if in non-manual mode : Auto, Guided, RTL, SmartRTL
     virtual bool is_autopilot_mode() const { return false; }
 
-    // returns true if steering is directly controlled by RC
-    virtual bool manual_steering() const { return false; }
-
-    // returns true if the throttle is controlled automatically
-    virtual bool auto_throttle() { return is_autopilot_mode(); }
+    // returns true if vehicle can be armed or disarmed from the transmitter in this mode
+    virtual bool allows_arming_from_transmitter() { return !is_autopilot_mode(); }
 
     //
     // attributes for mavlink system status reporting
@@ -58,8 +55,9 @@ public:
     // true if heading is controlled
     virtual bool attitude_stabilized() const { return true; }
 
-    // true if mode requires GPS:
-    virtual bool requires_gps() const { return true; }
+    // true if mode requires position and/or velocity estimate
+    virtual bool requires_position() const { return true; }
+    virtual bool requires_velocity() const { return true; }
 
     //
     // navigation methods
@@ -124,7 +122,8 @@ protected:
     bool stop_vehicle();
 
     // estimate maximum vehicle speed (in m/s)
-    float calc_speed_max(float cruise_speed, float cruise_throttle);
+    // cruise_speed is in m/s, cruise_throttle should be in the range -1 to +1
+    float calc_speed_max(float cruise_speed, float cruise_throttle) const;
 
     // calculate pilot input to nudge speed up or down
     //  target_speed should be in meters/sec
@@ -157,9 +156,6 @@ protected:
     float _desired_speed;       // desired speed in m/s
     float _desired_speed_final; // desired speed in m/s when we reach the destination
     float _speed_error;         // ground speed error in m/s
-
-    bool enter_gps_checks() const;
-
 };
 
 
@@ -175,6 +171,10 @@ public:
 
     // attributes for mavlink system status reporting
     bool has_manual_input() const override { return true; }
+
+    // acro mode requires a velocity estimate
+    bool requires_position() const override { return false; }
+    bool requires_velocity() const override { return true; }
 };
 
 
@@ -294,8 +294,9 @@ public:
     // attributes for mavlink system status reporting
     bool attitude_stabilized() const override { return false; }
 
-    // hold mode does not require GPS
-    bool requires_gps() const override { return false; }
+    // hold mode does not require position or velocity estimate
+    bool requires_position() const override { return false; }
+    bool requires_velocity() const override { return false; }
 };
 
 
@@ -309,15 +310,13 @@ public:
     // methods that affect movement of the vehicle in this mode
     void update() override;
 
-    // attributes of the mode
-    bool manual_steering() const override { return true; }
-
     // attributes for mavlink system status reporting
     bool has_manual_input() const override { return true; }
     bool attitude_stabilized() const override { return false; }
 
-    // manual mode does not require GPS
-    bool requires_gps() const override { return false; }
+    // manual mode does not require position or velocity estimate
+    bool requires_position() const override { return false; }
+    bool requires_velocity() const override { return false; }
 };
 
 
@@ -359,7 +358,7 @@ public:
     bool reached_destination() override { return smart_rtl_state == SmartRTL_StopAtHome; }
 
     // save current position for use by the smart_rtl flight mode
-    void save_position(bool save_pos);
+    void save_position();
 
 protected:
 
@@ -388,6 +387,10 @@ public:
 
     // attributes for mavlink system status reporting
     bool has_manual_input() const override { return true; }
+
+    // steering requires velocity but not position
+    bool requires_position() const override { return false; }
+    bool requires_velocity() const override { return true; }
 };
 
 class ModeInitializing : public Mode

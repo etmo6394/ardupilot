@@ -123,7 +123,8 @@ void AP_GPS_Backend::fill_3d_velocity(void)
     state.have_vertical_velocity = false;
 }
 
-void AP_GPS_Backend::inject_data(const uint8_t *data, uint16_t len)
+void
+AP_GPS_Backend::inject_data(const uint8_t *data, uint16_t len)
 {
     // not all backends have valid ports
     if (port != nullptr) {

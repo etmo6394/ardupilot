@@ -92,6 +92,9 @@ void Rover::init_ardupilot()
     // initialise rangefinder
     init_rangefinder();
 
+    // init proximity sensor
+    init_proximity();
+
     // init beacons used for non-gps position estimation
     init_beacon();
 
@@ -224,6 +227,11 @@ bool Rover::set_mode(Mode &new_mode, mode_reason_t reason)
 
     control_mode = &new_mode;
 
+    // pilot requested flight mode change during a fence breach indicates pilot is attempting to manually recover
+    // this flight mode change could be automatic (i.e. fence, battery, GPS or GCS failsafe)
+    // but it should be harmless to disable the fence temporarily in these situations as well
+    g2.fence.manual_recovery_start();
+
 #if FRSKY_TELEM_ENABLED == ENABLED
     frsky_telemetry.update_control_mode(control_mode->mode_number());
 #endif
@@ -253,20 +261,6 @@ void Rover::startup_INS_ground(void)
     ins.init(scheduler.get_loop_rate_hz());
     ahrs.reset();
 }
-
-// updates the notify state
-// should be called at 50hz
-void Rover::update_notify()
-{
-    notify.update();
-}
-
-void Rover::resetPerfData(void) {
-    mainLoop_count = 0;
-    G_Dt_max = 0;
-    perf_mon_timer = millis();
-}
-
 
 void Rover::check_usb_mux(void)
 {
@@ -331,8 +325,8 @@ bool Rover::arm_motors(AP_Arming::ArmingMethod method)
         return false;
     }
 
-    // Reset SmartRTL return location. If activated, SmartRTL will ultimately try to land at this point
-    g2.smart_rtl.reset_path(true);
+    // Set the SmartRTL home location. If activated, SmartRTL will ultimately try to land at this point
+    g2.smart_rtl.set_home(true);
 
     change_arm_state();
     return true;
@@ -355,13 +349,6 @@ bool Rover::disarm_motors(void)
     change_arm_state();
 
     return true;
-}
-
-// save current position for use by the smart_rtl mode
-void Rover::smart_rtl_update()
-{
-    const bool save_position = hal.util->get_soft_armed() && (control_mode != &mode_smartrtl);
-    mode_smartrtl.save_position(save_position);
 }
 
 // returns true if vehicle is a boat
