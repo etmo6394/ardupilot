@@ -253,6 +253,7 @@ void AP_SerialManager::init()
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_RX,
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_TX);
                     state[i].uart->set_stop_bits(2);
+                    state[i].uart->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
                     hal.console->printf("\nuartE at %d baud\n",(int32_t)state[i].baud);
                     hal.console->printf("uartE protocol: %d\n",(int8_t)state[i].protocol);
                     hal.console->printf("expected uart state 4: %p\n", hal.uartE);
@@ -263,6 +264,7 @@ void AP_SerialManager::init()
                     state[i].uart->begin(map_baudrate(state[i].baud),
                                          AP_SERIALMANAGER_UZED_BUFSIZE_RX,
                                          AP_SERIALMANAGER_UZED_BUFSIZE_TX);
+                    state[i].uart->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
                     break;
             }
         }

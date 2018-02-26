@@ -248,7 +248,7 @@ void AP_BoardConfig::sensor_config_error(const char *reason)
     }
 }
 
-void AP_BoardConfig::sensor_config_error2(const char *reason, void* backend, uint8_t count, const char *c)
+void AP_BoardConfig::sensor_config_error2(const char *reason, void* backend, uint8_t count, uint16_t nbytes)
 {
     _in_sensor_config_error = true;
     /*
@@ -259,7 +259,7 @@ void AP_BoardConfig::sensor_config_error2(const char *reason, void* backend, uin
     */
     while (true) {
         printf("Sensor failure: %s %p\n", reason, backend);
-        gcs().send_text(MAV_SEVERITY_ERROR, "%p %d %s", backend, count, c);
+        gcs().send_text(MAV_SEVERITY_ERROR, "UART: %p, nbytes: %d, data: %d", backend, nbytes, count);
         hal.scheduler->delay(3000);
     }
 }

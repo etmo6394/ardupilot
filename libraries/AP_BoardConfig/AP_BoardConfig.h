@@ -60,7 +60,7 @@ public:
     // notify user of a fatal startup error related to available sensors. 
     static void sensor_config_error(const char *reason);
 
-    static void sensor_config_error2(const char *reason, void* backend, uint8_t count, const char *c);
+    static void sensor_config_error2(const char *reason, void* backend, uint8_t count, uint16_t nbytes);
 
     static void sensor_config_error3(const char *reason, const char *DMUdata, int nbytes);
 

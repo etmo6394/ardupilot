@@ -101,34 +101,22 @@ void AP_InertialSensor_DMU11::accumulate(void)
 
     uint16_t count = 0;
     int16_t nbytes = uart->available();
-    //char DMUdata[nbytes];
+
     uint8_t c1 = 0;
-
-    nbytes = 10;
-    while (nbytes-- > 0) {
+    int16_t nbytes1 = 10;
+    while (nbytes1-- > 0) {
         c1 = uart->read();
-        //linebuf[linebuf_len++] = c;
         count++;
-        //if (linebuf_len == sizeof(linebuf)) {
-            // too long, discard the line
-            //linebuf_len = 0;
-        //}
     }
-    linebuf[linebuf_len++] = '\0';
 
-    AP_BoardConfig::sensor_config_error2("error", uart, c1, "error");
-
-    //DMUdata[nbytes+1] = '\0';
-
-    //AP_BoardConfig::sensor_config_error2("error", uart, nbytes);
-    //AP_BoardConfig::sensor_config_error3("error", DMUdata, nbytes);
+    AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
 
 
-    //_rotate_and_correct_accel(accel_instance, accel);
-    //_rotate_and_correct_gyro(gyro_instance, gyro);
+    //_rotate_and_correct_accel(_accel_instance, accel);
+    //_rotate_and_correct_gyro(_gyro_instance, gyro);
 
-    //_notify_new_gyro_raw_sample(gyro_instance, gyro, data.timestamp);
-    //_notify_new_accel_raw_sample(accel_instance, accel, data.timestamp);
+    //_notify_new_gyro_raw_sample(_gyro_instance, gyro, data.timestamp);
+    //_notify_new_accel_raw_sample(_accel_instance, accel, data.timestamp);
 }
 
 bool AP_InertialSensor_DMU11::update(void)
