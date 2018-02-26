@@ -20,18 +20,10 @@ public:
   // Start and register sensor instances
   void start(void) override;
 
+  void accumulate(void) override;
+
   bool update(void) override;
 
-  //bool is_DMU11_data = false;
-
-  //bool get_DMU11_data(void);
-
-  /*
-  static bool return_DMU11_data(void) {
-      return get_DMU11_data();
-       //return is_DMU11_data;
-  };
-  */
   // update state
   // void update(void) override;
 
@@ -40,4 +32,6 @@ private:
   AP_HAL::UARTDriver *uart = nullptr;
   uint8_t _gyro_instance;
   uint8_t _accel_instance;
+  char linebuf[40];
+  uint8_t linebuf_len = 0;
 };

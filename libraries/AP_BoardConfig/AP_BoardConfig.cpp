@@ -21,6 +21,7 @@
 #include <GCS_MAVLink/GCS.h>
 #include "AP_BoardConfig.h"
 #include <stdio.h>
+//#include <string>
 
 #if HAL_WITH_UAVCAN
 #include <AP_UAVCAN/AP_UAVCAN.h>
@@ -243,6 +244,38 @@ void AP_BoardConfig::sensor_config_error(const char *reason)
     while (true) {
         printf("Sensor failure: %s\n", reason);
         gcs().send_text(MAV_SEVERITY_ERROR, "Check BRD_TYPE: %s", reason);
+        hal.scheduler->delay(3000);
+    }
+}
+
+void AP_BoardConfig::sensor_config_error2(const char *reason, void* backend, uint8_t count, const char *c)
+{
+    _in_sensor_config_error = true;
+    /*
+      to give the user the opportunity to connect to USB we keep
+      repeating the error.  The mavlink delay callback is initialised
+      before this, so the user can change parameters (and in
+      particular BRD_TYPE if needed)
+    */
+    while (true) {
+        printf("Sensor failure: %s %p\n", reason, backend);
+        gcs().send_text(MAV_SEVERITY_ERROR, "%p %d %s", backend, count, c);
+        hal.scheduler->delay(3000);
+    }
+}
+
+void AP_BoardConfig::sensor_config_error3(const char *reason, const char *DMUdata, int nbytes)
+{
+    _in_sensor_config_error = true;
+    /*
+      to give the user the opportunity to connect to USB we keep
+      repeating the error.  The mavlink delay callback is initialised
+      before this, so the user can change parameters (and in
+      particular BRD_TYPE if needed)
+    */
+    while (true) {
+        printf("Sensor failure: %s\n", reason);
+        gcs().send_text(MAV_SEVERITY_ERROR, "%d %s", nbytes, DMUdata);
         hal.scheduler->delay(3000);
     }
 }

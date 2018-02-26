@@ -42,6 +42,8 @@ Item    Word    Data Item               Value/Units
 
 
 #include <AP_HAL/AP_HAL.h>
+#include <AP_BoardConfig/AP_BoardConfig.h>
+//#include <string>
 #include "AP_InertialSensor_DMU11.h"
 
 // Declare external reference to HAL to gain access to namespace objects
@@ -78,7 +80,7 @@ AP_InertialSensor_Backend *AP_InertialSensor_DMU11::probe(AP_InertialSensor &imu
 }
 
 
-//"Start" the sensor, register the DMU11 as one new gyro and one new accel
+// "Start" the sensor, register the DMU11 as one new gyro and one new accel
 void AP_InertialSensor_DMU11::start(void)
 {
   // Register 1 accel and 1 gyro, sampling raw at 1000Hz, with DMU11 protocol
@@ -88,45 +90,46 @@ void AP_InertialSensor_DMU11::start(void)
   hal.console->printf("Registered DMU11 accel [%u]\n", _accel_instance);
 }
 
-// read - return last value measured by sensor
-// Vector3f stuff, refer to AP_InertialSensor.cpp lines ~1400-1600
-// bool AP_InertialSensor_DMU11::get_reading(Vector3f &gyro, Vector3f &accel)
 
-/*
-bool AP_InertialSensor_DMU11::get_DMU11_data(void)
+// Copy filtered data to frontend
+void AP_InertialSensor_DMU11::accumulate(void)
 {
     if (uart == nullptr) {
-        is_DMU11_data = false;
-        return false;
-
+        AP_BoardConfig::sensor_config_error("Error: UART port not configured");
     }
+
+
     uint16_t count = 0;
     int16_t nbytes = uart->available();
+    //char DMUdata[nbytes];
+    uint8_t c1 = 0;
+
+    nbytes = 10;
     while (nbytes-- > 0) {
-      // read byte from buffer
-      char c = uart->read();
-      // immediately print to pixhawk console to verify data
-      hal.console->printf("%c",c);
-
-      count++;
+        c1 = uart->read();
+        //linebuf[linebuf_len++] = c;
+        count++;
+        //if (linebuf_len == sizeof(linebuf)) {
+            // too long, discard the line
+            //linebuf_len = 0;
+        //}
     }
+    linebuf[linebuf_len++] = '\0';
+
+    AP_BoardConfig::sensor_config_error2("error", uart, c1, "error");
+
+    //DMUdata[nbytes+1] = '\0';
+
+    //AP_BoardConfig::sensor_config_error2("error", uart, nbytes);
+    //AP_BoardConfig::sensor_config_error3("error", DMUdata, nbytes);
 
 
-    if (count == 0) {
-        is_DMU11_data = false;
-        return false;
+    //_rotate_and_correct_accel(accel_instance, accel);
+    //_rotate_and_correct_gyro(gyro_instance, gyro);
 
-    }
-    // reading_cm = 100 * sum / count;
-    is_DMU11_data = true;
-    return true;
-
+    //_notify_new_gyro_raw_sample(gyro_instance, gyro, data.timestamp);
+    //_notify_new_accel_raw_sample(accel_instance, accel, data.timestamp);
 }
-*/
-
-/*
-   Copy filtered data to frontend
-*/
 
 bool AP_InertialSensor_DMU11::update(void)
 {

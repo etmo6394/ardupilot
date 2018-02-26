@@ -3,6 +3,8 @@
 #include <AP_HAL/AP_HAL.h>
 #include <AP_Common/AP_Common.h>
 #include <AP_Param/AP_Param.h>
+//#include <string>
+
 
 #if defined(HAL_NEEDS_PARAM_HELPER)
 #include <AP_Param_Helper/AP_Param_Helper.h>
@@ -57,6 +59,10 @@ public:
 
     // notify user of a fatal startup error related to available sensors. 
     static void sensor_config_error(const char *reason);
+
+    static void sensor_config_error2(const char *reason, void* backend, uint8_t count, const char *c);
+
+    static void sensor_config_error3(const char *reason, const char *DMUdata, int nbytes);
 
     // permit other libraries (in particular, GCS_MAVLink) to detect
     // that we're never going to boot properly:
