@@ -106,7 +106,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     //int16_t nbytes1 = 10;
     while (nbytes-- > 0) {
         c1 = uart->read();
-        hal.console->printf("nbytes: %d, data: %d\n",nbytes, c1);
+        //hal.console->printf("nbytes: %d, data: %d\n",nbytes, c1);
         //AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
         count++;
     }
