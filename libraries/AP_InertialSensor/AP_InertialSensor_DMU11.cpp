@@ -141,18 +141,20 @@ void AP_InertialSensor_DMU11::accumulate(void)
         //hal.console->printf("char: %c\n", c);
 
         // check for header line 0x55AA
-        if (c == HEADER1) {
-          hal.console->printf("char: %c\n", c);
-          tmp_c = c;
-          // We found 0x55, now need to do another read to verify that
-          // the next byte is 0xAA
-          c = uart->read();
-          nbytes--; // manually decrement for extra read statement
-          if (c != HEADER2) {
+        if (c != HEADER1) {
+            continue;
+        }
+        hal.console->printf("char: %c\n", c);
+        tmp_c = c;
+        // We found 0x55, now need to do another read to verify that
+        // the next byte is 0xAA
+        c = uart->read();
+        nbytes--; // manually decrement for extra read statement
+        if (c != HEADER2) {
             // Second byte isnt the expected second part of the header line (0xAA)
             // so its just another piece of data
             //need to delay 95.5 us per framed byte
-            hal.scheduler->delay_microseconds(96);
+            //hal.scheduler->delay_microseconds(96);
             continue;  // Back to top of loop to try again
           }
           hal.console->printf("char: %c\n", c);
@@ -164,7 +166,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
           msg_len = 2;
           initialize_message = false;   // Message no longer needs to be initialized
           break;  // Break out of while loop
-        } // if(c==HEADER1)
+        //} // if(c==HEADER1)
       } // while(nbytes-->0)
     } //if (initialize_message)
 
