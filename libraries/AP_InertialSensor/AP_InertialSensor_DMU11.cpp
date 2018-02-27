@@ -42,6 +42,7 @@ Item    Word    Data Item               Value/Units
 
 
 #include <AP_HAL/AP_HAL.h>
+#include <AP_HAL/utility/RingBuffer.h>
 #include <AP_BoardConfig/AP_BoardConfig.h>
 //#include <string>
 #include "AP_InertialSensor_DMU11.h"
