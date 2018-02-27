@@ -141,10 +141,11 @@ void AP_InertialSensor_DMU11::accumulate(void)
       while (nbytes-- > 0) {
         // read byte from buffer
         c = uart->read();
-        hal.console->printf("char: %c\n", c);
+        //hal.console->printf("char: %c\n", c);
 
         // check for header line 0x55AA
         if (c == HEADER1) {
+          hal.console->printf("char: %c\n", c);
           tmp_c = c;
           // We found 0x55, now need to do another read to verify that
           // the next byte is 0xAA
