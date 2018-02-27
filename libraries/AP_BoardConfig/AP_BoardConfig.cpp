@@ -279,3 +279,19 @@ void AP_BoardConfig::sensor_config_error3(const char *reason, const char *DMUdat
         hal.scheduler->delay(3000);
     }
 }
+
+void AP_BoardConfig::sensor_config_error4(const char *reason, bool ini)
+{
+    _in_sensor_config_error = true;
+    /*
+      to give the user the opportunity to connect to USB we keep
+      repeating the error.  The mavlink delay callback is initialised
+      before this, so the user can change parameters (and in
+      particular BRD_TYPE if needed)
+    */
+    while (true) {
+        printf("Sensor failure: %s\n", reason);
+        gcs().send_text(MAV_SEVERITY_ERROR, "%s: %s", reason, ini ? "true":"false");
+        hal.scheduler->delay(3000);
+    }
+}

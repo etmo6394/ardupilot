@@ -64,6 +64,8 @@ public:
 
     static void sensor_config_error3(const char *reason, const char *DMUdata, int nbytes);
 
+    static void sensor_config_error4(const char *reason, bool ini);
+
     // permit other libraries (in particular, GCS_MAVLink) to detect
     // that we're never going to boot properly:
     static bool in_sensor_config_error(void) { return _in_sensor_config_error; }
