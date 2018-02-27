@@ -128,8 +128,8 @@ void AP_InertialSensor_DMU11::accumulate(void)
     */
     if (initialize_message) {
       // Check number of available bytes
-      hal.scheduler->delay(10);
       nbytes = uart->available();
+
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
 
@@ -151,6 +151,8 @@ void AP_InertialSensor_DMU11::accumulate(void)
           if (c != HEADER2) {
             // Second byte isnt the expected second part of the header line (0xAA)
             // so its just another piece of data
+            //need to delay 95.5 us per framed byte
+            hal.scheduler->delay_microseconds(96);
             continue;  // Back to top of loop to try again
           }
           hal.console->printf("char: %c\n", c);
