@@ -113,7 +113,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
       such that the header line 0x55AA occupies the first two indices of the buffer
     */
     if (initialize_message) {
-      hal.scheduler->delay(5000);
+      hal.scheduler->delay(1000);
       // Check number of available bytes
       nbytes = uart->available();
       hal.console->printf("nbytes: %d",nbytes);
@@ -169,7 +169,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
         //} // if(c==HEADER1)
       } // while(nbytes-->0)
       hal.console->printf("Broke out of while loop.\n");
-      hal.console->printf("Message: %c %c\n", message[0], message[1]);
+      hal.console->printf("Message: %c %c\n", tmp_c, c);
       hal.scheduler->delay(20000);
 
     } //if (initialize_message)
@@ -179,7 +179,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     nbytes = uart->available();
     while (nbytes-- > 0) {
       message[msg_len++] = uart->read();
-      hal.console->printf("Message[%d]: %c\n", msg_len, message[msg_len]);
+      hal.console->printf("[[%d]: %c]", msg_len, message[msg_len]);
       if (msg_len == MESSAGE_SIZE) {
         /*
           If the message size has been maxed out (40 bytes) it is time to parse through the contents.
