@@ -122,6 +122,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
             //hal.scheduler->delay_microseconds(191);
             //hal.scheduler->delay_microseconds(7640);
             //nbytes = uart->available();
+            hal.scheduler->delay(50);
             hal.console->printf("nbytes: %d\n", nbytes);
         }
 
@@ -169,7 +170,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     nbytes = uart->available();
     while (nbytes-- > 0) {
       message[msg_len++] = uart->read();
-      hal.console->printf("[[%d]: %c]", msg_len, message[msg_len]);
+      hal.console->printf("[[%d]: %c] ", msg_len, message[msg_len]);
       if (msg_len == MESSAGE_SIZE) {
         /*
           If the message size has been maxed out (40 bytes) it is time to parse through the contents.
