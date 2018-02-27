@@ -115,6 +115,9 @@ void AP_InertialSensor_DMU11::accumulate(void)
     if (initialize_message) {
       // Check number of available bytes
       nbytes = uart->available();
+      if (nbytes == 0) {
+          hal.console->printf("No bytes available on DMU11.\n");
+      }
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
 
