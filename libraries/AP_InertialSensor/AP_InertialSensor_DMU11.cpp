@@ -127,6 +127,8 @@ void AP_InertialSensor_DMU11::accumulate(void)
         // read byte from buffer
         if (nbytes == 1) {
             nbytes = uart->available();
+            //need to delay 95.5 us per framed byte
+            hal.scheduler->delay_microseconds(191);
             hal.console->printf("nbytes: %d\n", nbytes);
         }
         c = uart->read();
