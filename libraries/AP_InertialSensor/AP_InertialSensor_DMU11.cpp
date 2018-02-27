@@ -128,7 +128,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     */
     if (initialize_message) {
       // Check number of available bytes
-      hal.scheduler->delay(3000);
+      hal.scheduler->delay(5);
       nbytes = uart->available();
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
@@ -153,6 +153,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
             // so its just another piece of data
             continue;  // Back to top of loop to try again
           }
+          hal.console->printf("char: %c\n", c);
           // We got here which means the header line has been found.
           // Now we can start filling the message buffer
           // First two indices are filled manually with the header that has already read
