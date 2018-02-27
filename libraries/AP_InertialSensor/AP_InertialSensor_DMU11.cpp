@@ -292,6 +292,7 @@ void AP_InertialSensor_DMU11::parse_data(void)
 
 
   msg_len = 0;
+
 }
 
 
