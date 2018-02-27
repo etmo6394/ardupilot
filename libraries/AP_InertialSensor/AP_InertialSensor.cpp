@@ -681,7 +681,7 @@ AP_InertialSensor::init(uint16_t sample_rate)
             _accel_scale[i].set(Vector3f(1,1,1));
         }
     }
-
+    AP_BoardConfig::sensor_config_error("error");
     // calibrate gyros unless gyro calibration has been disabled
     if (gyro_calibration_timing() != GYRO_CAL_NEVER) {
         init_gyro();
@@ -1195,6 +1195,7 @@ AP_InertialSensor::_init_gyro()
         last_average[k].zero();
         converged[k] = false;
     }
+
     for(int8_t c = 0; c < 5; c++) {
         hal.scheduler->delay(5);
         update();
