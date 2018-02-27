@@ -1492,6 +1492,7 @@ check_sample:
 
     now = AP_HAL::micros();
     if (_hil_mode && _hil.delta_time > 0) {
+        hal.console->printf("We are in HIL mode.\n");
         _delta_time = _hil.delta_time;
         _hil.delta_time = 0;
     } else {
