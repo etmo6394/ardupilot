@@ -124,7 +124,6 @@ void AP_InertialSensor_DMU11::accumulate(void)
         count++;
     }
 */
-    hal.console->printf("0x55: %c, 'U': %c\n", 0x55, 'U');
 
     int16_t nbytes;
     char c;
@@ -142,6 +141,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
       while (nbytes-- > 0) {
         // read byte from buffer
         c = uart->read();
+        hal.console->printf("char: %c\n", c);
 
         // check for header line 0x55AA
         if (c == HEADER1) {
