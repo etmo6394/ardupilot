@@ -128,7 +128,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     */
     if (initialize_message) {
       // Check number of available bytes
-      hal.scheduler->delay(5);
+      hal.scheduler->delay(10);
       nbytes = uart->available();
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
