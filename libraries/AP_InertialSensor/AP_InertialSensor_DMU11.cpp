@@ -95,7 +95,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     if (uart == nullptr) {
         AP_BoardConfig::sensor_config_error("Error: UART port not configured");
     }
-
+    AP_BoardConfig::sensor_config_error("error");
     int16_t nbytes;
     char c;
     /*
@@ -107,6 +107,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
       // Check number of available bytes
       nbytes = uart->available();
       hal.console->printf("nbytes: %d\n",nbytes);
+      AP_BoardConfig::sensor_config_error3("nbytes","nbytes",nbytes);
 
       if (nbytes == 0) {
           hal.console->printf("No bytes available on DMU11.\n");
