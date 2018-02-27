@@ -120,7 +120,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
         if ((nbytes == 1) || (nbytes == 2) ) {
             hal.scheduler->delay(50);
             nbytes = uart->available();
-            hal.console->printf("nbytes: %d\n", nbytes);
+            //hal.console->printf("nbytes: %d\n", nbytes);
         }
 
         // read byte from buffer
