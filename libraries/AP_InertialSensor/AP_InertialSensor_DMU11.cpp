@@ -184,11 +184,13 @@ void AP_InertialSensor_DMU11::accumulate(void)
         parse_data();
 
         // Peek next byte for header indication. If its not the header, we need to search for it again and reinitialize
-        c = uart->peek();
+       /*
+        c = hal.peek();
         if (c != HEADER1) {
           initialize_message = true;
           break;
         }
+        */
       }
     } // while (nbytes-- > 0)
 
@@ -197,17 +199,6 @@ void AP_InertialSensor_DMU11::accumulate(void)
 
     return;
 
-
-
-
-
-
-
-    //_rotate_and_correct_accel(_accel_instance, accel);
-    //_rotate_and_correct_gyro(_gyro_instance, gyro);
-
-    //_notify_new_gyro_raw_sample(_gyro_instance, gyro, data.timestamp);
-    //_notify_new_accel_raw_sample(_accel_instance, accel, data.timestamp);
 }
 
 void AP_InertialSensor_DMU11::parse_data(void)
@@ -293,11 +284,11 @@ void AP_InertialSensor_DMU11::parse_data(void)
   Vector3f accel = Vector3f(xAcc,yAcc,zAcc);
 
   // Notify of new measurements
-  _rotate_and_correct_gyro(_gyro_instance,gyro);
-  _notify_new_gyro_raw_sample(_gyro_instance,gyro);
+  //_rotate_and_correct_gyro(_gyro_instance,gyro);
+  //_notify_new_gyro_raw_sample(_gyro_instance,gyro);
 
-  _rotate_and_correct_accel(_accel_instance,accel);
-  _notify_new_accel_raw_sample(_accel_instance,accel);
+  //_rotate_and_correct_accel(_accel_instance,accel);
+  //_notify_new_accel_raw_sample(_accel_instance,accel);
 
 
   msg_len = 0;
@@ -312,10 +303,7 @@ bool AP_InertialSensor_DMU11::update(void)
     //update_accel(_accel_instance);
     //update_gyro(_gyro_instance);
 
-    if (uart == nullptr) {
-        return false;
-    }
-
+   /*
     uint16_t count = 0;
     int16_t nbytes = uart->available();
     //hal.console->printf("nbytes: %d\n",nbytes);
@@ -328,13 +316,12 @@ bool AP_InertialSensor_DMU11::update(void)
 
       count++;
     }
+    */
 
     //hal.console->printf("count: %d",count);
 
-    if (count == 0) {
-        return false;
+    accumulate();
 
-    }
     // reading_cm = 100 * sum / count;
     return true;
 }

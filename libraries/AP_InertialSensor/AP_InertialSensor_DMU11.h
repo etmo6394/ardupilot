@@ -24,6 +24,8 @@ public:
 
   bool update(void) override;
 
+  bool parse_data(void);
+
   // update state
   // void update(void) override;
 
@@ -35,7 +37,7 @@ private:
   char linebuf[40];
   uint8_t linebuf_len = 0;
   char message[40];
-  bool parse_data(void);
+  //bool parse_data(void);
   //MessageStatus message_status = MESSAGE_INCOMPLETE;
   bool initialize_message;
   uint8_t msg_len = 0;
