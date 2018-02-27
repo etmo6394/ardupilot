@@ -46,10 +46,6 @@ Item    Word    Data Item               Value/Units
 #include <AP_BoardConfig/AP_BoardConfig.h>
 //#include <string>
 #include "AP_InertialSensor_DMU11.h"
-// #define HEADER1 0x55
-// #define HEADER2 0xAA
-// #define MESSAGE_SIZE 40
-// #define DEG2RAD 0.01745329251
 
 // Declare external reference to HAL to gain access to namespace objects
 extern const AP_HAL::HAL& hal;
@@ -114,7 +110,6 @@ void AP_InertialSensor_DMU11::accumulate(void)
     uint16_t count = 0;
     int16_t nbytes = uart->available();
 
-
     char c1 = 0;
     //int16_t nbytes1 = 10;
     while (nbytes-- > 0) {
@@ -139,6 +134,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
 
       // Loop through nbytes to read data
       while (nbytes-- > 0) {
+        hal.console->printf("nbytes: %d\n", nbytes);
         // read byte from buffer
         c = uart->read();
         //hal.console->printf("char: %c\n", c);
