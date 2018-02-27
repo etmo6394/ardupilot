@@ -95,7 +95,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     if (uart == nullptr) {
         AP_BoardConfig::sensor_config_error("Error: UART port not configured");
     }
-    AP_BoardConfig::sensor_config_error("error");
+    //AP_BoardConfig::sensor_config_error("error");
     int16_t nbytes;
     char c;
     /*

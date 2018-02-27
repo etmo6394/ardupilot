@@ -661,6 +661,7 @@ AP_InertialSensor_Backend *AP_InertialSensor::_find_backend(int16_t backend_id, 
 void
 AP_InertialSensor::init(uint16_t sample_rate)
 {
+    AP_BoardConfig::sensor_config_error("error");
     // remember the sample rate
     _sample_rate = sample_rate;
     _loop_delta_t = 1.0f / sample_rate;
@@ -681,7 +682,7 @@ AP_InertialSensor::init(uint16_t sample_rate)
             _accel_scale[i].set(Vector3f(1,1,1));
         }
     }
-    AP_BoardConfig::sensor_config_error("error");
+
     // calibrate gyros unless gyro calibration has been disabled
     if (gyro_calibration_timing() != GYRO_CAL_NEVER) {
         init_gyro();
@@ -795,7 +796,7 @@ AP_InertialSensor::detect_backends(void)
 
     case AP_BoardConfig::PX4_BOARD_PIXHAWK2:
 
-        _fast_sampling_mask.set_default(1);
+        //_fast_sampling_mask.set_default(1);
 /*
         // older Pixhawk2 boards have the MPU6000 instead of MPU9250
         hal.console->printf("PixHawk2 backend detected\n");
