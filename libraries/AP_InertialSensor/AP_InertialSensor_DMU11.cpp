@@ -14,32 +14,22 @@
  */
 // spec sheet: https://www.siliconsensing.com/media/30801/dmu11-00-0100-132-rev-3.pdf
 
-/*
-Expected Data:
-
-Item    Word    Data Item               Value/Units
-0       0       Header                  16 Bit, 0x55AA
-1       1       Message Count           16 Bit, 0 to 65535 decimal
-2       2-3     Axis X Rate             32 Bit Single Precision FP, (deg/s)
-3       4-5     Axis X Accel            32 Bit Single Precision FP, (g)
-4       6-7     Axis Y Rate             32 Bit Single Precision FP, (deg/s)
-5       8-9     Axis Y Accel            32 Bit Single Precision FP, (g)
-6       10-11   Axis Z Rate             32 Bit Single Precision FP, (deg/s)
-7       12-13   Axis Z Accel            32 Bit Single Precision FP, (g)
-8       14-15   Aux Input V             32 Bit Single Precision FP, (V)
-9       16-17   Avg IMU Temp            32 Bit Single Precision FP, (degC)
-10      18-19   Axis X Delta Theta      32 Bit Single Precision FP, (deg)
-11      20-21   Axis X Delta Vel        32 Bit Single Precision FP, (m/s)
-12      22-23   Axis Y Delta Theta      32 Bit Single Precision FP, (deg)
-13      24-25   Axis Y Delta Vel        32 Bit Single Precision FP, (m/s)
-14      26-27   Axis Z Delta Theta      32 Bit Single Precision FP, (deg)
-15      28-29   Axis Z Delta Vel        32 Bit Single Precision FP, (m/s)
-16      30      Sys Startup Flags       16 Bit, 0 to 65535 decimal
-17      31      Sys Op Flags            16 Bit, 0 to 65535 decimal
-18      32      Bit Flag Error Ind      16 Bit, 0 to 65535 decimal
-19      33      Checksum                16 Bit 2-s complement of 16 Bit Sum of prev 0-18 items
-*/
-
+  /* DMU11 CUSTOM MESSAGE CONTENT:
+      Word    Data Item     Type      Byte (index) Numbers
+      0       Header        16 bit    0-1
+      1       Msg count     16 bit    2-3
+      2-3     xRate         float     4-7
+      4-5     xAcc          float     8-11
+      6-7     yRate         float     12-15
+      8-9     yAcc          float     16-19
+      10-11   zRate         float     20-23
+      12-13   zAcc          float     24-27
+      14-15   IMU Temp      float     28-31
+      16      starup BIT    16 bit    32-33
+      17      sys Op. BIT   16 bit    34-35
+      18      error ind.    16 bit    36-37
+      19      Checksum      16 bit    38-39
+  */
 
 #include <AP_HAL/AP_HAL.h>
 #include <AP_HAL/utility/RingBuffer.h>
