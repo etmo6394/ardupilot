@@ -34,4 +34,20 @@ private:
   uint8_t _accel_instance;
   char linebuf[40];
   uint8_t linebuf_len = 0;
+  char message[];
+  bool parse_data(void);
+  //MessageStatus message_status = MESSAGE_INCOMPLETE;
+  bool initialize_message;
+  uint8_t msg_len = 0;
+  float xRate,xAcc,yRate,yAcc,zRate,zAcc;
+  // Union declaration to convert mem types
+  union InertialFloats {
+    float f;
+    char  c[4];
+  } u_float;
+
+  union InertialInts {
+    uint16_t ui16;
+    char c[2] ;
+  } u_in;
 };
