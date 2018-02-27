@@ -57,9 +57,8 @@ extern const AP_HAL::HAL& hal;
 // DMU11 Constructor, sets up backend, creates DMU11 object, and finds UART port
 AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu) :
     AP_InertialSensor_Backend(imu),
-    //HEADER1(0x55),
+    HEADER1(0x55),
     HEADER2(0xAA),
-    HEADER1('U'),
     MESSAGE_SIZE(40),
     DEG2RAD(0.01745329251),
     initialize_message(true)    // Initialized to true, indicating that the message buffer needs to be initialized
@@ -125,7 +124,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
         count++;
     }
 */
-
+    hal.console->printf("0x55: %c, 'U': %c\n", 0x55, 'U');
 
     int16_t nbytes;
     char c;
