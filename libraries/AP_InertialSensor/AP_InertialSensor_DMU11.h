@@ -34,7 +34,7 @@ private:
   uint8_t _accel_instance;
   char linebuf[40];
   uint8_t linebuf_len = 0;
-  char message[];
+  char message[40];
   bool parse_data(void);
   //MessageStatus message_status = MESSAGE_INCOMPLETE;
   bool initialize_message;
