@@ -278,10 +278,10 @@ void AP_InertialSensor_DMU11::parse_data(void)
   xRate = u_float.f;
 
   // Save to imu data types
-  Vector3f gyro = Vector3f(xRate,yRate,zRate);
-  gyro *= DEG2RAD;
+  //Vector3f gyro = Vector3f(xRate,yRate,zRate);
+  //gyro *= DEG2RAD;
 
-  Vector3f accel = Vector3f(xAcc,yAcc,zAcc);
+  //Vector3f accel = Vector3f(xAcc,yAcc,zAcc);
 
   // Notify of new measurements
   //_rotate_and_correct_gyro(_gyro_instance,gyro);
