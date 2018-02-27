@@ -161,6 +161,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
           break;  // Break out of while loop
         //} // if(c==HEADER1)
       } // while(nbytes-->0)
+      hal.console->printf("Broke out of while loop.\n");
     } //if (initialize_message)
 
 //// Now the message buffer has been initialized and can be filled normally
