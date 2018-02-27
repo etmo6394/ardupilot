@@ -106,10 +106,11 @@ void AP_InertialSensor_DMU11::accumulate(void)
     int16_t nbytes1 = 10;
     while (nbytes1-- > 0) {
         c1 = uart->read();
+        AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
         count++;
     }
 
-    AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
+    //AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
 
 
     //_rotate_and_correct_accel(_accel_instance, accel);

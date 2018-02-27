@@ -14,6 +14,7 @@
 #include <termios.h>
 #include <drivers/drv_hrt.h>
 #include <assert.h>
+#include <AP_BoardConfig/AP_BoardConfig.h>
 #include "GPIO.h"
 
 using namespace PX4;
@@ -93,6 +94,7 @@ void PX4UARTDriver::begin(uint32_t b, uint16_t rxS, uint16_t txS)
         }
         _writebuf.set_size(txS);
     }
+    AP_BoardConfig::sensor_config_error4("Error",_fd);
 
 	if (_fd == -1) {
         _fd = open(_devpath, O_RDWR);
