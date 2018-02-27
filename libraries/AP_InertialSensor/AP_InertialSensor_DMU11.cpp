@@ -124,7 +124,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     }
 
 
-    int16_t nbytes;
+    //int16_t nbytes;
     char c;
     /*
       If this is the first read, the message buffer needs to be initialized
