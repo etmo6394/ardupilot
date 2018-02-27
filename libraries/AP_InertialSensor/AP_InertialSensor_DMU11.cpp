@@ -116,7 +116,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
       // Check number of available bytes
       nbytes = uart->available();
       if (nbytes == 0) {
-          hal.console->printf("No bytes available on DMU11.\n");
+          hal.console->printf("No bytes available on DMU11.");
       }
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
@@ -125,12 +125,13 @@ void AP_InertialSensor_DMU11::accumulate(void)
       while (nbytes-- > 0) {
         //hal.console->printf("nbytes: %d\n", nbytes);
         // read byte from buffer
-        c = uart->read();
-        //hal.console->printf("char: %c\n", c);
         if (nbytes == 0) {
             nbytes = uart->available();
             hal.console->printf("nbytes: %d\n", nbytes);
         }
+        c = uart->read();
+        //hal.console->printf("char: %c\n", c);
+
 
         // check for header line 0x55AA
         if (c != HEADER1) {
