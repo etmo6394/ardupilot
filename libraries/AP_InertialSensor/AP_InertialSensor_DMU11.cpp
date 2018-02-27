@@ -57,8 +57,9 @@ extern const AP_HAL::HAL& hal;
 // DMU11 Constructor, sets up backend, creates DMU11 object, and finds UART port
 AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu) :
     AP_InertialSensor_Backend(imu),
-    HEADER1(0x55),
+    //HEADER1(0x55),
     HEADER2(0xAA),
+    HEADER1('U'),
     MESSAGE_SIZE(40),
     DEG2RAD(0.01745329251),
     initialize_message(true)    // Initialized to true, indicating that the message buffer needs to be initialized
@@ -110,9 +111,10 @@ void AP_InertialSensor_DMU11::accumulate(void)
         AP_BoardConfig::sensor_config_error("Error: UART port not configured");
     }
 
-
+/*
     uint16_t count = 0;
     int16_t nbytes = uart->available();
+
 
     char c1 = 0;
     //int16_t nbytes1 = 10;
@@ -122,9 +124,10 @@ void AP_InertialSensor_DMU11::accumulate(void)
         //AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
         count++;
     }
+*/
 
 
-    //int16_t nbytes;
+    int16_t nbytes;
     char c;
     /*
       If this is the first read, the message buffer needs to be initialized
