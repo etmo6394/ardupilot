@@ -106,20 +106,6 @@ void AP_InertialSensor_DMU11::accumulate(void)
         AP_BoardConfig::sensor_config_error("Error: UART port not configured");
     }
 
-/*
-    uint16_t count = 0;
-    int16_t nbytes = uart->available();
-
-    char c1 = 0;
-    //int16_t nbytes1 = 10;
-    while (nbytes-- > 0) {
-        c1 = uart->read();
-        hal.console->printf("nbytes: %d, data: %c\n",nbytes, c1);
-        //AP_BoardConfig::sensor_config_error2("error", uart, c1, nbytes);
-        count++;
-    }
-*/
-
     int16_t nbytes;
     char c;
     /*
@@ -129,7 +115,6 @@ void AP_InertialSensor_DMU11::accumulate(void)
     if (initialize_message) {
       // Check number of available bytes
       nbytes = uart->available();
-
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
 
@@ -139,6 +124,10 @@ void AP_InertialSensor_DMU11::accumulate(void)
         // read byte from buffer
         c = uart->read();
         //hal.console->printf("char: %c\n", c);
+        if (nbytes == 0) {
+            nbytes = uart->available();
+            hal.console->printf("nbytes: %d\n", nbytes);
+        }
 
         // check for header line 0x55AA
         if (c != HEADER1) {
