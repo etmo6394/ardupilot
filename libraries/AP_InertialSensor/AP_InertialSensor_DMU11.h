@@ -29,6 +29,9 @@ public:
   // void update(void) override;
 
 private:
+  char HEADER1, HEADER2;
+  uint8_t MESSAGE_SIZE;
+  float DEG2RAD;
   // bool get_reading(Vector3f &gyro, Vector3f &accel);
   AP_HAL::UARTDriver *uart = nullptr;
   uint8_t _gyro_instance;

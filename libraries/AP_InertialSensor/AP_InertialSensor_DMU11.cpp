@@ -46,10 +46,10 @@ Item    Word    Data Item               Value/Units
 #include <AP_BoardConfig/AP_BoardConfig.h>
 //#include <string>
 #include "AP_InertialSensor_DMU11.h"
-#define HEADER1 0x55
-#define HEADER2 0xAA
-#define MESSAGE_SIZE 40
-#define DEG2RAD 0.01745329251
+// #define HEADER1 0x55
+// #define HEADER2 0xAA
+// #define MESSAGE_SIZE 40
+// #define DEG2RAD 0.01745329251
 
 // Declare external reference to HAL to gain access to namespace objects
 extern const AP_HAL::HAL& hal;
@@ -57,6 +57,10 @@ extern const AP_HAL::HAL& hal;
 // DMU11 Constructor, sets up backend, creates DMU11 object, and finds UART port
 AP_InertialSensor_DMU11::AP_InertialSensor_DMU11(AP_InertialSensor &imu) :
     AP_InertialSensor_Backend(imu),
+    HEADER1(0x55),
+    HEADER2(0xAA),
+    MESSAGE_SIZE(40),
+    DEG2RAD(0.01745329251),
     initialize_message(true)    // Initialized to true, indicating that the message buffer needs to be initialized
                                     // for the correct message formatting. This will be set to false once the format is initialized
                                     // and only set true again if theres an error in the message format
