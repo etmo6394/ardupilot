@@ -128,13 +128,14 @@ void AP_InertialSensor_DMU11::accumulate(void)
     */
     if (initialize_message) {
       // Check number of available bytes
+      hal.scheduler->delay(3000);
       nbytes = uart->available();
       //hal.console->printf("nbytes: %d\n", nbytes);
       char tmp_c;
 
       // Loop through nbytes to read data
       while (nbytes-- > 0) {
-        hal.console->printf("nbytes: %d\n", nbytes);
+        //hal.console->printf("nbytes: %d\n", nbytes);
         // read byte from buffer
         c = uart->read();
         //hal.console->printf("char: %c\n", c);
