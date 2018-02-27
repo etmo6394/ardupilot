@@ -113,7 +113,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
       such that the header line 0x55AA occupies the first two indices of the buffer
     */
     if (initialize_message) {
-      hal.scheduler->delay_microseconds(20000);
+      hal.scheduler->delay(5000);
       // Check number of available bytes
       nbytes = uart->available();
       hal.console->printf("nbytes: %d",nbytes);
