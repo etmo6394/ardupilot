@@ -254,10 +254,7 @@ void AP_SerialManager::init()
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_TX);
                     state[i].uart->set_stop_bits(2);
                     state[i].uart->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
-                    hal.console->printf("\nuartE at %d baud\n",(int32_t)state[i].baud);
-                    hal.console->printf("uartE protocol: %d\n",(int8_t)state[i].protocol);
-                    hal.console->printf("expected uart state 4: %p\n", hal.uartE);
-                    hal.console->printf("actual uart state 4: %p\n\n", state[4].uart);
+                    hal.console->printf("DMU on uartE(%p) at %d baud (protocol %d)\n",state[4].uart,(int32_t)state[i].baud,(int8_t)state[i].protocol);
                     break;
                 case SerialProtocol_uZed:
                     state[i].baud = AP_SERIALMANAGER_UZED_BAUD/1000;
@@ -282,12 +279,8 @@ AP_HAL::UARTDriver *AP_SerialManager::find_serial(enum SerialProtocol protocol, 
     for(uint8_t i=0; i<SERIALMANAGER_NUM_PORTS; i++) {
         if (protocol_match(protocol, (enum SerialProtocol)state[i].protocol.get())) {
             if (found_instance == instance) {
-                hal.console->printf("instances: %s\n", (found_instance==instance) ? "true":"false" );
-                hal.console->printf("uart: %p\n", state[i].uart);
-                hal.console->printf("expected uart: %p\n", hal.uartE);
-                hal.console->printf("current i: %d\n", i);
-                hal.console->printf("verify baud: %d\n", (int32_t)state[i].baud);
-                hal.console->printf("verify protocol: %d\n", (int8_t)state[i].protocol);
+                hal.console->printf("uart: %p | expected uart: %p\n", state[i].uart,hal.uartE);
+                hal.console->printf("baud: %d, protocol: %d\n", (int32_t)state[i].baud, (int8_t)state[i].protocol);
 
                 return state[i].uart;
             }
