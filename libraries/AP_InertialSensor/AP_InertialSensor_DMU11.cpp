@@ -125,7 +125,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
       while (nbytes-- > 0) {
         //hal.console->printf("nbytes: %d\n", nbytes);
         // read byte from buffer
-        if (nbytes == 0) {
+        if (nbytes == 1) {
             nbytes = uart->available();
             hal.console->printf("nbytes: %d\n", nbytes);
         }
