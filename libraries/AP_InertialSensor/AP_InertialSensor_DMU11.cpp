@@ -199,7 +199,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
     } // while (nbytes-- > 0)
     //message[msg_len++] = '\0';
 
-    uint8_t count2;
+    uint8_t count2 = 0;
     while (count2++ < msg_len ) {
       hal.console->printf("Message[%d]: %s\n", count2, message[count2]);
     }
