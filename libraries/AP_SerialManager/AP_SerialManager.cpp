@@ -254,7 +254,7 @@ void AP_SerialManager::init()
                                          AP_SERIALMANAGER_DMU11_BUFSIZE_TX);
                     state[i].uart->set_stop_bits(2);
                     state[i].uart->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
-                    hal.console->printf("DMU on uartE(%p) at %d baud (protocol %d)\n",state[4].uart,(int32_t)state[i].baud,(int8_t)state[i].protocol);
+                    hal.console->printf("DMU on uartE (%p) at %d baud (protocol %d)\n",state[4].uart,(int32_t)state[i].baud,(int8_t)state[i].protocol);
                     break;
                 case SerialProtocol_uZed:
                     state[i].baud = AP_SERIALMANAGER_UZED_BAUD/1000;
