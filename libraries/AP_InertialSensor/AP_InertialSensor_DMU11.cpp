@@ -169,7 +169,7 @@ void AP_InertialSensor_DMU11::accumulate(void)
         //} // if(c==HEADER1)
       } // while(nbytes-->0)
       hal.console->printf("Broke out of while loop.\n");
-      hal.console->printf("Message: %c %c\n", tmp_c, c);
+      hal.console->printf("Message: %c %c\n", message[0], message[1]);
       hal.scheduler->delay(20000);
 
     } //if (initialize_message)
