@@ -755,9 +755,9 @@ AP_InertialSensor::detect_backends(void)
     }
 #if CONFIG_HAL_BOARD == HAL_BOARD_SITL
     hal.console->printf("INS in SITL Mode\n");
-    //ADD_BACKEND(AP_InertialSensor_SITL::detect(*this));
+    ADD_BACKEND(AP_InertialSensor_SITL::detect(*this));
     hal.console->printf("Attempting to detect dmu11\n");
-    ADD_BACKEND(AP_InertialSensor_DMU11::probe(*this));
+    //ADD_BACKEND(AP_InertialSensor_DMU11::probe(*this));
     hal.console->printf("INS in HIL Mode\n");
 #elif HAL_INS_DEFAULT == HAL_INS_HIL
     //ADD_BACKEND(AP_InertialSensor_HIL::detect(*this));
