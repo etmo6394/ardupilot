@@ -533,7 +533,7 @@ uint8_t AP_InertialSensor::register_gyro(uint16_t raw_sample_rate_hz,
         AP_HAL::panic("Too many gyros");
     }
 
-    // If sensor is DMU11
+    // If sensor is DMU11 x
     /*
     if (id == 0) {
       _gyro_raw_sample_rates[_gyro_count] = 0;
