@@ -58,6 +58,7 @@ ArduCopter/test.ArduCopter/
 ArduCopter/test/*
 ArduCopter/way.txt
 ArduPlane/test.ArduPlane/
+ArduPlane/arduplane.exe.stackdump
 ArduPlane/test/*
 ArduPlane/way.txt
 Build.APMrover2/*
